@@ -1,5 +1,5 @@
 -- ─────────────────────────────────────────────────────────────────────────────
--- Connect++ Seed Data
+-- Connect++ Seed Data  (idempotent — safe to re-run)
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- ── Outcome Templates ─────────────────────────────────────────────────────────
@@ -238,68 +238,73 @@ insert into outcome_templates (slug, title, subtitle, description, category, pri
       "placeholder": "e.g. P95 API response < 200ms, page load < 2s on 4G"
     }
   ]
-}'::jsonb, 5);
+}'::jsonb, 5)
+
+on conflict (slug) do nothing;
 
 
 -- ── Talent Profiles ───────────────────────────────────────────────────────────
 
-insert into talent_profiles (display_name, title, seniority, bio, skills, ai_velocity_score, years_experience, hourly_rate_cents, highlight_projects) values
+insert into talent_profiles (id, display_name, title, seniority, bio, skills, ai_velocity_score, years_experience, hourly_rate_cents, highlight_projects) values
 
-('Marcus', 'Senior Full-Stack Engineer', 'senior',
+('c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'Marcus', 'Senior Full-Stack Engineer', 'senior',
 'I build fast, maintainable product backends and pair them with clean React frontends. I''ve shipped SaaS products from zero to Series A scale and have strong opinions about API design and database modeling. My AI workflow triples output on greenfield features without sacrificing code quality.',
 '["React", "TypeScript", "Node.js", "PostgreSQL", "Next.js", "AWS", "Prisma"]'::jsonb,
 2.4, 8, 18500,
 '[{"title": "Fintech Dashboard Rebuild", "description": "Led a 3-month rewrite of a legacy banking dashboard handling $2B in daily transactions. Migrated to Next.js + tRPC, reduced bundle size by 60% and API latency by 40%.", "tech": ["Next.js", "tRPC", "PostgreSQL", "AWS"]}, {"title": "Real-Time Collaboration Tool", "description": "Built a Notion-like collaborative editor from scratch with real-time sync, offline support, and conflict resolution for a Series A startup.", "tech": ["React", "Yjs", "WebSockets", "Node.js"]}]'::jsonb),
 
-('Priya', 'Staff Engineer – Backend & Infrastructure', 'staff',
+('c2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'Priya', 'Staff Engineer – Backend & Infrastructure', 'staff',
 'Distributed systems engineer with a focus on reliability and scale. I''ve designed data pipelines processing billions of events per day and led migrations from monoliths to service-oriented architectures. I use AI tools to accelerate infrastructure automation and cut toil dramatically.',
 '["Go", "Kubernetes", "PostgreSQL", "Kafka", "Terraform", "Python", "gRPC"]'::jsonb,
 2.7, 12, 24000,
 '[{"title": "Event Streaming Platform", "description": "Designed and built a multi-tenant Kafka-based event streaming platform processing 5B events/day for a logistics company. Zero-downtime deploys, 99.99% uptime.", "tech": ["Kafka", "Go", "Kubernetes", "Terraform"]}, {"title": "Monolith to Microservices Migration", "description": "Led 18-month migration of a 500K LOC Rails monolith to event-driven microservices. Reduced deploy time from 45 minutes to 3 minutes.", "tech": ["Go", "gRPC", "PostgreSQL", "Kubernetes"]}]'::jsonb),
 
-('Jordan', 'Senior iOS Engineer', 'senior',
+('c3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8', 'Jordan', 'Senior iOS Engineer', 'senior',
 'iOS specialist who cares deeply about native performance and intuitive UX. I''ve shipped apps with millions of MAU and know every corner of UIKit and SwiftUI. I leverage AI pair programming to prototype at 2x speed while maintaining the polish users expect from top-tier iOS apps.',
 '["Swift", "SwiftUI", "UIKit", "Core Data", "Combine", "Xcode", "TestFlight"]'::jsonb,
 2.1, 7, 17500,
 '[{"title": "Health & Fitness App", "description": "Led iOS development for a fitness app that reached #3 in the Health category on the App Store with 800K downloads in 6 months. Custom animation engine and HealthKit integration.", "tech": ["Swift", "SwiftUI", "HealthKit", "Core Data"]}, {"title": "Real-Time Transit App", "description": "Built an offline-first transit app with live vehicle tracking and predictive arrival times serving 200K daily active users.", "tech": ["Swift", "MapKit", "Core Location", "Combine"]}]'::jsonb),
 
-('Amara', 'Senior ML Engineer', 'senior',
+('c4d5e6f7-a8b9-c0d1-e2f3-a4b5c6d7e8f9', 'Amara', 'Senior ML Engineer', 'senior',
 'I build ML systems that actually make it to production. My background spans recommendation systems, NLP pipelines, and computer vision — and I specialize in the unglamorous work of getting models out of notebooks and into reliable, scalable services.',
 '["Python", "PyTorch", "MLflow", "FastAPI", "AWS SageMaker", "Pandas", "Docker"]'::jsonb,
 2.3, 6, 19000,
 '[{"title": "Personalization Engine", "description": "Built and deployed a real-time recommendation engine for an e-commerce platform that increased click-through rate by 34% and average order value by 18%.", "tech": ["PyTorch", "FastAPI", "Redis", "AWS SageMaker"]}, {"title": "Document Intelligence Pipeline", "description": "Created an NLP pipeline that extracts structured data from 50K+ contracts per day, reducing manual review time by 85%.", "tech": ["Python", "spaCy", "FastAPI", "PostgreSQL"]}]'::jsonb),
 
-('Devon', 'Principal DevOps & Platform Engineer', 'principal',
+('c5e6f7a8-b9c0-d1e2-f3a4-b5c6d7e8f9a0', 'Devon', 'Principal DevOps & Platform Engineer', 'principal',
 'Platform engineer who builds the systems other engineers love. I''ve designed golden paths for dozens of engineering teams — from CI/CD to internal developer portals. AI tools have transformed how I write Terraform and build automation; I ship infrastructure 3x faster than I did three years ago.',
 '["Terraform", "AWS", "Kubernetes", "GitHub Actions", "Python", "ArgoCD", "Prometheus"]'::jsonb,
 2.6, 14, 26000,
 '[{"title": "Internal Developer Platform", "description": "Built a Backstage-based internal developer portal adopted by 200+ engineers across 15 teams. Self-service infrastructure provisioning reduced ops tickets by 70%.", "tech": ["Backstage", "Terraform", "AWS", "Kubernetes"]}, {"title": "Zero-Downtime Migration", "description": "Led AWS region migration for a healthcare platform with strict HIPAA requirements. 18-month project completed with zero downtime and full compliance audit trail.", "tech": ["AWS", "Terraform", "ArgoCD", "Python"]}]'::jsonb),
 
-('Sasha', 'Senior Full-Stack Engineer – React & Node', 'senior',
+('c6f7a8b9-c0d1-e2f3-a4b5-c6d7e8f9a0b1', 'Sasha', 'Senior Full-Stack Engineer – React & Node', 'senior',
 'Product-focused engineer who thrives at the intersection of design and engineering. I build UIs that feel fast and intuitive and back them with clean APIs. I have a strong eye for UX and collaborate closely with design teams. AI-assisted development has made me significantly faster at generating boilerplate and prototyping new features.',
 '["React", "TypeScript", "Node.js", "GraphQL", "Tailwind CSS", "Prisma", "Vercel"]'::jsonb,
 2.2, 6, 17000,
 '[{"title": "B2B SaaS Analytics Dashboard", "description": "Built a complex analytics dashboard with 40+ chart types, real-time updates, and white-labeling for a B2B SaaS product used by 500+ companies.", "tech": ["React", "Recharts", "GraphQL", "Node.js"]}, {"title": "Design System Library", "description": "Architected and built a company-wide design system with 80+ components, full a11y compliance, and Storybook documentation. Adopted by 5 product teams.", "tech": ["React", "TypeScript", "Storybook", "Tailwind CSS"]}]'::jsonb),
 
-('Wei', 'Senior Android Engineer', 'senior',
+('c7a8b9c0-d1e2-f3a4-b5c6-d7e8f9a0b1c2', 'Wei', 'Senior Android Engineer', 'senior',
 'Android specialist with deep expertise in Jetpack Compose and modern Android architecture. I''ve shipped apps in fintech and health that handle sensitive data with the security and reliability those domains demand.',
 '["Kotlin", "Jetpack Compose", "Android SDK", "Room", "Retrofit", "Coroutines", "Hilt"]'::jsonb,
 1.9, 7, 17000,
 '[{"title": "Mobile Banking App Redesign", "description": "Led the Jetpack Compose migration of a banking app with 1.2M users. Reduced crash rate by 45% and improved app store rating from 3.8 to 4.7.", "tech": ["Kotlin", "Jetpack Compose", "Biometrics API", "Room"]}, {"title": "Telehealth Platform", "description": "Built the Android side of a HIPAA-compliant telehealth app with video consultations, e-prescriptions, and offline medical records.", "tech": ["Kotlin", "WebRTC", "Room", "Hilt"]}]'::jsonb),
 
-('Nadia', 'Staff Engineer – Python & Data', 'staff',
+('c8b9c0d1-e2f3-a4b5-c6d7-e8f9a0b1c2d3', 'Nadia', 'Staff Engineer – Python & Data', 'staff',
 'Data engineer and API architect. I design the plumbing that keeps data flowing reliably — from ingestion pipelines to the APIs that serve it to product teams. I lean heavily on AI to accelerate schema design, data transformation code, and API documentation.',
 '["Python", "FastAPI", "PostgreSQL", "dbt", "Airflow", "Spark", "Redis"]'::jsonb,
 1.8, 10, 21000,
-'[{"title": "Data Warehouse Modernization", "description": "Redesigned a fragile ETL spaghetti system into a reliable dbt-based data warehouse processing 10TB/day. Analyst query time dropped from 45 seconds to 2 seconds average.", "tech": ["dbt", "Snowflake", "Airflow", "Python"]}, {"title": "API Gateway for Data Products", "description": "Built a FastAPI-based gateway serving ML model predictions and analytics to 30+ internal and external consumers with SLAs, rate limiting, and full observability.", "tech": ["FastAPI", "PostgreSQL", "Redis", "Prometheus"]}]'::jsonb);
+'[{"title": "Data Warehouse Modernization", "description": "Redesigned a fragile ETL spaghetti system into a reliable dbt-based data warehouse processing 10TB/day. Analyst query time dropped from 45 seconds to 2 seconds average.", "tech": ["dbt", "Snowflake", "Airflow", "Python"]}, {"title": "API Gateway for Data Products", "description": "Built a FastAPI-based gateway serving ML model predictions and analytics to 30+ internal and external consumers with SLAs, rate limiting, and full observability.", "tech": ["FastAPI", "PostgreSQL", "Redis", "Prometheus"]}]'::jsonb)
+
+on conflict (id) do nothing;
 
 
 -- ── Demo Companies ────────────────────────────────────────────────────────────
--- These companies are used for demo engagements (no auth.users link needed for seed)
 
 insert into companies (id, name, website, size, industry) values
 ('a1b2c3d4-e5f6-7890-abcd-ef1234567890', 'Acme Corp', 'https://acme.example.com', '51-200', 'E-commerce'),
-('b2c3d4e5-f6a7-8901-bcde-f12345678901', 'Bloom Health', 'https://bloomhealth.example.com', '11-50', 'Healthcare');
+('b2c3d4e5-f6a7-8901-bcde-f12345678901', 'Bloom Health', 'https://bloomhealth.example.com', '11-50', 'Healthcare')
+
+on conflict (id) do nothing;
 
 
 -- ── Demo Engagements ──────────────────────────────────────────────────────────
@@ -329,7 +334,9 @@ values
   1400000,
   '2026-03-31',
   '2026-04-11'
-);
+)
+
+on conflict (id) do nothing;
 
 
 -- ── Demo Milestones ───────────────────────────────────────────────────────────
@@ -367,7 +374,9 @@ insert into milestones (engagement_id, title, description, status, deliverables,
   'upcoming',
   '[{"name": "Production deployment", "description": "AWS deployment with monitoring and alerting", "status": "pending"}, {"name": "Staff onboarding guide", "description": "Video walkthrough + written documentation", "status": "pending"}, {"name": "Admin user training", "description": "Live 60-minute walkthrough with warehouse managers", "status": "pending"}]'::jsonb,
   '2026-04-18', null, 4
-);
+)
+
+on conflict do nothing;
 
 -- Engagement 2: Bloom Health — 3 milestones
 insert into milestones (engagement_id, title, description, status, deliverables, due_date, completed_at, display_order) values
@@ -394,7 +403,9 @@ insert into milestones (engagement_id, title, description, status, deliverables,
   'upcoming',
   '[{"name": "GitHub Actions pipeline", "description": "Tests run on every PR with pass/fail gates", "status": "pending"}, {"name": "Coverage dashboard", "description": "Codecov integration with badge on README", "status": "pending"}, {"name": "Testing playbook", "description": "Guidelines for the Bloom engineering team to maintain and extend coverage", "status": "pending"}]'::jsonb,
   '2026-04-11', null, 3
-);
+)
+
+on conflict do nothing;
 
 
 -- ── Demo Messages ─────────────────────────────────────────────────────────────
@@ -408,7 +419,9 @@ insert into messages (engagement_id, sender_name, sender_role, content, is_syste
 ('e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'System', 'system', 'Milestone 1 (Architecture & Design) marked as completed.', true, '2026-03-28 16:30:00+00'),
 ('e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'Marcus (Engineer)', 'engineer', 'Architecture doc and Figma designs are ready for review — I''ve shared the link via email. The DB schema is finalized. We''re using Next.js 14 + Supabase for the backend, which lets us move fast and gives you real-time updates out of the box. Kicking off the product catalog API today.', false, '2026-03-29 10:15:00+00'),
 ('e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'Tyler (Acme)', 'client', 'Designs look great! One feedback: on the stock overview screen, can we add a "Days of Stock Remaining" column? That''s the metric our warehouse managers check first every morning.', false, '2026-03-31 08:30:00+00'),
-('e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'Marcus (Engineer)', 'engineer', 'Done — added Days of Stock Remaining calculated from average daily movement over the last 30 days. It''ll be a real-time computed column so it updates automatically as stock moves. Good call, this is genuinely useful.', false, '2026-03-31 11:00:00+00');
+('e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'Marcus (Engineer)', 'engineer', 'Done — added Days of Stock Remaining calculated from average daily movement over the last 30 days. It''ll be a real-time computed column so it updates automatically as stock moves. Good call, this is genuinely useful.', false, '2026-03-31 11:00:00+00')
+
+on conflict do nothing;
 
 -- Engagement 2: Bloom Health messages
 insert into messages (engagement_id, sender_name, sender_role, content, is_system_message, created_at) values
@@ -417,4 +430,6 @@ insert into messages (engagement_id, sender_name, sender_role, content, is_syste
 ('e2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'Keisha (Bloom)', 'client', 'Sending staging credentials now via 1Password. The environment is already HIPAA-sandboxed with synthetic patient data. One request: can we prioritize the prescription request E2E test? That flow has had the most prod incidents.', false, '2026-03-31 15:30:00+00'),
 ('e2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'Sam (PM)', 'pm', 'Absolutely — prescription request will be the first E2E we build. We found a race condition in that flow during the audit that likely explains some of your incidents. We''ll write a regression test for it specifically.', false, '2026-04-01 09:00:00+00'),
 ('e2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'System', 'system', 'Milestone 1 (Codebase Audit) marked as completed.', true, '2026-04-03 14:00:00+00'),
-('e2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'Sam (PM)', 'pm', 'Test suite build is complete and ready for your review. We hit 71% overall coverage (up from 8%), including 94% on utilities/hooks and 100% on the prescription flow with a regression test for the race condition. Milestone 2 is marked In Review — please take a look and let us know if anything needs adjustment before we wire it into CI.', false, '2026-04-10 16:00:00+00');
+('e2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', 'Sam (PM)', 'pm', 'Test suite build is complete and ready for your review. We hit 71% overall coverage (up from 8%), including 94% on utilities/hooks and 100% on the prescription flow with a regression test for the race condition. Milestone 2 is marked In Review — please take a look and let us know if anything needs adjustment before we wire it into CI.', false, '2026-04-10 16:00:00+00')
+
+on conflict do nothing;
