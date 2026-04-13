@@ -131,38 +131,34 @@ alter table milestones enable row level security;
 alter table messages enable row level security;
 alter table talent_profiles enable row level security;
 
+-- ── Helper: avoids RLS recursion when policies query the users table ──────────
+-- SECURITY DEFINER bypasses RLS on the users table for this lookup only.
+create or replace function get_my_company_id()
+returns uuid
+language sql
+security definer
+stable
+as $$
+  select company_id from users where id = auth.uid()
+$$;
+
 -- ── companies ─────────────────────────────────────────────────────────────────
--- Users can read/update their own company
 create policy "Users can read their own company"
   on companies for select
-  using (
-    id in (
-      select company_id from users where id = auth.uid()
-    )
-  );
+  using (id = get_my_company_id());
 
 create policy "Users can update their own company"
   on companies for update
-  using (
-    id in (
-      select company_id from users where id = auth.uid()
-    )
-  );
+  using (id = get_my_company_id());
 
 create policy "Anyone can insert a company"
   on companies for insert
   with check (true);
 
 -- ── users ─────────────────────────────────────────────────────────────────────
--- Users can read their own record and other users in their company
 create policy "Users can read their own profile"
   on users for select
-  using (
-    id = auth.uid()
-    or company_id in (
-      select company_id from users where id = auth.uid()
-    )
-  );
+  using (id = auth.uid() or company_id = get_my_company_id());
 
 create policy "Users can update their own profile"
   on users for update
@@ -179,50 +175,33 @@ create policy "Anyone can read active outcome templates"
   using (is_active = true);
 
 -- ── engagements ───────────────────────────────────────────────────────────────
--- Users can read engagements belonging to their company
 create policy "Users can read their company's engagements"
   on engagements for select
-  using (
-    company_id in (
-      select company_id from users where id = auth.uid()
-    )
-  );
+  using (company_id = get_my_company_id());
 
 create policy "Users can insert engagements for their company"
   on engagements for insert
-  with check (
-    company_id in (
-      select company_id from users where id = auth.uid()
-    )
-    -- Also allow unauthenticated intake submissions
-    or auth.uid() is null
-  );
+  with check (company_id = get_my_company_id() or auth.uid() is null);
 
 create policy "Unauthenticated users can insert intake engagements"
   on engagements for insert
   with check (status = 'intake');
 
 -- ── milestones ────────────────────────────────────────────────────────────────
--- Users can read milestones for their company's engagements
 create policy "Users can read milestones for their company's engagements"
   on milestones for select
   using (
     engagement_id in (
-      select e.id from engagements e
-      join users u on u.company_id = e.company_id
-      where u.id = auth.uid()
+      select id from engagements where company_id = get_my_company_id()
     )
   );
 
 -- ── messages ──────────────────────────────────────────────────────────────────
--- Users can read and insert messages for their company's engagements
 create policy "Users can read messages for their company's engagements"
   on messages for select
   using (
     engagement_id in (
-      select e.id from engagements e
-      join users u on u.company_id = e.company_id
-      where u.id = auth.uid()
+      select id from engagements where company_id = get_my_company_id()
     )
   );
 
@@ -230,9 +209,7 @@ create policy "Users can insert messages for their company's engagements"
   on messages for insert
   with check (
     engagement_id in (
-      select e.id from engagements e
-      join users u on u.company_id = e.company_id
-      where u.id = auth.uid()
+      select id from engagements where company_id = get_my_company_id()
     )
   );
 

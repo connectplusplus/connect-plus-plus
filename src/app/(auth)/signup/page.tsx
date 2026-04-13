@@ -50,6 +50,14 @@ export default function SignupPage() {
       if (authError) throw authError
       if (!authData.user) throw new Error('User creation failed')
 
+      // If email confirmation is required, show success message and stop here.
+      // The user profile will be created after they confirm and log in.
+      if (!authData.session) {
+        setSuccess(true)
+        setLoading(false)
+        return
+      }
+
       // 2. Create company
       const { data: company, error: companyError } = await supabase
         .from('companies')
@@ -70,19 +78,13 @@ export default function SignupPage() {
 
       if (userError) throw userError
 
-      // If email confirmation is required, show success message
-      if (!authData.session) {
-        setSuccess(true)
-        setLoading(false)
-        return
-      }
-
-      // Otherwise redirect to dashboard
       router.push('/dashboard')
       router.refresh()
-    } catch (err) {
+    } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+        err instanceof Error
+          ? err.message
+          : (err as { message?: string })?.message ?? 'Something went wrong. Please try again.'
 
       if (message.includes('already registered') || message.includes('already exists')) {
         setError('An account with this email already exists. Try signing in instead.')
