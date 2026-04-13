@@ -24,7 +24,7 @@ interface DashboardSidebarProps {
 const NAV_ITEMS = [
   { label: 'Overview', href: '/dashboard', icon: Home, exact: true },
   { label: 'Engagements', href: '/dashboard/engagements', icon: Layers, exact: false },
-  { label: 'Marketplace', href: '/marketplace/outcomes', icon: Store, exact: false },
+  { label: 'New Engagement', href: '/dashboard/new-engagement', icon: Store, exact: false },
   { label: 'Messages', href: '/dashboard/messages', icon: MessageCircle, exact: false },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings, exact: false },
 ]

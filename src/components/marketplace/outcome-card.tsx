@@ -24,9 +24,10 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; strokeWidth?
 
 interface OutcomeCardProps {
   template: OutcomeTemplate
+  linkPrefix?: string
 }
 
-export function OutcomeCard({ template }: OutcomeCardProps) {
+export function OutcomeCard({ template, linkPrefix = '/marketplace/outcomes' }: OutcomeCardProps) {
   const IconComponent = template.icon ? (ICON_MAP[template.icon] ?? Zap) : Zap
   const categoryColor = CATEGORY_COLORS[template.category]
   const categoryLabel = CATEGORY_LABELS[template.category]
@@ -79,7 +80,7 @@ export function OutcomeCard({ template }: OutcomeCardProps) {
 
       {/* CTA */}
       <Link
-        href={`/marketplace/outcomes/${template.slug}`}
+        href={`${linkPrefix}/${template.slug}`}
         className="flex items-center justify-between text-[#A6F84C] text-sm font-semibold hover:gap-3 transition-all duration-150 group/link"
       >
         <span>Learn More</span>

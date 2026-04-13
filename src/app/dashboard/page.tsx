@@ -183,7 +183,7 @@ export default async function DashboardPage() {
               Browse the outcome catalog to find a productized service that fits your needs, or
               explore our engineer talent pool.
             </p>
-            <Link href="/marketplace/outcomes">
+            <Link href="/dashboard/new-engagement">
               <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
                 Browse outcomes
                 <ArrowRight size={14} className="ml-2" />

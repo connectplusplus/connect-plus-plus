@@ -7,6 +7,7 @@ import { CATEGORY_LABELS } from '@/lib/constants'
 
 interface OutcomeCatalogProps {
   templates: OutcomeTemplate[]
+  linkPrefix?: string
 }
 
 const categories: Array<{ value: OutcomeCategory | 'all'; label: string }> = [
@@ -17,7 +18,7 @@ const categories: Array<{ value: OutcomeCategory | 'all'; label: string }> = [
   { value: 'optimize', label: CATEGORY_LABELS.optimize },
 ]
 
-export function OutcomeCatalog({ templates }: OutcomeCatalogProps) {
+export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
   const [activeCategory, setActiveCategory] = useState<OutcomeCategory | 'all'>('all')
 
   const filtered =
@@ -55,7 +56,7 @@ export function OutcomeCatalog({ templates }: OutcomeCatalogProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((template) => (
-            <OutcomeCard key={template.id} template={template} />
+            <OutcomeCard key={template.id} template={template} linkPrefix={linkPrefix} />
           ))}
         </div>
       )}
