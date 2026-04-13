@@ -28,7 +28,7 @@ export function DashboardHeader() {
       <h1 className="font-heading font-semibold text-white text-base">{getTitle()}</h1>
 
       <div className="flex items-center gap-3">
-        <Link href="/marketplace/outcomes">
+        <Link href="/dashboard/new-engagement">
           <Button
             size="sm"
             className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold text-xs h-8 gap-1.5"
