@@ -10,9 +10,9 @@ export const COLORS = {
   textPrimary: '#0F172A',
   textSecondary: '#64748B',
   textTertiary: '#94A3B8',
-  accent: '#7C3AED',
-  accentHover: '#8B5CF6',
-  accentPressed: '#6D28D9',
+  accent: '#6B8F5E',
+  accentHover: '#7DA06E',
+  accentPressed: '#5A7D4E',
   accentText: '#FFFFFF',
   success: '#34D399',
   warning: '#FBBF24',
@@ -22,9 +22,9 @@ export const COLORS = {
 
 // ─── Mode Badge Colors ─────────────────────────────────────────────────────────
 export const MODE_COLORS: Record<EngagementMode, string> = {
-  talent: '#EC4899',
-  pod: '#F472B6',
-  predefined_outcome: '#7C3AED',
+  talent: '#D4A574',
+  pod: '#C9956A',
+  predefined_outcome: '#6B8F5E',
   custom_outcome: '#FB923C',
 }
 
@@ -38,7 +38,7 @@ export const MODE_LABELS: Record<EngagementMode, string> = {
 // ─── Status Colors ────────────────────────────────────────────────────────────
 export const MILESTONE_STATUS_COLORS: Record<MilestoneStatus, string> = {
   upcoming: '#6B7280',
-  in_progress: '#7C3AED',
+  in_progress: '#6B8F5E',
   in_review: '#FBBF24',
   completed: '#34D399',
 }
@@ -62,7 +62,7 @@ export const ENGAGEMENT_STATUS_LABELS: Record<EngagementStatus, string> = {
 export const ENGAGEMENT_STATUS_COLORS: Record<EngagementStatus, string> = {
   intake: '#60A5FA',
   scoping: '#FBBF24',
-  active: '#7C3AED',
+  active: '#6B8F5E',
   in_review: '#FBBF24',
   completed: '#34D399',
   cancelled: '#F87171',
@@ -78,8 +78,8 @@ export const SENDER_ROLE_LABELS: Record<SenderRole, string> = {
 
 export const SENDER_ROLE_COLORS: Record<SenderRole, string> = {
   client: '#60A5FA',
-  pm: '#7C3AED',
-  engineer: '#EC4899',
+  pm: '#6B8F5E',
+  engineer: '#D4A574',
   system: '#6B7280',
 }
 
@@ -93,8 +93,8 @@ export const CATEGORY_LABELS: Record<OutcomeCategory, string> = {
 
 export const CATEGORY_COLORS: Record<OutcomeCategory, string> = {
   build: '#60A5FA',
-  automate: '#EC4899',
-  migrate: '#F472B6',
+  automate: '#D4A574',
+  migrate: '#C9956A',
   optimize: '#FBBF24',
 }
 

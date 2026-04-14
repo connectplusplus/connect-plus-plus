@@ -46,21 +46,21 @@ export default function LoginPage() {
             alt="FullStack"
             className="h-6 w-auto"
           />
-          <span className="text-[#7C3AED] font-heading font-semibold text-sm border-l border-[#E2E8F0] pl-2">
+          <span className="text-[#6B8F5E] font-heading font-semibold text-sm border-l border-[#E0DDD6] pl-2">
             Glassbox
           </span>
         </div>
-        <h1 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">
+        <h1 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">
           Welcome back
         </h1>
-        <p className="text-[#64748B] text-sm">Sign in to your Glassbox account</p>
+        <p className="text-[#8B8781] text-sm">Sign in to your Glassbox account</p>
       </div>
 
       {/* Card */}
-      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8">
+      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-[#0F172A]">Email</label>
+            <label className="block text-sm font-medium text-[#2D2B27]">Email</label>
             <Input
               type="email"
               value={email}
@@ -68,13 +68,13 @@ export default function LoginPage() {
               placeholder="you@company.com"
               required
               autoComplete="email"
-              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
+              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-[#0F172A]">Password</label>
+              <label className="block text-sm font-medium text-[#2D2B27]">Password</label>
             </div>
             <Input
               type="password"
@@ -83,7 +83,7 @@ export default function LoginPage() {
               placeholder="••••••••"
               required
               autoComplete="current-password"
-              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
+              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
             />
           </div>
 
@@ -97,7 +97,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11 mt-2"
+            className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11 mt-2"
           >
             {loading ? (
               <>
@@ -111,9 +111,9 @@ export default function LoginPage() {
         </form>
       </div>
 
-      <p className="text-center text-[#64748B] text-sm mt-6">
+      <p className="text-center text-[#8B8781] text-sm mt-6">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors font-medium">
+        <Link href="/signup" className="text-[#6B8F5E] hover:text-[#7DA06E] transition-colors font-medium">
           Create one free
         </Link>
       </p>

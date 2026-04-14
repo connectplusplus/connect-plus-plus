@@ -14,22 +14,22 @@ import { GlassParticles } from '@/components/marketing/glass-particles'
 
 export default function HomePage() {
   return (
-    <div className="bg-white text-[#0F172A]">
+    <div className="bg-[#FAFAF7] text-[#2D2B27]">
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-white to-[#EEF2FF]">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[#F5F3EE] via-[#FAFAF7] to-[#F0EDE6]">
         {/* Glass particles — interactive background */}
         <GlassParticles />
 
         {/* Subtle gradient mesh */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#7C3AED] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#EC4899] opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-[#3B82F6] opacity-[0.02] rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#6B8F5E] opacity-[0.04] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#D4A574] opacity-[0.04] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-[#C9B896] opacity-[0.03] rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-6 py-32" style={{ zIndex: 2 }}>
           <div className="max-w-4xl" data-hero-content>
-            <div className="inline-flex items-center gap-2 border border-[#E2E8F0] bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-sm">
-              <span className="w-2 h-2 bg-[#7C3AED] rounded-full animate-pulse" />
-              <span className="text-[#7C3AED] text-xs font-semibold tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 border border-[#E0DDD6] bg-[#FAFAF7]/80 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-sm">
+              <span className="w-2 h-2 bg-[#6B8F5E] rounded-full animate-pulse" />
+              <span className="text-[#6B8F5E] text-xs font-semibold tracking-wide uppercase">
                 The future of engineering services is here
               </span>
             </div>
@@ -37,10 +37,10 @@ export default function HomePage() {
             <h1 className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6">
               Engineering Services,
               <br />
-              <span className="bg-gradient-to-r from-[#7C3AED] via-[#6366F1] to-[#EC4899] bg-clip-text text-transparent">redefined as a software platform.</span>
+              <span className="bg-gradient-to-r from-[#6B8F5E] via-[#9B8B6E] to-[#D4A574] bg-clip-text text-transparent">redefined as a software platform.</span>
             </h1>
 
-            <p className="text-[#64748B] text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
+            <p className="text-[#8B8781] text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
               At FullStack, we wrote the book on Nearshore Engineering Talent. Now we are
               rewriting the rules of the game with Glassbox, the industry&apos;s first transparent,
               AI-native, outcomes platform.
@@ -50,16 +50,16 @@ export default function HomePage() {
               <Link href="/marketplace/outcomes">
                 <Button
                   size="lg"
-                  className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold text-base px-8 h-12 w-52 transition-colors duration-150 shadow-lg shadow-[#7C3AED]/20"
+                  className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold text-base px-8 h-12 w-52 transition-colors duration-150 shadow-lg shadow-[#6B8F5E]/20"
                 >
                   Browse Outcomes
                 </Button>
               </Link>
-              <span className="text-[#94A3B8] text-sm font-medium uppercase tracking-wide">or</span>
+              <span className="text-[#B0ADA6] text-sm font-medium uppercase tracking-wide">or</span>
               <Link href="/marketplace/talent">
                 <Button
                   size="lg"
-                  className="bg-white/80 backdrop-blur-sm text-[#7C3AED] border border-[#7C3AED]/30 hover:bg-[#7C3AED]/10 font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
+                  className="bg-[#FAFAF7]/80 backdrop-blur-sm text-[#6B8F5E] border border-[#6B8F5E]/30 hover:bg-[#6B8F5E]/10 font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
                 >
                   Explore Talent
                 </Button>
@@ -73,14 +73,14 @@ export default function HomePage() {
 
 
       {/* ── How It Works ────────────────────────────────────────────────────── */}
-      <section className="bg-[#F1F5F9] py-24">
+      <section className="bg-[#EFEDE8] py-24">
         <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#0F172A] leading-tight mb-4">
+          <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#2D2B27] leading-tight mb-4">
             With Glassbox, Speed is built in.<br />
-            <span className="bg-gradient-to-r from-[#7C3AED] via-[#6366F1] to-[#EC4899] bg-clip-text text-transparent">Not Optional.</span>
+            <span className="bg-gradient-to-r from-[#6B8F5E] via-[#9B8B6E] to-[#D4A574] bg-clip-text text-transparent">Not Optional.</span>
           </h2>
-          <p className="text-[#64748B] text-lg md:text-xl mt-6">
+          <p className="text-[#8B8781] text-lg md:text-xl mt-6">
             How Glassbox by FullStack works
           </p>
         </div>
@@ -110,13 +110,13 @@ export default function HomePage() {
             },
           ].map((item, i) => (
             <div key={i} className="relative">
-              <div className="bg-[#EFF6FF] border border-[#CBD5E1] rounded-xl p-6 h-full hover:border-[#7C3AED]/30 transition-colors duration-150">
+              <div className="bg-[#F0EDE6] border border-[#D4D0C8] rounded-xl p-6 h-full hover:border-[#6B8F5E]/30 transition-colors duration-150">
                 <div className="text-2xl mb-3">{item.icon}</div>
-                <div className="text-[#7C3AED] font-mono-brand text-xs font-medium mb-2 tracking-wider">
+                <div className="text-[#6B8F5E] font-mono-brand text-xs font-medium mb-2 tracking-wider">
                   {item.step}
                 </div>
                 <h3 className="font-heading font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed">{item.description}</p>
+                <p className="text-[#8B8781] text-sm leading-relaxed">{item.description}</p>
               </div>
             </div>
           ))}
@@ -131,7 +131,7 @@ export default function HomePage() {
             <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6">
               The AI-native difference
             </h2>
-            <p className="text-[#64748B] text-lg leading-relaxed mb-8">
+            <p className="text-[#8B8781] text-lg leading-relaxed mb-8">
               Every engineer on Glassbox works with AI as a core part of their workflow. Not as a
               gimmick — as a force multiplier. The result: faster delivery, lower cost, higher
               quality.
@@ -144,8 +144,8 @@ export default function HomePage() {
                 '30-day post-delivery warranty on all outcome engagements',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2 size={18} className="text-[#7C3AED] mt-0.5 shrink-0" strokeWidth={2} />
-                  <span className="text-[#64748B] text-sm leading-relaxed">{item}</span>
+                  <CheckCircle2 size={18} className="text-[#6B8F5E] mt-0.5 shrink-0" strokeWidth={2} />
+                  <span className="text-[#8B8781] text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
@@ -158,12 +158,12 @@ export default function HomePage() {
               { label: 'Client satisfaction', value: '4.9/5', sub: 'across 600+ companies' },
               { label: 'Faster time to first ship', value: '60%', sub: 'vs traditional procurement' },
             ].map((stat, i) => (
-              <div key={i} className="bg-white border border-[#E2E8F0] rounded-xl p-6">
-                <div className="font-mono-brand font-semibold text-3xl text-[#7C3AED] mb-1">
+              <div key={i} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6">
+                <div className="font-mono-brand font-semibold text-3xl text-[#6B8F5E] mb-1">
                   {stat.value}
                 </div>
-                <div className="text-[#0F172A] text-sm font-medium mb-1">{stat.label}</div>
-                <div className="text-[#94A3B8] text-xs">{stat.sub}</div>
+                <div className="text-[#2D2B27] text-sm font-medium mb-1">{stat.label}</div>
+                <div className="text-[#B0ADA6] text-xs">{stat.sub}</div>
               </div>
             ))}
           </div>
@@ -171,13 +171,13 @@ export default function HomePage() {
       </section>
 
       {/* ── The Four Modes ──────────────────────────────────────────────────── */}
-      <section className="section-padding bg-[#F8FAFC]">
+      <section className="section-padding bg-[#F5F3EE]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="font-heading font-bold text-3xl md:text-4xl mb-4">
               Four ways to get work done
             </h2>
-            <p className="text-[#64748B] text-lg max-w-xl mx-auto">
+            <p className="text-[#8B8781] text-lg max-w-xl mx-auto">
               Every team is different. Choose the procurement mode that fits your project.
             </p>
           </div>
@@ -185,31 +185,31 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Talent */}
             <Link href="/marketplace/talent" className="group block">
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 h-full hover:border-[#EC4899]/40 hover:-translate-y-0.5 transition-all duration-150">
+              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 h-full hover:border-[#D4A574]/40 hover:-translate-y-0.5 transition-all duration-150">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[#F1F5F9] flex items-center justify-center">
-                    <Users size={22} className="text-[#EC4899]" strokeWidth={1.5} />
+                  <div className="w-12 h-12 rounded-xl bg-[#EFEDE8] flex items-center justify-center">
+                    <Users size={22} className="text-[#D4A574]" strokeWidth={1.5} />
                   </div>
                   <span
                     className="text-xs font-medium border rounded-full px-2.5 py-1"
-                    style={{ color: '#EC4899', borderColor: '#EC489940' }}
+                    style={{ color: '#D4A574', borderColor: '#D4A57440' }}
                   >
                     Talent
                   </span>
                 </div>
                 <h3 className="font-heading font-semibold text-xl mb-3">Individual Talent</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed mb-6">
+                <p className="text-[#8B8781] text-sm leading-relaxed mb-6">
                   Hire a single AI-accelerated engineer — full-stack, mobile, ML, or DevOps — and
                   embed them directly with your team. Every engineer comes with an AI Velocity Score.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {['React', 'Node.js', 'Python', 'Go', 'iOS', 'DevOps'].map((s) => (
-                    <span key={s} className="text-xs bg-[#F1F5F9] text-[#64748B] rounded px-2 py-1">
+                    <span key={s} className="text-xs bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-1">
                       {s}
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center text-[#7C3AED] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
+                <div className="flex items-center text-[#6B8F5E] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
                   Explore engineers <ChevronRight size={14} />
                 </div>
               </div>
@@ -217,28 +217,28 @@ export default function HomePage() {
 
             {/* Predefined Outcomes */}
             <Link href="/marketplace/outcomes" className="group block">
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 h-full hover:border-[#7C3AED]/40 hover:-translate-y-0.5 transition-all duration-150">
+              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 h-full hover:border-[#6B8F5E]/40 hover:-translate-y-0.5 transition-all duration-150">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[#F1F5F9] flex items-center justify-center">
-                    <Package size={22} className="text-[#7C3AED]" strokeWidth={1.5} />
+                  <div className="w-12 h-12 rounded-xl bg-[#EFEDE8] flex items-center justify-center">
+                    <Package size={22} className="text-[#6B8F5E]" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-medium border rounded-full px-2.5 py-1 text-[#7C3AED] border-[#7C3AED40]">
+                  <span className="text-xs font-medium border rounded-full px-2.5 py-1 text-[#6B8F5E] border-[#6B8F5E40]">
                     Outcomes
                   </span>
                 </div>
                 <h3 className="font-heading font-semibold text-xl mb-3">Predefined Outcomes</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed mb-6">
+                <p className="text-[#8B8781] text-sm leading-relaxed mb-6">
                   Productized services at fixed prices. MVP Sprint, CI/CD Pipeline, Automated
                   Testing — scoped, priced, and timelines defined upfront. No surprises.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {['MVP Sprint', 'CI/CD Pipeline', 'Test Coverage', 'Perf Audit'].map((s) => (
-                    <span key={s} className="text-xs bg-[#F1F5F9] text-[#64748B] rounded px-2 py-1">
+                    <span key={s} className="text-xs bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-1">
                       {s}
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center text-[#7C3AED] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
+                <div className="flex items-center text-[#6B8F5E] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
                   Browse outcomes <ChevronRight size={14} />
                 </div>
               </div>
@@ -246,28 +246,28 @@ export default function HomePage() {
 
             {/* Pods */}
             <Link href="/marketplace/pods" className="group block">
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 h-full hover:border-[#F472B6]/40 hover:-translate-y-0.5 transition-all duration-150">
+              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 h-full hover:border-[#C9956A]/40 hover:-translate-y-0.5 transition-all duration-150">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[#F1F5F9] flex items-center justify-center">
-                    <Zap size={22} className="text-[#F472B6]" strokeWidth={1.5} />
+                  <div className="w-12 h-12 rounded-xl bg-[#EFEDE8] flex items-center justify-center">
+                    <Zap size={22} className="text-[#C9956A]" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-medium border rounded-full px-2.5 py-1 text-[#F472B6] border-[#F472B640]">
+                  <span className="text-xs font-medium border rounded-full px-2.5 py-1 text-[#C9956A] border-[#C9956A40]">
                     Pods
                   </span>
                 </div>
                 <h3 className="font-heading font-semibold text-xl mb-3">Pods</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed mb-6">
+                <p className="text-[#8B8781] text-sm leading-relaxed mb-6">
                   Cross-functional teams — engineering, design, PM — assembled for your project.
                   Full product teams on demand, fully AI-accelerated.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {['AI Product Pod', 'Growth Pod', 'Platform Pod'].map((s) => (
-                    <span key={s} className="text-xs bg-[#F1F5F9] text-[#64748B] rounded px-2 py-1">
+                    <span key={s} className="text-xs bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-1">
                       {s}
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center text-[#7C3AED] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
+                <div className="flex items-center text-[#6B8F5E] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
                   Explore pods <ChevronRight size={14} />
                 </div>
               </div>
@@ -275,9 +275,9 @@ export default function HomePage() {
 
             {/* Custom Outcomes */}
             <Link href="/marketplace/custom" className="group block">
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 h-full hover:border-[#FB923C]/40 hover:-translate-y-0.5 transition-all duration-150">
+              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 h-full hover:border-[#FB923C]/40 hover:-translate-y-0.5 transition-all duration-150">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[#F1F5F9] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-[#EFEDE8] flex items-center justify-center">
                     <Wrench size={22} className="text-[#FB923C]" strokeWidth={1.5} />
                   </div>
                   <span className="text-xs font-medium border rounded-full px-2.5 py-1 text-[#FB923C] border-[#FB923C40]">
@@ -285,18 +285,18 @@ export default function HomePage() {
                   </span>
                 </div>
                 <h3 className="font-heading font-semibold text-xl mb-3">Custom Outcomes</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed mb-6">
+                <p className="text-[#8B8781] text-sm leading-relaxed mb-6">
                   Bring your own spec. Our AI PM works with you to define scope, timeline, and price
                   — then assembles the right team to execute it.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {['Bespoke Scope', 'Phased Delivery', 'Dedicated Team'].map((s) => (
-                    <span key={s} className="text-xs bg-[#F1F5F9] text-[#64748B] rounded px-2 py-1">
+                    <span key={s} className="text-xs bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-1">
                       {s}
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center text-[#7C3AED] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
+                <div className="flex items-center text-[#6B8F5E] text-sm font-semibold group-hover:gap-2 gap-1 transition-all duration-150">
                   Start a custom project <ChevronRight size={14} />
                 </div>
               </div>
@@ -306,12 +306,12 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA Footer ──────────────────────────────────────────────────────── */}
-      <section className="section-padding bg-[#F8FAFC] border-t border-[#E2E8F0]">
+      <section className="section-padding bg-[#F5F3EE] border-t border-[#E0DDD6]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="font-heading font-bold text-4xl md:text-5xl mb-6">
             Ready to ship faster?
           </h2>
-          <p className="text-[#64748B] text-lg mb-10">
+          <p className="text-[#8B8781] text-lg mb-10">
             Join 600+ companies that have switched from traditional outsourcing to AI-native
             engineering outcomes.
           </p>
@@ -319,7 +319,7 @@ export default function HomePage() {
             <Link href="/signup">
               <Button
                 size="lg"
-                className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold text-base px-10 h-12 group"
+                className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold text-base px-10 h-12 group"
               >
                 Start your first project
                 <ArrowRight size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
@@ -329,13 +329,13 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-[#E2E8F0] text-[#0F172A] hover:bg-[#F1F5F9] font-semibold text-base px-10 h-12"
+                className="border-[#E0DDD6] text-[#2D2B27] hover:bg-[#EFEDE8] font-semibold text-base px-10 h-12"
               >
                 Browse the catalog
               </Button>
             </Link>
           </div>
-          <p className="text-[#94A3B8] text-xs mt-6">No commitment required. First scope estimate is free.</p>
+          <p className="text-[#B0ADA6] text-xs mt-6">No commitment required. First scope estimate is free.</p>
         </div>
       </section>
     </div>

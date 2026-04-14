@@ -40,8 +40,8 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
               onClick={() => setActiveCategory(cat.value)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
                 isActive
-                  ? 'bg-[#7C3AED] text-white'
-                  : 'bg-white text-[#64748B] border border-[#E2E8F0] hover:text-[#0F172A] hover:border-[#CBD5E1]'
+                  ? 'bg-[#6B8F5E] text-white'
+                  : 'bg-[#FAFAF7] text-[#8B8781] border border-[#E0DDD6] hover:text-[#2D2B27] hover:border-[#D4D0C8]'
               }`}
             >
               {cat.label}
@@ -52,7 +52,7 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
 
       {/* Cards grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-20 text-[#64748B]">
+        <div className="text-center py-20 text-[#8B8781]">
           No outcomes in this category yet.
         </div>
       ) : (
@@ -63,13 +63,13 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
 
           {/* Custom Engagement card — only on dashboard */}
           {linkPrefix && (
-          <div className="bg-[#7C3AED] text-white rounded-xl p-6 flex flex-col">
+          <div className="bg-[#6B8F5E] text-white rounded-xl p-6 flex flex-col">
             <h3 className="font-heading font-bold text-lg mb-2">Custom Engagement</h3>
             <p className="text-sm leading-relaxed opacity-80 mb-5 flex-1">
               Need something that doesn&apos;t fit a predefined outcome? We scope bespoke
               engineering projects collaboratively — from AI transformations to full platform builds.
             </p>
-            <div className="flex items-center gap-3 bg-white/10 rounded-lg p-3 mb-4">
+            <div className="flex items-center gap-3 bg-[#FAFAF7]/10 rounded-lg p-3 mb-4">
               <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0">
                 <Image src="/tori.jpeg" alt="Tori Ireland" width={48} height={48} className="w-full h-full object-cover" />
               </div>
@@ -82,7 +82,7 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
               href="https://calendly.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-white text-[#7C3AED] font-semibold text-sm hover:bg-white transition-colors"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-[#FAFAF7] text-[#6B8F5E] font-semibold text-sm hover:bg-[#FAFAF7] transition-colors"
             >
               <ExternalLink size={13} />
               Schedule a call with Tori

@@ -10,7 +10,7 @@ interface MilestoneTrackerProps {
 export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
   if (milestones.length === 0) {
     return (
-      <div className="text-center py-10 text-[#64748B]">
+      <div className="text-center py-10 text-[#8B8781]">
         No milestones have been created yet.
       </div>
     )
@@ -52,8 +52,8 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
               <div
                 className={`flex-1 rounded-xl border p-5 transition-colors duration-150 ${
                   isActive
-                    ? 'bg-white border-opacity-40'
-                    : 'bg-white border-[#E2E8F0]'
+                    ? 'bg-[#FAFAF7] border-opacity-40'
+                    : 'bg-[#FAFAF7] border-[#E0DDD6]'
                 }`}
                 style={
                   isActive
@@ -66,19 +66,19 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
                   <div>
                     <h4
                       className={`font-heading font-semibold text-base mb-1 ${
-                        isCompleted ? 'text-[#64748B] line-through' : 'text-[#0F172A]'
+                        isCompleted ? 'text-[#8B8781] line-through' : 'text-[#2D2B27]'
                       }`}
                     >
                       {milestone.title}
                     </h4>
                     {milestone.description && (
-                      <p className="text-[#64748B] text-sm">{milestone.description}</p>
+                      <p className="text-[#8B8781] text-sm">{milestone.description}</p>
                     )}
                   </div>
                   <div className="ml-4 shrink-0 flex flex-col items-end gap-2">
                     <MilestoneStatusBadge status={milestone.status} />
                     {milestone.due_date && (
-                      <div className="flex items-center gap-1 text-[#94A3B8] text-xs">
+                      <div className="flex items-center gap-1 text-[#B0ADA6] text-xs">
                         <Calendar size={11} strokeWidth={1.5} />
                         {new Date(milestone.due_date).toLocaleDateString('en-US', {
                           month: 'short',
@@ -91,8 +91,8 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
 
                 {/* Deliverables */}
                 {milestone.deliverables && milestone.deliverables.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-[#E2E8F0]">
-                    <p className="text-[#64748B] text-xs font-medium mb-2 uppercase tracking-wide">
+                  <div className="mt-4 pt-4 border-t border-[#E0DDD6]">
+                    <p className="text-[#8B8781] text-xs font-medium mb-2 uppercase tracking-wide">
                       Deliverables
                     </p>
                     <div className="space-y-2">
@@ -107,7 +107,7 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
                           ) : (
                             <Square
                               size={14}
-                              className="text-[#94A3B8] shrink-0 mt-0.5"
+                              className="text-[#B0ADA6] shrink-0 mt-0.5"
                               strokeWidth={1.5}
                             />
                           )}
@@ -115,14 +115,14 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
                             <span
                               className={`text-sm ${
                                 d.status === 'done'
-                                  ? 'text-[#64748B] line-through'
-                                  : 'text-[#0F172A]'
+                                  ? 'text-[#8B8781] line-through'
+                                  : 'text-[#2D2B27]'
                               }`}
                             >
                               {d.name}
                             </span>
                             {d.description && (
-                              <p className="text-[#94A3B8] text-xs mt-0.5">{d.description}</p>
+                              <p className="text-[#B0ADA6] text-xs mt-0.5">{d.description}</p>
                             )}
                           </div>
                         </div>
@@ -133,7 +133,7 @@ export function MilestoneTracker({ milestones }: MilestoneTrackerProps) {
 
                 {/* Completed at */}
                 {milestone.completed_at && (
-                  <p className="text-[#94A3B8] text-xs mt-3">
+                  <p className="text-[#B0ADA6] text-xs mt-3">
                     Completed{' '}
                     {new Date(milestone.completed_at).toLocaleDateString('en-US', {
                       month: 'long',

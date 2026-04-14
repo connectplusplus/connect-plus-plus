@@ -6,7 +6,7 @@ interface MilestoneTimelineProps {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  completed: '#7C3AED',
+  completed: '#6B8F5E',
   in_progress: '#FBBF24',
   in_review: '#60A5FA',
   upcoming: '#2A2A30',
@@ -34,7 +34,7 @@ export function MilestoneTimeline({ milestones, compact = false }: MilestoneTime
         const isFlagged = !!flagLabel
         const color = isFlagged ? '#F87171' : (STATUS_COLORS[m.status] ?? '#2A2A30')
         const isCurrent = m.status === 'in_progress' || m.status === 'in_review'
-        const lineColor = m.status === 'completed' ? '#7C3AED' : '#2A2A30'
+        const lineColor = m.status === 'completed' ? '#6B8F5E' : '#2A2A30'
 
         return (
           <div key={m.id} className={`flex items-start ${isLast ? '' : 'flex-1'}`}>
@@ -68,7 +68,7 @@ export function MilestoneTimeline({ milestones, compact = false }: MilestoneTime
                     {m.title}
                   </p>
                   {m.due_date && (
-                    <p className="text-[9px] text-[#94A3B8] mt-0.5">
+                    <p className="text-[9px] text-[#B0ADA6] mt-0.5">
                       {m.completed_at ? formatShortDate(m.completed_at) : formatShortDate(m.due_date)}
                     </p>
                   )}

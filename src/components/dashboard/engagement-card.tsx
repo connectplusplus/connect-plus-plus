@@ -22,11 +22,11 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
 
   return (
     <Link href={`/dashboard/engagements/${engagement.id}`} className="block group">
-      <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/30 hover:-translate-y-0.5 transition-all duration-150 h-full flex flex-col">
+      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 hover:border-[#6B8F5E]/30 hover:-translate-y-0.5 transition-all duration-150 h-full flex flex-col">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0 mr-3">
-            <h3 className="text-[#0F172A] font-medium text-sm leading-tight mb-1.5 group-hover:text-[#7C3AED] transition-colors duration-150 min-h-[2.5rem] line-clamp-2">
+            <h3 className="text-[#2D2B27] font-medium text-sm leading-tight mb-1.5 group-hover:text-[#6B8F5E] transition-colors duration-150 min-h-[2.5rem] line-clamp-2">
               {engagement.title}
             </h3>
             <div className="flex items-center gap-2 flex-wrap">
@@ -45,7 +45,7 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
           </div>
           <ChevronRight
             size={16}
-            className="text-[#94A3B8] group-hover:text-[#7C3AED] shrink-0 mt-0.5 transition-colors duration-150"
+            className="text-[#B0ADA6] group-hover:text-[#6B8F5E] shrink-0 mt-0.5 transition-colors duration-150"
           />
         </div>
 
@@ -53,10 +53,10 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
         {totalMilestones > 0 && (
           <div className="mb-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[#64748B] text-xs">
+              <span className="text-[#8B8781] text-xs">
                 {completedMilestones}/{totalMilestones} milestones
               </span>
-              <span className="text-[#64748B] text-xs font-mono-brand">
+              <span className="text-[#8B8781] text-xs font-mono-brand">
                 {Math.round(progressPct)}%
               </span>
             </div>
@@ -66,16 +66,16 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
 
         {/* Last message */}
         {lastMessage && (
-          <div className="flex items-start gap-2 pt-3 border-t border-[#E2E8F0] mt-auto">
-            <MessageSquare size={13} className="text-[#94A3B8] shrink-0 mt-0.5" strokeWidth={1.5} />
+          <div className="flex items-start gap-2 pt-3 border-t border-[#E0DDD6] mt-auto">
+            <MessageSquare size={13} className="text-[#B0ADA6] shrink-0 mt-0.5" strokeWidth={1.5} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-[#64748B] text-xs font-medium">{lastMessage.sender_name}</span>
-                <span className="text-[#94A3B8] text-xs">
+                <span className="text-[#8B8781] text-xs font-medium">{lastMessage.sender_name}</span>
+                <span className="text-[#B0ADA6] text-xs">
                   {formatRelativeTime(lastMessage.created_at)}
                 </span>
               </div>
-              <p className="text-[#94A3B8] text-xs line-clamp-1">{lastMessage.content}</p>
+              <p className="text-[#B0ADA6] text-xs line-clamp-1">{lastMessage.content}</p>
             </div>
           </div>
         )}

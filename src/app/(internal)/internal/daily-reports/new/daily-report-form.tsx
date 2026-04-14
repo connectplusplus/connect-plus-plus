@@ -79,8 +79,8 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">New Daily Report</h2>
-        <p className="text-[#64748B] text-sm">
+        <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">New Daily Report</h2>
+        <p className="text-[#8B8781] text-sm">
           This report will be visible to the client immediately after submission.
         </p>
       </div>
@@ -90,23 +90,23 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
         <div className="bg-[#10B981]/10 border border-[#10B981]/20 rounded-xl p-5 flex items-start gap-3">
           <CheckCircle2 size={20} className="text-[#10B981] shrink-0 mt-0.5" />
           <div>
-            <p className="text-[#0F172A] text-sm font-semibold">Report published. Your client can see it now.</p>
-            <p className="text-[#64748B] text-xs mt-1">
+            <p className="text-[#2D2B27] text-sm font-semibold">Report published. Your client can see it now.</p>
+            <p className="text-[#8B8781] text-xs mt-1">
               {new Date(success.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} — {success.engagement}
             </p>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white border border-[#E2E8F0] rounded-xl p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6 space-y-5">
 
         {/* Engagement selector */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-[#0F172A]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             Engagement <span className="text-[#EF4444]">*</span>
           </label>
           {engagements.length === 0 ? (
-            <p className="text-[#64748B] text-sm bg-[#F1F5F9] rounded-lg p-3">
+            <p className="text-[#8B8781] text-sm bg-[#EFEDE8] rounded-lg p-3">
               No engagements assigned to you. Contact your delivery lead.
             </p>
           ) : (
@@ -114,7 +114,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
               value={engagementId}
               onChange={(e) => setEngagementId(e.target.value)}
               required
-              className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors appearance-none"
+              className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none focus:ring-1 focus:ring-[#6B8F5E]/30 transition-colors appearance-none"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
             >
               <option value="">Select an engagement...</option>
@@ -129,7 +129,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
 
         {/* Report date */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-[#0F172A]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             Report Date <span className="text-[#EF4444]">*</span>
           </label>
           <input
@@ -139,13 +139,13 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
             max={today}
             min={yesterday}
             required
-            className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors"
+            className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none focus:ring-1 focus:ring-[#6B8F5E]/30 transition-colors"
           />
         </div>
 
         {/* Accomplishments */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-[#0F172A]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             What we accomplished today <span className="text-[#EF4444]">*</span>
           </label>
           <Textarea
@@ -154,27 +154,27 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
             placeholder="Completed the auth middleware refactor, merged 3 PRs, resolved the Hertz API integration blocker."
             required
             rows={4}
-            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
+            className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
           />
         </div>
 
         {/* Blockers */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-[#0F172A]">
-            Blockers <span className="text-[#94A3B8] text-xs font-normal">(optional — leave empty for &quot;None&quot;)</span>
+          <label className="block text-sm font-medium text-[#2D2B27]">
+            Blockers <span className="text-[#B0ADA6] text-xs font-normal">(optional — leave empty for &quot;None&quot;)</span>
           </label>
           <Textarea
             value={blockers}
             onChange={(e) => setBlockers(e.target.value)}
             placeholder="Waiting on client API credentials for the payment gateway integration."
             rows={3}
-            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
+            className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
           />
         </div>
 
         {/* Plan for tomorrow */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-[#0F172A]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             Plan for tomorrow <span className="text-[#EF4444]">*</span>
           </label>
           <Textarea
@@ -183,13 +183,13 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
             placeholder="Begin milestone 3 testing, pair with Marcus on the caching layer."
             required
             rows={3}
-            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
+            className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
           />
         </div>
 
         {/* Health score slider */}
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-[#0F172A]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             Health Score
           </label>
           <div className="flex items-center gap-4">
@@ -199,7 +199,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
               max={100}
               value={healthScore}
               onChange={(e) => setHealthScore(Number(e.target.value))}
-              className="flex-1 h-2 bg-[#E2E8F0] rounded-full appearance-none cursor-pointer accent-[#7C3AED]"
+              className="flex-1 h-2 bg-[#E2E8F0] rounded-full appearance-none cursor-pointer accent-[#6B8F5E]"
             />
             <div className="flex items-center gap-2 shrink-0 w-32 justify-end">
               <span className="font-mono-brand font-bold text-lg" style={{ color: healthColor }}>
@@ -213,10 +213,10 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
         </div>
 
         {/* AI velocity note (internal only) */}
-        <div className="space-y-2 pt-4 border-t border-[#E2E8F0]">
-          <label className="block text-sm font-medium text-[#0F172A]">
+        <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
+          <label className="block text-sm font-medium text-[#2D2B27]">
             AI Velocity Note
-            <span className="ml-2 text-xs font-normal text-[#94A3B8] bg-[#F1F5F9] rounded px-1.5 py-0.5">
+            <span className="ml-2 text-xs font-normal text-[#B0ADA6] bg-[#EFEDE8] rounded px-1.5 py-0.5">
               Internal only — not visible to client
             </span>
           </label>
@@ -225,7 +225,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
             onChange={(e) => setAiVelocityNote(e.target.value)}
             placeholder="Team used Cursor for the API scaffold — saved ~4 hours. Marcus is exploring Claude for code review automation."
             rows={2}
-            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
+            className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
           />
         </div>
 
@@ -241,7 +241,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
         <Button
           type="submit"
           disabled={loading || engagements.length === 0}
-          className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11"
+          className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11"
         >
           {loading ? (
             <>

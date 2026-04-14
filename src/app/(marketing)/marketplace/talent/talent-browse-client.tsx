@@ -79,26 +79,26 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" strokeWidth={1.5} />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0ADA6]" strokeWidth={1.5} />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, skill, or title..."
-              className="pl-9 bg-white border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
+              className="pl-9 bg-[#FAFAF7] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
             />
           </div>
 
           {/* Seniority dropdown */}
           <Select value={seniority} onValueChange={(v) => setSeniority((v ?? 'all') as Seniority | 'all')}>
-            <SelectTrigger className="w-full sm:w-56 bg-white border-[#E2E8F0] text-[#0F172A] focus:border-[#7C3AED]">
+            <SelectTrigger className="w-full sm:w-56 bg-[#FAFAF7] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-white border-[#E2E8F0]">
+            <SelectContent className="bg-[#FAFAF7] border-[#E0DDD6]">
               {SENIORITY_OPTIONS.map((opt) => (
                 <SelectItem
                   key={opt.value}
                   value={opt.value}
-                  className="text-[#0F172A] hover:bg-[#F1F5F9] focus:bg-[#F1F5F9] cursor-pointer"
+                  className="text-[#2D2B27] hover:bg-[#EFEDE8] focus:bg-[#EFEDE8] cursor-pointer"
                 >
                   {opt.label}
                 </SelectItem>
@@ -111,12 +111,12 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
             onClick={() => setAvailableOnly((v) => !v)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150 whitespace-nowrap ${
               availableOnly
-                ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
-                : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
+                ? 'bg-[#6B8F5E]/10 border-[#6B8F5E] text-[#6B8F5E]'
+                : 'bg-[#FAFAF7] border-[#E0DDD6] text-[#8B8781] hover:border-[#D4D0C8]'
             }`}
           >
             <span
-              className={`w-2 h-2 rounded-full ${availableOnly ? 'bg-[#7C3AED]' : 'bg-[#6B7280]'}`}
+              className={`w-2 h-2 rounded-full ${availableOnly ? 'bg-[#6B8F5E]' : 'bg-[#6B7280]'}`}
             />
             Available now
           </button>
@@ -132,8 +132,8 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
                 onClick={() => toggleSkill(skill)}
                 className={`px-3 py-1.5 rounded-lg text-xs border transition-colors duration-150 ${
                   active
-                    ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
-                    : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
+                    ? 'bg-[#6B8F5E]/10 border-[#6B8F5E] text-[#6B8F5E]'
+                    : 'bg-[#FAFAF7] border-[#E0DDD6] text-[#8B8781] hover:border-[#D4D0C8]'
                 }`}
               >
                 {skill}
@@ -153,7 +153,7 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
 
       {/* Results count */}
       <div className="flex items-center justify-between mb-6">
-        <p className="text-[#64748B] text-sm">
+        <p className="text-[#8B8781] text-sm">
           {filtered.length === profiles.length
             ? `${profiles.length} engineers available`
             : `${filtered.length} of ${profiles.length} engineers`}
@@ -163,10 +163,10 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-[#64748B] text-lg mb-2">No engineers match your filters.</p>
+          <p className="text-[#8B8781] text-lg mb-2">No engineers match your filters.</p>
           <button
             onClick={() => { setSearch(''); setSeniority('all'); setActiveSkills([]); setAvailableOnly(false) }}
-            className="text-[#7C3AED] text-sm underline"
+            className="text-[#6B8F5E] text-sm underline"
           >
             Clear all filters
           </button>

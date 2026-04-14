@@ -74,8 +74,8 @@ export function GlassParticles() {
         spinX: (Math.random() - 0.5) * 0.006,
         spinY: (Math.random() - 0.5) * 0.008,
         spinZ: (Math.random() - 0.5) * 0.004,
-        hue: 220 + Math.random() * 60, // blue to purple
-        saturation: 40 + Math.random() * 35,
+        hue: 80 + Math.random() * 60, // sage green to warm olive
+        saturation: 20 + Math.random() * 25,
         opacity: 0.12 + depth * 0.18 + Math.random() * 0.08,
         depth,
       })
@@ -285,8 +285,8 @@ export function GlassParticles() {
       // Cursor glow
       if (mouse.x > 0 && mouse.y > 0) {
         const cursorGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 100)
-        cursorGrad.addColorStop(0, 'hsla(260, 60%, 70%, 0.05)')
-        cursorGrad.addColorStop(1, 'hsla(260, 60%, 70%, 0)')
+        cursorGrad.addColorStop(0, 'hsla(100, 30%, 60%, 0.05)')
+        cursorGrad.addColorStop(1, 'hsla(100, 30%, 60%, 0)')
         ctx.beginPath()
         ctx.arc(mouse.x, mouse.y, 100, 0, Math.PI * 2)
         ctx.fillStyle = cursorGrad

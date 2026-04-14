@@ -97,7 +97,7 @@ export function MessageThread({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {messages.length === 0 && (
-          <div className="text-center py-10 text-[#64748B] text-sm">
+          <div className="text-center py-10 text-[#8B8781] text-sm">
             No messages yet. Start the conversation.
           </div>
         )}
@@ -107,7 +107,7 @@ export function MessageThread({
             return (
               <div key={msg.id} className="flex items-center gap-3 py-1">
                 <div className="flex-1 h-px bg-[#E2E8F0]" />
-                <span className="text-[#94A3B8] text-xs whitespace-nowrap">{msg.content}</span>
+                <span className="text-[#B0ADA6] text-xs whitespace-nowrap">{msg.content}</span>
                 <div className="flex-1 h-px bg-[#E2E8F0]" />
               </div>
             )
@@ -131,20 +131,20 @@ export function MessageThread({
               {/* Bubble */}
               <div className={`max-w-[70%] ${isCurrentUser ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
                 <div className={`flex items-center gap-2 ${isCurrentUser ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-[#0F172A] text-xs font-medium">{msg.sender_name}</span>
+                  <span className="text-[#2D2B27] text-xs font-medium">{msg.sender_name}</span>
                   <span
                     className="text-xs px-1.5 py-0.5 rounded border"
                     style={{ color: roleColor, borderColor: `${roleColor}30`, backgroundColor: `${roleColor}10` }}
                   >
                     {roleLabel}
                   </span>
-                  <span className="text-[#94A3B8] text-xs">{formatRelativeTime(msg.created_at)}</span>
+                  <span className="text-[#B0ADA6] text-xs">{formatRelativeTime(msg.created_at)}</span>
                 </div>
                 <div
                   className={`rounded-xl px-4 py-3 text-sm leading-relaxed ${
                     isCurrentUser
-                      ? 'bg-[#7C3AED]/10 border border-[#7C3AED]/20 text-[#0F172A]'
-                      : 'bg-[#F1F5F9] border border-[#E2E8F0] text-[#1E293B]'
+                      ? 'bg-[#6B8F5E]/10 border border-[#6B8F5E]/20 text-[#2D2B27]'
+                      : 'bg-[#EFEDE8] border border-[#E0DDD6] text-[#3D3A35]'
                   }`}
                 >
                   {msg.content}
@@ -158,7 +158,7 @@ export function MessageThread({
 
       {/* Input */}
       {currentUserId && (
-        <form onSubmit={handleSend} className="border-t border-[#E2E8F0] pt-4">
+        <form onSubmit={handleSend} className="border-t border-[#E0DDD6] pt-4">
           <div className="flex gap-3">
             <Textarea
               value={input}
@@ -167,12 +167,12 @@ export function MessageThread({
               placeholder="Type a message... (Enter to send, Shift+Enter for newline)"
               rows={2}
               disabled={sending}
-              className="flex-1 bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none text-sm"
+              className="flex-1 bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none text-sm"
             />
             <Button
               type="submit"
               disabled={!input.trim() || sending}
-              className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] self-end h-10 w-10 p-0"
+              className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] self-end h-10 w-10 p-0"
             >
               <Send size={15} strokeWidth={2} />
             </Button>

@@ -38,38 +38,38 @@ export default async function InternalDashboardPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">
+        <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">
           Welcome back, {firstName}
         </h2>
-        <p className="text-[#64748B] text-sm">
+        <p className="text-[#8B8781] text-sm">
           {internalUser.role === 'pm' ? 'Project Manager' : internalUser.role.replace('_', ' ')} — FullStack Internal Portal
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-6">
-          <p className="text-[#94A3B8] text-xs uppercase tracking-widest mb-2">Assigned Engagements</p>
-          <p className="font-mono-brand font-bold text-3xl text-[#0F172A]">{engagementCount ?? 0}</p>
+        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6">
+          <p className="text-[#B0ADA6] text-xs uppercase tracking-widest mb-2">Assigned Engagements</p>
+          <p className="font-mono-brand font-bold text-3xl text-[#2D2B27]">{engagementCount ?? 0}</p>
         </div>
-        <div className="bg-white border border-[#E2E8F0] rounded-xl p-6">
-          <p className="text-[#94A3B8] text-xs uppercase tracking-widest mb-2">Reports Submitted</p>
-          <p className="font-mono-brand font-bold text-3xl text-[#0F172A]">{reportCount ?? 0}</p>
+        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6">
+          <p className="text-[#B0ADA6] text-xs uppercase tracking-widest mb-2">Reports Submitted</p>
+          <p className="font-mono-brand font-bold text-3xl text-[#2D2B27]">{reportCount ?? 0}</p>
         </div>
       </div>
 
-      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
-        <div className="w-14 h-14 rounded-full bg-[#7C3AED]/10 flex items-center justify-center mx-auto mb-4">
-          <FileText size={24} className="text-[#7C3AED]" />
+      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
+        <div className="w-14 h-14 rounded-full bg-[#6B8F5E]/10 flex items-center justify-center mx-auto mb-4">
+          <FileText size={24} className="text-[#6B8F5E]" />
         </div>
-        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-2">
+        <h3 className="font-heading font-semibold text-lg text-[#2D2B27] mb-2">
           Submit a Daily Report
         </h3>
-        <p className="text-[#64748B] text-sm mb-5 max-w-md mx-auto">
+        <p className="text-[#8B8781] text-sm mb-5 max-w-md mx-auto">
           Keep your clients informed with a structured end-of-day update. Reports appear
           instantly on the client&apos;s engagement dashboard.
         </p>
         <Link href="/internal/daily-reports/new">
-          <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
+          <Button className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold">
             <Plus size={14} className="mr-2" />
             New Daily Report
           </Button>
