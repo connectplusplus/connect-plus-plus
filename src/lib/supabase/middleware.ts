@@ -36,17 +36,33 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  // Redirect unauthenticated users from dashboard routes
+  // ── Client dashboard protection ──────────────────────────────────────
   if (!user && pathname.startsWith('/dashboard')) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // Redirect authenticated users away from auth pages
+  // Redirect authenticated users away from client auth pages
   if (user && (pathname === '/login' || pathname === '/signup')) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // ── Internal portal protection ───────────────────────────────────────
+  // Protect /internal/* routes — require authentication
+  if (!user && pathname.startsWith('/internal') && pathname !== '/internal-login') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/internal-login'
+    return NextResponse.redirect(url)
+  }
+
+  // Redirect authenticated internal users away from internal login
+  // (Role check happens at the page level since middleware can't query DB)
+  if (user && pathname === '/internal-login') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/internal'
     return NextResponse.redirect(url)
   }
 

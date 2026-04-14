@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import type { Engagement, Milestone, Message, OutcomeTemplate } from '@/lib/types'
+import type { Engagement, Milestone, Message, OutcomeTemplate, DailyReport } from '@/lib/types'
 import { MilestoneTracker } from '@/components/dashboard/milestone-tracker'
 import { MilestoneTimeline } from '@/components/dashboard/milestone-timeline'
 import { MessageThread } from '@/components/dashboard/message-thread'
@@ -57,6 +57,7 @@ interface EngagementDetailClientProps {
   engagement: Engagement & { outcome_templates?: OutcomeTemplate | null }
   milestones: Milestone[]
   messages: Message[]
+  dailyReports?: DailyReport[]
   currentUserId?: string
   currentUserName?: string
 }
@@ -96,6 +97,7 @@ export function EngagementDetailClient({
   engagement,
   milestones,
   messages,
+  dailyReports = [],
   currentUserId,
   currentUserName,
 }: EngagementDetailClientProps) {
@@ -430,6 +432,7 @@ export function EngagementDetailClient({
           engagementTitle={engagement.title}
           projectLead={projectLead}
           startDate={engagement.start_date}
+          realReports={dailyReports}
         />
       )}
 
@@ -635,7 +638,7 @@ function ProjectDocsTab() {
 // Daily Reports Tab
 // ═══════════════════════════════════════════════════════════════════════════════
 
-interface DailyReport {
+interface DemoReport {
   id: string
   date: string
   author: string
@@ -645,12 +648,12 @@ interface DailyReport {
   tomorrow: string[]
 }
 
-function generateDemoReports(title: string, lead: ProjectLead | undefined, startDate: string | null): DailyReport[] {
+function generateDemoReports(title: string, lead: ProjectLead | undefined, startDate: string | null): DemoReport[] {
   const author = lead?.name ?? 'Carlos Mendez'
   const base = startDate ? new Date(startDate) : new Date('2026-03-03')
 
   // Generate 5 realistic daily reports
-  const reports: DailyReport[] = [
+  const reports: DemoReport[] = [
     {
       id: '1',
       date: new Date(base.getTime() + 35 * 86400000).toISOString(),
@@ -756,15 +759,37 @@ function DailyReportsTab({
   engagementTitle,
   projectLead,
   startDate,
+  realReports = [],
 }: {
   engagementTitle: string
   projectLead?: ProjectLead
   startDate: string | null
+  realReports?: DailyReport[]
 }) {
   const [search, setSearch] = useState('')
   const [selectedReport, setSelectedReport] = useState<string | null>(null)
 
-  const reports = generateDemoReports(engagementTitle, projectLead, startDate)
+  // Use real reports if available, otherwise fall back to demo data
+  const hasRealReports = realReports.length > 0
+
+  // Normalize real reports to the same shape as demo reports for the existing UI
+  const normalizedRealReports: DemoReport[] = realReports.map((r) => ({
+    id: r.id,
+    date: r.report_date,
+    author: (r as any).internal_users?.full_name ?? projectLead?.name ?? 'Project Manager',
+    summary: r.accomplishments,
+    highlights: r.accomplishments.split('\n').filter(Boolean).length > 1
+      ? r.accomplishments.split('\n').filter(Boolean)
+      : [r.accomplishments],
+    blockers: r.blockers ? [r.blockers] : [],
+    tomorrow: r.plan_tomorrow.split('\n').filter(Boolean).length > 1
+      ? r.plan_tomorrow.split('\n').filter(Boolean)
+      : [r.plan_tomorrow],
+  }))
+
+  const reports: DemoReport[] = hasRealReports
+    ? normalizedRealReports
+    : generateDemoReports(engagementTitle, projectLead, startDate)
 
   const filtered = search.trim()
     ? reports.filter(

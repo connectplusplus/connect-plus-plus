@@ -138,6 +138,60 @@ export interface TalentProfile {
   created_at: string
 }
 
+// ─── Internal User Types ─────────────────────────────────────────────────────
+
+export type InternalUserRole = 'pm' | 'delivery_lead' | 'finance'
+
+export interface InternalUser {
+  id: string
+  full_name: string
+  email: string
+  role: InternalUserRole
+  avatar_url: string | null
+  created_at: string
+}
+
+export interface DailyReport {
+  id: string
+  engagement_id: string
+  author_id: string
+  report_date: string
+  accomplishments: string
+  blockers: string | null
+  plan_tomorrow: string
+  health_score: number
+  ai_velocity_note?: string | null // only present for internal users
+  created_at: string
+  updated_at: string
+  // Joined fields
+  engagement?: {
+    title: string
+    company_id: string
+    companies?: {
+      name: string
+    }
+  }
+  author?: {
+    full_name: string
+  }
+}
+
+export type HealthScoreLabel = 'Excellent' | 'Good' | 'At Risk' | 'Critical'
+
+export function getHealthLabel(score: number): HealthScoreLabel {
+  if (score >= 85) return 'Excellent'
+  if (score >= 70) return 'Good'
+  if (score >= 50) return 'At Risk'
+  return 'Critical'
+}
+
+export function getHealthColor(score: number): string {
+  if (score >= 85) return '#10B981'
+  if (score >= 70) return '#64748B'
+  if (score >= 50) return '#F59E0B'
+  return '#EF4444'
+}
+
 // ─── UI Types ─────────────────────────────────────────────────────────────────
 
 export interface NavItem {
