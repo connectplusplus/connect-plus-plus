@@ -41,9 +41,9 @@ export default function HomePage() {
             </h1>
 
             <p className="text-[#64748B] text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
-              Glassbox by FullStack is a revolutionary platform that transforms traditional
-              engineering services engagements into transparent, AI-powered outcomes. This is the
-              future of sourcing.
+              At FullStack, we wrote the book on Nearshore Engineering Talent. Now we are
+              rewriting the rules of the game with Glassbox, the industry&apos;s first transparent,
+              AI-native, outcomes platform.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -77,8 +77,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#0F172A] leading-tight mb-4">
-            Engineering outcomes,<br />
-            <span className="bg-gradient-to-r from-[#7C3AED] via-[#6366F1] to-[#EC4899] bg-clip-text text-transparent">not headcount.</span>
+            With Glassbox, Speed is built in.<br />
+            <span className="bg-gradient-to-r from-[#7C3AED] via-[#6366F1] to-[#EC4899] bg-clip-text text-transparent">Not Optional.</span>
           </h2>
           <p className="text-[#64748B] text-lg md:text-xl mt-6">
             How Glassbox by FullStack works

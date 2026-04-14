@@ -61,7 +61,8 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
             <OutcomeCard key={template.id} template={template} linkPrefix={linkPrefix} />
           ))}
 
-          {/* Custom Engagement card */}
+          {/* Custom Engagement card — only on dashboard */}
+          {linkPrefix && (
           <div className="bg-[#7C3AED] text-white rounded-xl p-6 flex flex-col">
             <h3 className="font-heading font-bold text-lg mb-2">Custom Engagement</h3>
             <p className="text-sm leading-relaxed opacity-80 mb-5 flex-1">
@@ -87,6 +88,7 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
               Schedule a call with Tori
             </a>
           </div>
+          )}
         </div>
       )}
     </div>
