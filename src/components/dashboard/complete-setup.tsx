@@ -4,16 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { createClient } from '@/lib/supabase/client'
 import { Loader2 } from 'lucide-react'
+import { completeAccountSetup } from '@/app/dashboard/actions'
 
-interface CompleteSetupProps {
-  userId: string
-  fullName: string
-  email: string
-}
-
-export function CompleteSetup({ userId, fullName, email }: CompleteSetupProps) {
+export function CompleteSetup() {
   const router = useRouter()
   const [companyName, setCompanyName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -24,36 +18,15 @@ export function CompleteSetup({ userId, fullName, email }: CompleteSetupProps) {
     setLoading(true)
     setError(null)
 
-    try {
-      const supabase = createClient()
+    const result = await completeAccountSetup(companyName)
 
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .insert({ name: companyName })
-        .select('id')
-        .single()
-
-      if (companyError) throw companyError
-
-      const { error: userError } = await supabase.from('users').insert({
-        id: userId,
-        company_id: company.id,
-        full_name: fullName,
-        email,
-        role: 'owner',
-      })
-
-      if (userError) throw userError
-
-      router.refresh()
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : (err as { message?: string })?.message ?? 'Something went wrong.'
-      setError(message)
+    if (result.error) {
+      setError(result.error)
       setLoading(false)
+      return
     }
+
+    router.refresh()
   }
 
   return (

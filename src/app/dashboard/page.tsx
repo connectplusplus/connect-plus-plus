@@ -35,13 +35,7 @@ export default async function DashboardPage() {
 
   // No profile yet — ask for company name to complete setup
   if (!userProfile?.company_id) {
-    return (
-      <CompleteSetup
-        userId={user.id}
-        fullName={userProfile?.full_name ?? user.email?.split('@')[0] ?? 'there'}
-        email={user.email ?? ''}
-      />
-    )
+    return <CompleteSetup />
   }
 
   const company = userProfile.companies as { id: string; name: string; created_at: string } | null
