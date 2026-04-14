@@ -8,6 +8,8 @@ import { getInitials } from '@/lib/utils'
 const ROUTE_TITLES: Record<string, string> = {
   '/dashboard': 'Overview',
   '/dashboard/engagements': 'Engagements',
+  '/dashboard/my-talent': 'FullStack Talent Dashboard',
+  '/dashboard/talent': 'Browse Talent',
   '/dashboard/messages': 'Messages',
   '/dashboard/settings': 'Settings',
 }
@@ -41,7 +43,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 
   return (
     <header className="h-14 border-b border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between px-6 shrink-0">
-      <h1 className="font-heading font-semibold text-[#0F172A] text-base">{getTitle()}</h1>
+      <h1 className="font-heading font-bold text-[#0F172A] text-lg">{getTitle()}</h1>
 
       <div className="flex items-center gap-4">
         <button

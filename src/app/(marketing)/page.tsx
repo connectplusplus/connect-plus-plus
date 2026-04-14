@@ -10,27 +10,24 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { GlassParticles } from '@/components/marketing/glass-particles'
 
 export default function HomePage() {
   return (
     <div className="bg-white text-[#0F172A]">
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background grid */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              'linear-gradient(#7C3AED 1px, transparent 1px), linear-gradient(90deg, #7C3AED 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
-        {/* Radial glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#7C3AED] opacity-[0.04] rounded-full blur-3xl pointer-events-none" />
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-white to-[#EEF2FF]">
+        {/* Glass particles — interactive background */}
+        <GlassParticles />
 
-        <div className="relative max-w-7xl mx-auto px-6 py-32">
+        {/* Subtle gradient mesh */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#7C3AED] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#EC4899] opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-[#3B82F6] opacity-[0.02] rounded-full blur-[80px] pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-6 py-32" style={{ zIndex: 2 }}>
           <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 border border-[#E2E8F0] bg-white rounded-full px-4 py-2 mb-8">
+            <div className="inline-flex items-center gap-2 border border-[#E2E8F0] bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-sm">
               <span className="w-2 h-2 bg-[#7C3AED] rounded-full animate-pulse" />
               <span className="text-[#7C3AED] text-xs font-semibold tracking-wide uppercase">
                 The future of engineering services is here
@@ -40,7 +37,7 @@ export default function HomePage() {
             <h1 className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6">
               Engineering outcomes,
               <br />
-              <span className="text-[#7C3AED]">not headcount.</span>
+              <span className="bg-gradient-to-r from-[#7C3AED] via-[#6366F1] to-[#EC4899] bg-clip-text text-transparent">not headcount.</span>
             </h1>
 
             <p className="text-[#64748B] text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
@@ -53,7 +50,7 @@ export default function HomePage() {
               <Link href="/marketplace/outcomes">
                 <Button
                   size="lg"
-                  className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
+                  className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold text-base px-8 h-12 w-52 transition-colors duration-150 shadow-lg shadow-[#7C3AED]/20"
                 >
                   Browse Outcomes
                 </Button>
@@ -62,7 +59,7 @@ export default function HomePage() {
               <Link href="/marketplace/talent">
                 <Button
                   size="lg"
-                  className="bg-white text-[#7C3AED] border border-[#7C3AED] hover:bg-[#7C3AED]/10 font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
+                  className="bg-white/80 backdrop-blur-sm text-[#7C3AED] border border-[#7C3AED]/30 hover:bg-[#7C3AED]/10 font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
                 >
                   Explore Talent
                 </Button>

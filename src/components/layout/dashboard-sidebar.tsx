@@ -31,7 +31,7 @@ export function DashboardSidebar() {
   return (
     <aside className="w-60 min-h-screen bg-white border-r border-[#E2E8F0] flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-3 py-5 border-b border-[#E2E8F0]">
+      <div className="px-3 h-14 flex items-center border-b border-[#E2E8F0]">
         <Link href="/dashboard">
           <img
             src="/logo.png"

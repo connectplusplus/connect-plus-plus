@@ -84,11 +84,11 @@ export function MessagesClient({
   }
 
   return (
-    <div className="-m-6 flex h-[calc(100vh-3.5rem)]">
+    <div className="max-w-6xl mx-auto flex gap-4 h-[calc(100vh-8rem)]">
 
       {/* ── Left sidebar: folders ──────────────────────────────────── */}
-      <div className="w-64 shrink-0 border-r border-[#E2E8F0] bg-white flex flex-col">
-        <div className="px-4 py-4 border-b border-[#E2E8F0]">
+      <div className="w-64 shrink-0 border border-[#E2E8F0] rounded-xl bg-white flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b border-[#E2E8F0]">
           <h2 className="font-heading font-semibold text-[#0F172A] text-base">Messages</h2>
         </div>
 
@@ -164,7 +164,7 @@ export function MessagesClient({
         </div>
 
       {/* ── Right panel: message content ────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 border border-[#E2E8F0] rounded-xl bg-white overflow-hidden">
 
           {activeFolder === 'inbox' ? (
             /* ── Inbox: list of all recent messages ──────────────── */
