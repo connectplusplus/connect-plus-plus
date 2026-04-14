@@ -1,10 +1,21 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { EngagementList } from '@/components/dashboard/engagement-list'
-import type { Engagement, Milestone, Message } from '@/lib/types'
-import { ArrowRight, Layers, CheckCircle2, MessageSquare, Activity } from 'lucide-react'
+import { CompleteSetup } from '@/components/dashboard/complete-setup'
+import type { Engagement, Milestone, Message, TalentProfile } from '@/lib/types'
+import { ArrowRight, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { formatRelativeTime } from '@/lib/utils'
+
+// ── FullStack account manager (static for demo) ───────────────────────────────
+const ACCOUNT_MANAGER = {
+  name: 'Tori Ireland',
+  title: 'Client Partner',
+  photo: '/tori.jpeg',
+  calendly: 'https://calendly.com',
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -15,28 +26,30 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
-  // Fetch user profile
+  // Fetch user profile + company
   const { data: userProfile } = await supabase
     .from('users')
-    .select('*, companies(id, name)')
+    .select('*, companies(id, name, created_at)')
     .eq('id', user.id)
     .single()
 
-  const companyId = userProfile?.company_id
-
-  if (!companyId) {
-    // No company yet
+  // No profile yet — ask for company name to complete setup
+  if (!userProfile?.company_id) {
     return (
-      <div className="max-w-2xl mx-auto text-center py-20">
-        <h2 className="font-heading font-bold text-2xl text-white mb-3">
-          Welcome to Connect++
-        </h2>
-        <p className="text-[#9CA3AF] mb-6">
-          Your account is being set up. If this persists, please contact support.
-        </p>
-      </div>
+      <CompleteSetup
+        userId={user.id}
+        fullName={userProfile?.full_name ?? user.email?.split('@')[0] ?? 'there'}
+        email={user.email ?? ''}
+      />
     )
   }
+
+  const company = userProfile.companies as { id: string; name: string; created_at: string } | null
+  const companyId = userProfile.company_id
+  const firstName = userProfile.full_name?.split(' ')[0] ?? 'there'
+  const clientSince = company?.created_at
+    ? new Date(company.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : null
 
   // Fetch engagements
   const { data: engagements } = await supabase
@@ -45,7 +58,6 @@ export default async function DashboardPage() {
     .eq('company_id', companyId)
     .order('created_at', { ascending: false })
 
-  // Fetch milestones for all engagements
   const engagementIds = (engagements ?? []).map((e) => e.id)
 
   const { data: allMilestones } = engagementIds.length > 0
@@ -56,7 +68,6 @@ export default async function DashboardPage() {
         .order('display_order', { ascending: true })
     : { data: [] }
 
-  // Fetch last message for each engagement
   const { data: allMessages } = engagementIds.length > 0
     ? await supabase
         .from('messages')
@@ -66,96 +77,154 @@ export default async function DashboardPage() {
         .order('created_at', { ascending: false })
     : { data: [] }
 
-  // Build engagement data
   const engagementsWithData = (engagements ?? []).map((eng) => {
     const milestones = (allMilestones ?? []).filter(
       (m: Milestone) => m.engagement_id === eng.id
     ) as Milestone[]
     const lastMessage =
       (allMessages ?? []).find((m: Message) => m.engagement_id === eng.id) ?? null
-
     return { ...eng, milestones, last_message: lastMessage }
   })
 
-  // Active engagements
   const activeEngagements = engagementsWithData.filter(
     (e) => e.status === 'active' || e.status === 'in_review' || e.status === 'scoping'
   )
 
-  // Stats
-  const completedMilestonesThisMonth = (allMilestones ?? []).filter((m: Milestone) => {
-    if (m.status !== 'completed' || !m.completed_at) return false
-    const completedDate = new Date(m.completed_at)
-    const now = new Date()
-    return (
-      completedDate.getMonth() === now.getMonth() &&
-      completedDate.getFullYear() === now.getFullYear()
-    )
-  }).length
-
-  const firstName = userProfile?.full_name?.split(' ')[0] ?? 'there'
+  // Fetch shortlisted talent (top 4 available)
+  const { data: shortlistedTalent } = await supabase
+    .from('talent_profiles')
+    .select('*')
+    .eq('is_available', true)
+    .order('ai_velocity_score', { ascending: false })
+    .limit(4)
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* Welcome banner */}
-      <div>
-        <h2 className="font-heading font-bold text-2xl text-white mb-1">
-          Welcome back, {firstName}.
-        </h2>
-        <p className="text-[#9CA3AF] text-sm">
-          Here&apos;s what&apos;s happening across your engagements.
-        </p>
-      </div>
+    <div className="max-w-6xl mx-auto space-y-10">
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          {
-            label: 'Active Engagements',
-            value: activeEngagements.length,
-            icon: Layers,
-            color: '#A6F84C',
-          },
-          {
-            label: 'Milestones This Month',
-            value: completedMilestonesThisMonth,
-            icon: CheckCircle2,
-            color: '#34D399',
-          },
-          {
-            label: 'Total Engagements',
-            value: (engagements ?? []).length,
-            icon: Activity,
-            color: '#60A5FA',
-          },
-          {
-            label: 'Messages',
-            value: (allMessages ?? []).length,
-            icon: MessageSquare,
-            color: '#A78BFA',
-          },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-5"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[#9CA3AF] text-xs font-medium">{stat.label}</span>
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: `${stat.color}15` }}
-              >
-                <stat.icon size={15} style={{ color: stat.color }} strokeWidth={1.5} />
+      {/* ── Client hero banner ─────────────────────────────────────────────── */}
+      <div className="bg-[#16161C] border border-[#2A2A30] rounded-2xl p-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          {/* Left: client info */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-[#6B7280] text-xs font-medium uppercase tracking-widest mb-1">
+                Client Account
+              </p>
+              <h2 className="font-heading font-bold text-3xl text-white">
+                {company?.name ?? 'Your Company'}
+              </h2>
+            </div>
+            <div className="flex flex-wrap items-center gap-5">
+              {clientSince && (
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-[#1E1E24] flex items-center justify-center">
+                    <Calendar size={13} className="text-[#A6F84C]" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-[#6B7280] text-xs">FullStack client since</p>
+                    <p className="text-white text-sm font-medium">{clientSince}</p>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-[#1E1E24] flex items-center justify-center">
+                  <Clock size={13} className="text-[#A6F84C]" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <p className="text-[#6B7280] text-xs">Active engagements</p>
+                  <p className="text-white text-sm font-medium">{activeEngagements.length}</p>
+                </div>
               </div>
             </div>
-            <div className="font-mono-brand font-semibold text-2xl text-white">
-              {stat.value}
+          </div>
+
+          {/* Right: account manager card */}
+          <div className="flex items-center gap-5 bg-[#111116] border border-[#2A2A30] rounded-xl p-5 shrink-0">
+            <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-[#A6F84C]/20">
+              <Image
+                src={ACCOUNT_MANAGER.photo}
+                alt={ACCOUNT_MANAGER.name}
+                width={56}
+                height={56}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[#6B7280] text-xs mb-0.5">Your FullStack Partner</p>
+              <p className="text-white font-semibold text-base">{ACCOUNT_MANAGER.name}</p>
+              <p className="text-[#9CA3AF] text-xs mb-3">{ACCOUNT_MANAGER.title}</p>
+              <a
+                href={ACCOUNT_MANAGER.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B0B0F] bg-[#A6F84C] hover:bg-[#BCFF6E] px-3 py-1.5 rounded-lg transition-colors duration-150"
+              >
+                <ExternalLink size={11} strokeWidth={2.5} />
+                Schedule a call
+              </a>
             </div>
           </div>
-        ))}
+        </div>
       </div>
 
-      {/* Active Engagements */}
+      {/* ── Shortlisted talent ─────────────────────────────────────────────── */}
+      <div>
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h3 className="font-heading font-semibold text-lg text-white">
+              New Positions for {company?.name ?? 'Your Company'}
+            </h3>
+            <p className="text-[#6B7280] text-xs mt-0.5">
+              Shortlisted by your technology priorities
+            </p>
+          </div>
+          <Link
+            href="/marketplace/talent"
+            className="flex items-center gap-1 text-[#A6F84C] text-sm hover:text-[#BCFF6E] transition-colors"
+          >
+            Browse all <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {(shortlistedTalent as TalentProfile[] ?? []).map((talent) => (
+            <div
+              key={talent.id}
+              className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-5 hover:border-[#A6F84C]/30 hover:-translate-y-0.5 transition-all duration-150"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-[#1E1E24] flex items-center justify-center text-[#A6F84C] font-mono-brand text-sm font-semibold shrink-0">
+                  {talent.display_name.charAt(0)}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-white text-sm font-semibold truncate">{talent.display_name}</p>
+                  <p className="text-[#6B7280] text-xs truncate">{talent.seniority}</p>
+                </div>
+              </div>
+              <p className="text-[#9CA3AF] text-xs leading-relaxed mb-3 line-clamp-2">
+                {talent.title}
+              </p>
+              <div className="flex flex-wrap gap-1 mb-3">
+                {((talent.skills as string[]) ?? []).slice(0, 3).map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-0.5 rounded text-[10px] bg-[#1E1E24] text-[#9CA3AF] border border-[#2A2A30]"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#A6F84C] font-mono-brand text-xs font-semibold">
+                  {talent.ai_velocity_score}x AI velocity
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Active Engagements ─────────────────────────────────────────────── */}
       <div>
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-heading font-semibold text-lg text-white">
@@ -173,15 +242,8 @@ export default async function DashboardPage() {
 
         {activeEngagements.length === 0 ? (
           <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-12 text-center">
-            <div className="w-14 h-14 bg-[#1E1E24] rounded-xl flex items-center justify-center mx-auto mb-4">
-              <Layers size={24} className="text-[#6B7280]" strokeWidth={1.5} />
-            </div>
-            <h3 className="font-heading font-semibold text-white text-lg mb-2">
-              No active engagements yet
-            </h3>
-            <p className="text-[#9CA3AF] text-sm mb-6 max-w-sm mx-auto">
-              Browse the outcome catalog to find a productized service that fits your needs, or
-              explore our engineer talent pool.
+            <p className="text-[#9CA3AF] text-sm mb-5">
+              No active engagements yet. Start one from the catalog.
             </p>
             <Link href="/dashboard/new-engagement">
               <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
@@ -195,17 +257,6 @@ export default async function DashboardPage() {
         )}
       </div>
 
-      {/* All other engagements */}
-      {engagementsWithData.filter((e) => !activeEngagements.includes(e)).length > 0 && (
-        <div>
-          <h3 className="font-heading font-semibold text-lg text-white mb-5">
-            Past Engagements
-          </h3>
-          <EngagementList
-            engagements={engagementsWithData.filter((e) => !activeEngagements.includes(e))}
-          />
-        </div>
-      )}
     </div>
   )
 }
