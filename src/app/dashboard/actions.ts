@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { randomUUID } from 'crypto'
 
 export async function completeAccountSetup(companyName: string) {
   const supabase = await createClient()
@@ -12,19 +13,20 @@ export async function completeAccountSetup(companyName: string) {
 
   if (!user) return { error: 'Not authenticated' }
 
-  // Create company
-  const { data: company, error: companyError } = await supabase
+  // Pre-generate the UUID so we never need INSERT...RETURNING,
+  // which would trigger the SELECT RLS policy before the users row exists.
+  const companyId = randomUUID()
+
+  const { error: companyError } = await supabase
     .from('companies')
-    .insert({ name: companyName })
-    .select('id')
-    .single()
+    .insert({ id: companyId, name: companyName })
 
   if (companyError) return { error: companyError.message }
 
   // Create user profile
   const { error: userError } = await supabase.from('users').insert({
     id: user.id,
-    company_id: company.id,
+    company_id: companyId,
     full_name: user.user_metadata?.full_name ?? user.email?.split('@')[0] ?? 'User',
     email: user.email ?? '',
     role: 'owner',
