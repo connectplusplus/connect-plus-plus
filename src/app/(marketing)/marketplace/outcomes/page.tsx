@@ -4,7 +4,7 @@ import type { OutcomeTemplate } from '@/lib/types'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Predefined Outcomes — Connect++',
+  title: 'Predefined Outcomes — Glassbox',
   description:
     'Productized engineering services at fixed prices. MVP Sprint, CI/CD, Testing, Performance — scoped and priced upfront.',
 }

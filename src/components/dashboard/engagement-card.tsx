@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { ChevronRight, MessageSquare, Calendar } from 'lucide-react'
+import { ChevronRight, MessageSquare } from 'lucide-react'
 import { EngagementStatusBadge } from './status-badge'
+import { MilestoneTimeline } from './milestone-timeline'
 import type { Engagement, Milestone, Message } from '@/lib/types'
 import { MODE_COLORS, MODE_LABELS } from '@/lib/constants'
 import { formatRelativeTime } from '@/lib/utils'
@@ -16,20 +17,16 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
   const totalMilestones = milestones.length
   const progressPct = totalMilestones > 0 ? (completedMilestones / totalMilestones) * 100 : 0
 
-  const nextMilestone = milestones.find(
-    (m) => m.status === 'in_progress' || m.status === 'upcoming'
-  )
-
   const modeColor = MODE_COLORS[engagement.mode]
   const modeLabel = MODE_LABELS[engagement.mode]
 
   return (
     <Link href={`/dashboard/engagements/${engagement.id}`} className="block group">
-      <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-5 hover:border-[#A6F84C]/30 hover:-translate-y-0.5 transition-all duration-150">
+      <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-5 hover:border-[#A6F84C]/30 hover:-translate-y-0.5 transition-all duration-150 h-full flex flex-col">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0 mr-3">
-            <h3 className="text-white font-medium text-sm leading-tight mb-1.5 group-hover:text-[#A6F84C] transition-colors duration-150 line-clamp-2">
+            <h3 className="text-white font-medium text-sm leading-tight mb-1.5 group-hover:text-[#A6F84C] transition-colors duration-150 min-h-[2.5rem] line-clamp-2">
               {engagement.title}
             </h3>
             <div className="flex items-center gap-2 flex-wrap">
@@ -52,10 +49,10 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
           />
         </div>
 
-        {/* Progress bar */}
+        {/* Milestone timeline */}
         {totalMilestones > 0 && (
           <div className="mb-3">
-            <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-[#9CA3AF] text-xs">
                 {completedMilestones}/{totalMilestones} milestones
               </span>
@@ -63,34 +60,13 @@ export function EngagementCard({ engagement, milestones = [], lastMessage }: Eng
                 {Math.round(progressPct)}%
               </span>
             </div>
-            <div className="h-1.5 bg-[#1E1E24] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#A6F84C] rounded-full transition-all duration-500"
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Next milestone */}
-        {nextMilestone && (
-          <div className="flex items-center gap-2 mb-3">
-            <Calendar size={13} className="text-[#6B7280] shrink-0" strokeWidth={1.5} />
-            <span className="text-[#9CA3AF] text-xs truncate">
-              Next: <span className="text-white">{nextMilestone.title}</span>
-              {nextMilestone.due_date && (
-                <span className="text-[#6B7280]">
-                  {' '}
-                  · {new Date(nextMilestone.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                </span>
-              )}
-            </span>
+            <MilestoneTimeline milestones={milestones} compact />
           </div>
         )}
 
         {/* Last message */}
         {lastMessage && (
-          <div className="flex items-start gap-2 pt-3 border-t border-[#2A2A30]">
+          <div className="flex items-start gap-2 pt-3 border-t border-[#2A2A30] mt-auto">
             <MessageSquare size={13} className="text-[#6B7280] shrink-0 mt-0.5" strokeWidth={1.5} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">

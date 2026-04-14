@@ -131,7 +131,7 @@ export default async function DashboardNewEngagementDetailPage({ params }: PageP
             <p className="text-[#9CA3AF] text-sm mb-8">
               Fill out the intake form below. Your PM will review your scope within 24 hours.
             </p>
-            <IntakeForm template={t} companyId={userProfile?.company_id ?? undefined} />
+            <IntakeForm template={t} companyId={userProfile?.company_id ?? undefined} userEmail={user.email ?? undefined} />
           </div>
         </div>
 

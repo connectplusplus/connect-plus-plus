@@ -1,5 +1,5 @@
 -- ─────────────────────────────────────────────────────────────────────────────
--- Connect++ Initial Schema
+-- Glassbox Initial Schema
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- Companies (the customer's organization)
@@ -13,7 +13,7 @@ create table companies (
   updated_at timestamptz default now()
 );
 
--- Users (customer-side users who log into Connect++)
+-- Users (customer-side users who log into Glassbox)
 create table users (
   id uuid primary key references auth.users(id) on delete cascade,
   company_id uuid references companies(id),

@@ -4,7 +4,7 @@ import { TalentBrowseClient } from './talent-browse-client'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Explore Talent — Connect++',
+  title: 'Explore Talent — Glassbox',
   description:
     'Browse AI-accelerated engineers. Every profile includes an AI Velocity Score — see how much faster each engineer ships with AI tools.',
 }
@@ -41,7 +41,7 @@ export default async function TalentPage() {
               <span className="text-[#A6F84C]">AI velocity edge.</span>
             </h1>
             <p className="text-[#9CA3AF] text-lg leading-relaxed">
-              Every engineer on Connect++ ships 1.8x–2.7x faster than traditional teams. Browse
+              Every engineer on Glassbox ships 1.8x–2.7x faster than traditional teams. Browse
               profiles, filter by skill, and request the right engineer for your project.
             </p>
           </div>

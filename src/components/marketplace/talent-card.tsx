@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Zap, ExternalLink } from 'lucide-react'
+import { Zap } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/sheet'
 import type { TalentProfile } from '@/lib/types'
 import { formatCents, getInitials } from '@/lib/utils'
-import Link from 'next/link'
 
 const SENIORITY_COLORS: Record<string, string> = {
   mid: '#60A5FA',
@@ -115,7 +114,7 @@ export function TalentCard({ profile }: TalentCardProps) {
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent
           side="right"
-          className="w-full sm:max-w-lg bg-[#16161C] border-l border-[#2A2A30] text-white overflow-y-auto"
+          className="w-full sm:max-w-md bg-[#16161C] border-l border-[#2A2A30] text-white overflow-y-auto p-6"
         >
           <SheetHeader className="mb-6">
             <div className="flex items-start gap-4">
@@ -212,15 +211,9 @@ export function TalentCard({ profile }: TalentCardProps) {
 
             {/* CTA */}
             <div className="pt-4 border-t border-[#2A2A30]">
-              <Link href="/signup">
-                <Button className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
-                  Request {profile.display_name}
-                  <ExternalLink size={14} className="ml-2" />
-                </Button>
-              </Link>
-              <p className="text-[#6B7280] text-xs text-center mt-3">
-                Sign up to connect with this engineer
-              </p>
+              <Button className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
+                Schedule Video Interview with {profile.display_name}
+              </Button>
             </div>
           </div>
         </SheetContent>

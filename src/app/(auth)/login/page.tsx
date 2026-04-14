@@ -47,13 +47,13 @@ export default function LoginPage() {
             className="h-6 w-auto"
           />
           <span className="text-[#A6F84C] font-heading font-semibold text-sm border-l border-[#2A2A30] pl-2">
-            Connect++
+            Glassbox
           </span>
         </div>
         <h1 className="font-heading font-bold text-2xl text-white mb-1">
           Welcome back
         </h1>
-        <p className="text-[#9CA3AF] text-sm">Sign in to your Connect++ account</p>
+        <p className="text-[#9CA3AF] text-sm">Sign in to your Glassbox account</p>
       </div>
 
       {/* Card */}

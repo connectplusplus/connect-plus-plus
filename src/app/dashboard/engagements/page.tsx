@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { EngagementList } from '@/components/dashboard/engagement-list'
+import { SeedDemoButton } from '@/components/dashboard/seed-demo-button'
 import type { Engagement, Milestone, Message } from '@/lib/types'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -53,7 +54,7 @@ export default async function EngagementsPage() {
           <h2 className="font-heading font-bold text-2xl text-white mb-1">All Engagements</h2>
           <p className="text-[#9CA3AF] text-sm">{engagementsWithData.length} total</p>
         </div>
-        <Link href="/marketplace/outcomes">
+        <Link href="/dashboard/new-engagement">
           <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
             New Engagement
             <ArrowRight size={14} className="ml-2" />
@@ -74,6 +75,10 @@ export default async function EngagementsPage() {
       ) : (
         <EngagementList engagements={engagementsWithData} />
       )}
+
+      <div className="pt-4 text-center">
+        <SeedDemoButton />
+      </div>
     </div>
   )
 }

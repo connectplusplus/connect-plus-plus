@@ -4,10 +4,10 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { EngagementList } from '@/components/dashboard/engagement-list'
 import { CompleteSetup } from '@/components/dashboard/complete-setup'
+import { SeedDemoButton } from '@/components/dashboard/seed-demo-button'
 import type { Engagement, Milestone, Message, TalentProfile } from '@/lib/types'
 import { ArrowRight, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { formatRelativeTime } from '@/lib/utils'
 
 // ── FullStack account manager (static for demo) ───────────────────────────────
 const ACCOUNT_MANAGER = {
@@ -133,25 +133,25 @@ export default async function DashboardPage() {
           </div>
 
           {/* Right: account manager card */}
-          <div className="flex items-center gap-5 bg-[#111116] border border-[#2A2A30] rounded-xl p-5 shrink-0">
-            <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-[#A6F84C]/20">
+          <div className="flex items-center gap-0 bg-[#111116] border border-[#2A2A30] rounded-xl overflow-hidden shrink-0">
+            <div className="w-36 h-36 shrink-0">
               <Image
                 src={ACCOUNT_MANAGER.photo}
                 alt={ACCOUNT_MANAGER.name}
-                width={56}
-                height={56}
+                width={144}
+                height={144}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="min-w-0">
-              <p className="text-[#6B7280] text-xs mb-0.5">Your FullStack Partner</p>
-              <p className="text-white font-semibold text-base">{ACCOUNT_MANAGER.name}</p>
-              <p className="text-[#9CA3AF] text-xs mb-3">{ACCOUNT_MANAGER.title}</p>
+            <div className="px-5 py-4">
+              <p className="text-[#A6F84C] text-[10px] font-semibold uppercase tracking-widest mb-1">Your FullStack Partner</p>
+              <p className="text-white font-heading font-bold text-lg">{ACCOUNT_MANAGER.name}</p>
+              <p className="text-[#9CA3AF] text-sm mb-4">{ACCOUNT_MANAGER.title}</p>
               <a
                 href={ACCOUNT_MANAGER.calendly}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B0B0F] bg-[#A6F84C] hover:bg-[#BCFF6E] px-3 py-1.5 rounded-lg transition-colors duration-150"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B0B0F] bg-[#A6F84C] hover:bg-[#BCFF6E] px-4 py-2 rounded-lg transition-colors duration-150"
               >
                 <ExternalLink size={11} strokeWidth={2.5} />
                 Schedule a call
@@ -159,6 +159,36 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── Special Offer Banner ─────────────────────────────────────────── */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#A6F84C]/10 via-[#A6F84C]/5 to-transparent border border-[#A6F84C]/20 rounded-2xl p-6">
+        <div className="flex items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#A6F84C]/15 flex items-center justify-center shrink-0">
+              <span className="text-[#A6F84C] font-mono-brand font-bold text-lg">%</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[#A6F84C] text-[10px] font-semibold uppercase tracking-widest">Limited Offer</span>
+                <span className="text-[#6B7280] text-[10px]">Expires Apr 30, 2026</span>
+              </div>
+              <h3 className="font-heading font-bold text-white text-base">
+                20% off billing rates for React developers
+              </h3>
+              <p className="text-[#9CA3AF] text-sm mt-0.5">
+                Onboard before April 30th and lock in reduced rates for the duration of your engagement.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/dashboard/talent"
+            className="shrink-0 px-5 py-2.5 bg-[#A6F84C] text-[#0B0B0F] font-semibold text-sm rounded-lg hover:bg-[#BCFF6E] transition-colors"
+          >
+            Browse React Engineers
+          </Link>
+        </div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#A6F84C]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       </div>
 
       {/* ── Shortlisted talent ─────────────────────────────────────────────── */}
@@ -173,7 +203,7 @@ export default async function DashboardPage() {
             </p>
           </div>
           <Link
-            href="/marketplace/talent"
+            href="/dashboard/talent"
             className="flex items-center gap-1 text-[#A6F84C] text-sm hover:text-[#BCFF6E] transition-colors"
           >
             Browse all <ArrowRight size={14} />
@@ -235,16 +265,17 @@ export default async function DashboardPage() {
         </div>
 
         {activeEngagements.length === 0 ? (
-          <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-12 text-center">
-            <p className="text-[#9CA3AF] text-sm mb-5">
-              No active engagements yet. Start one from the catalog.
-            </p>
-            <Link href="/dashboard/new-engagement">
-              <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
-                Browse outcomes
-                <ArrowRight size={14} className="ml-2" />
-              </Button>
-            </Link>
+          <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-12 text-center space-y-4">
+            <p className="text-[#9CA3AF] text-sm">No active engagements yet.</p>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <SeedDemoButton />
+              <Link href="/dashboard/new-engagement">
+                <Button variant="outline" className="border-[#2A2A30] text-[#9CA3AF] hover:text-white text-sm h-9">
+                  Browse catalog
+                  <ArrowRight size={13} className="ml-1.5" />
+                </Button>
+              </Link>
+            </div>
           </div>
         ) : (
           <EngagementList engagements={activeEngagements} />

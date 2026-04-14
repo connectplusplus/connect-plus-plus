@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { OutcomeCard } from './outcome-card'
 import type { OutcomeTemplate, OutcomeCategory } from '@/lib/types'
 import { CATEGORY_LABELS } from '@/lib/constants'
+import { ExternalLink } from 'lucide-react'
 
 interface OutcomeCatalogProps {
   templates: OutcomeTemplate[]
@@ -58,6 +60,33 @@ export function OutcomeCatalog({ templates, linkPrefix }: OutcomeCatalogProps) {
           {filtered.map((template) => (
             <OutcomeCard key={template.id} template={template} linkPrefix={linkPrefix} />
           ))}
+
+          {/* Custom Engagement card */}
+          <div className="bg-[#A6F84C] text-[#0B0B0F] rounded-xl p-6 flex flex-col">
+            <h3 className="font-heading font-bold text-lg mb-2">Custom Engagement</h3>
+            <p className="text-sm leading-relaxed opacity-80 mb-5 flex-1">
+              Need something that doesn&apos;t fit a predefined outcome? We scope bespoke
+              engineering projects collaboratively — from AI transformations to full platform builds.
+            </p>
+            <div className="flex items-center gap-3 bg-[#0B0B0F]/10 rounded-lg p-3 mb-4">
+              <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0">
+                <Image src="/tori.jpeg" alt="Tori Ireland" width={48} height={48} className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm">Tori Ireland</p>
+                <p className="text-xs opacity-70">Your FullStack Client Partner</p>
+              </div>
+            </div>
+            <a
+              href="https://calendly.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-[#0B0B0F] text-[#A6F84C] font-semibold text-sm hover:bg-[#16161C] transition-colors"
+            >
+              <ExternalLink size={13} />
+              Schedule a call with Tori
+            </a>
+          </div>
         </div>
       )}
     </div>

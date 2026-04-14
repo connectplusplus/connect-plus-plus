@@ -14,7 +14,7 @@ export function MarketingFooter() {
                 className="h-5 w-auto"
               />
               <span className="text-[#A6F84C] font-heading font-semibold text-sm border-l border-[#2A2A30] pl-2">
-                Connect++
+                Glassbox
               </span>
             </div>
             <p className="text-[#9CA3AF] text-sm leading-relaxed max-w-xs">

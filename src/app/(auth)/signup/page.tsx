@@ -1,44 +1,181 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/lib/supabase/client'
-import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { completeAccountSetup } from '@/app/dashboard/actions'
+import { Loader2, AlertCircle, CheckCircle2, FileText } from 'lucide-react'
+
+type Step = 'code' | 'contract' | 'form' | 'success'
+
+function LogoBlock() {
+  return (
+    <div className="flex items-center justify-center gap-3 mb-6">
+      <img
+        src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
+        alt="FullStack"
+        className="h-6 w-auto"
+      />
+      <span className="w-px h-5 bg-[#2A2A30]" />
+      <img
+        src="/logo.png"
+        alt="Glassbox"
+        className="h-6 w-auto"
+      />
+    </div>
+  )
+}
+
+function StepIndicator({ current }: { current: Step }) {
+  const steps: Array<{ key: Step; label: string }> = [
+    { key: 'code', label: 'Verify' },
+    { key: 'contract', label: 'Agreement' },
+    { key: 'form', label: 'Account' },
+  ]
+  const currentIdx = steps.findIndex((s) => s.key === current)
+
+  return (
+    <div className="flex items-center justify-center gap-2 mb-8">
+      {steps.map((s, i) => (
+        <div key={s.key} className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <div
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+              style={{
+                backgroundColor: i <= currentIdx ? '#A6F84C' : '#1E1E24',
+                color: i <= currentIdx ? '#0B0B0F' : '#6B7280',
+                border: i <= currentIdx ? 'none' : '1px solid #2A2A30',
+              }}
+            >
+              {i + 1}
+            </div>
+            <span
+              className="text-xs font-medium"
+              style={{ color: i <= currentIdx ? '#A6F84C' : '#6B7280' }}
+            >
+              {s.label}
+            </span>
+          </div>
+          {i < steps.length - 1 && (
+            <div
+              className="w-8 h-px"
+              style={{ backgroundColor: i < currentIdx ? '#A6F84C' : '#2A2A30' }}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function CodeInput({ value, onChange }: { value: string[]; onChange: (val: string[]) => void }) {
+  const inputs = useRef<(HTMLInputElement | null)[]>([])
+
+  const handleKeyDown = useCallback(
+    (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Backspace' && !value[i] && i > 0) {
+        inputs.current[i - 1]?.focus()
+      }
+    },
+    [value]
+  )
+
+  const handleChange = useCallback(
+    (i: number, char: string) => {
+      const cleaned = char.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+      if (!cleaned) return
+      const next = [...value]
+      const chars = cleaned.split('')
+      for (let j = 0; j < chars.length && i + j < 7; j++) {
+        next[i + j] = chars[j]
+      }
+      onChange(next)
+      const focusIdx = Math.min(i + chars.length, 6)
+      setTimeout(() => inputs.current[focusIdx]?.focus(), 0)
+    },
+    [value, onChange]
+  )
+
+  const handlePaste = useCallback(
+    (e: React.ClipboardEvent) => {
+      e.preventDefault()
+      const pasted = e.clipboardData.getData('text').replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 7)
+      const next = [...value]
+      for (let j = 0; j < pasted.length; j++) {
+        next[j] = pasted[j]
+      }
+      onChange(next)
+      const focusIdx = Math.min(pasted.length, 6)
+      setTimeout(() => inputs.current[focusIdx]?.focus(), 0)
+    },
+    [value, onChange]
+  )
+
+  return (
+    <div className="flex items-center justify-center gap-2" onPaste={handlePaste}>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <input
+          key={i}
+          ref={(el) => { inputs.current[i] = el }}
+          type="text"
+          maxLength={1}
+          value={value[i] || ''}
+          onChange={(e) => handleChange(i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(i, e)}
+          className="w-11 h-13 text-center text-lg font-mono-brand font-bold text-white bg-[#1E1E24] border border-[#2A2A30] rounded-lg focus:border-[#A6F84C] focus:outline-none focus:ring-1 focus:ring-[#A6F84C]/30 transition-colors uppercase"
+        />
+      ))}
+    </div>
+  )
+}
 
 export default function SignupPage() {
   const router = useRouter()
+  const [step, setStep] = useState<Step>('code')
   const [form, setForm] = useState({
     fullName: '',
     companyName: '',
     email: '',
     password: '',
   })
+  const [code, setCode] = useState<string[]>(Array(7).fill(''))
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
   function handleChange(key: string, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleCodeSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    if (form.password.length < 8) {
-      setError('Password must be at least 8 characters.')
-      setLoading(false)
+    if (code.join('').length < 7) {
+      setError('Please enter the full 7-character code.')
       return
     }
+    setError(null)
+    setStep('contract')
+  }
+
+  function handleContractSign() {
+    setStep('form')
+  }
+
+  async function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters.')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
 
     try {
       const supabase = createClient()
 
-      // 1. Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
@@ -50,33 +187,14 @@ export default function SignupPage() {
       if (authError) throw authError
       if (!authData.user) throw new Error('User creation failed')
 
-      // If email confirmation is required, show success message and stop here.
-      // The user profile will be created after they confirm and log in.
       if (!authData.session) {
-        setSuccess(true)
+        setStep('success')
         setLoading(false)
         return
       }
 
-      // 2. Create company
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .insert({ name: form.companyName })
-        .select('id')
-        .single()
-
-      if (companyError) throw companyError
-
-      // 3. Create user profile
-      const { error: userError } = await supabase.from('users').insert({
-        id: authData.user.id,
-        company_id: company.id,
-        full_name: form.fullName,
-        email: form.email,
-        role: 'owner',
-      })
-
-      if (userError) throw userError
+      const setupResult = await completeAccountSetup(form.companyName)
+      if (setupResult.error) throw new Error(setupResult.error)
 
       router.push('/dashboard')
       router.refresh()
@@ -95,19 +213,11 @@ export default function SignupPage() {
     }
   }
 
-  if (success) {
+  // ── Success screen ──────────────────────────────────────────────────────
+  if (step === 'success') {
     return (
       <div className="w-full max-w-sm text-center">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <img
-            src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
-            alt="FullStack"
-            className="h-6 w-auto"
-          />
-          <span className="text-[#A6F84C] font-heading font-semibold text-sm border-l border-[#2A2A30] pl-2">
-            Connect++
-          </span>
-        </div>
+        <LogoBlock />
         <div className="bg-[#16161C] border border-[#A6F84C]/30 rounded-xl p-8">
           <div className="w-14 h-14 bg-[#A6F84C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 size={28} className="text-[#A6F84C]" strokeWidth={1.5} />
@@ -122,29 +232,142 @@ export default function SignupPage() {
     )
   }
 
+  // ── Step 1: Code entry ──────────────────────────────────────────────────
+  if (step === 'code') {
+    return (
+      <div className="w-full max-w-md">
+        <div className="text-center mb-2">
+          <LogoBlock />
+          <h1 className="font-heading font-bold text-2xl text-white mb-1">
+            New Customer Onboarding
+          </h1>
+          <p className="text-[#9CA3AF] text-sm mb-6">Start your guided onboarding process here.</p>
+        </div>
+
+        <StepIndicator current="code" />
+
+        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-8">
+          <h2 className="font-heading font-semibold text-lg text-white text-center mb-2">
+            Enter Your Customer Code
+          </h2>
+          <p className="text-[#9CA3AF] text-sm text-center leading-relaxed mb-6">
+            Enter the new customer code that you have received from the FullStack Sales Team.
+          </p>
+
+          <form onSubmit={handleCodeSubmit} className="space-y-6">
+            <CodeInput value={code} onChange={setCode} />
+
+            {error && (
+              <div className="flex items-start gap-2 text-[#F87171] text-sm bg-[#F87171]/10 border border-[#F87171]/20 rounded-lg px-3 py-3">
+                <AlertCircle size={15} className="shrink-0 mt-0.5" strokeWidth={2} />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              disabled={code.join('').length < 7}
+              className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-11"
+            >
+              Verify Code
+            </Button>
+          </form>
+        </div>
+
+        <div className="text-center mt-6 space-y-3">
+          <p className="text-[#6B7280] text-xs leading-relaxed max-w-xs mx-auto">
+            Don&apos;t have a code? Contact your FullStack Sales Representative or write to{' '}
+            <a href="mailto:new_customer@fullstacklabs.co" className="text-[#A6F84C] hover:text-[#BCFF6E] transition-colors">
+              new_customer@fullstacklabs.co
+            </a>
+            {' '}to complete your onboarding.
+          </p>
+          <p className="text-[#9CA3AF] text-sm">
+            Existing Customer?{' '}
+            <Link href="/login" className="text-[#A6F84C] hover:text-[#BCFF6E] transition-colors font-medium">
+              Log in here
+            </Link>
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Step 2: Contract / MSA ──────────────────────────────────────────────
+  if (step === 'contract') {
+    return (
+      <div className="w-full max-w-6xl">
+        <div className="text-center mb-2">
+          <LogoBlock />
+        </div>
+
+        <StepIndicator current="contract" />
+
+        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl overflow-hidden">
+          {/* Sign button at top */}
+          <div className="flex items-center justify-between p-5 border-b border-[#2A2A30] bg-[#111116]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#A6F84C]/10 flex items-center justify-center">
+                <FileText size={18} className="text-[#A6F84C]" />
+              </div>
+              <div>
+                <h2 className="font-heading font-semibold text-white text-base">
+                  Master Services Agreement
+                </h2>
+                <p className="text-[#6B7280] text-xs">
+                  FullStack Labs, Inc. — Glassbox Platform
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={handleContractSign}
+              className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-10 px-6"
+            >
+              <CheckCircle2 size={15} className="mr-2" />
+              Sign and Get Access to Glassbox
+            </Button>
+          </div>
+
+          {/* Embedded PDF */}
+          <div className="w-full" style={{ height: 'calc(100vh - 240px)' }}>
+            <iframe
+              src="/msa.pdf"
+              className="w-full h-full border-0"
+              title="FullStack Glassbox Master Services Agreement"
+            />
+          </div>
+        </div>
+
+        <div className="text-center mt-4">
+          <button
+            onClick={() => { setStep('code'); setError(null) }}
+            className="text-[#9CA3AF] text-sm hover:text-white transition-colors"
+          >
+            &larr; Back
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Step 3: Create account ──────────────────────────────────────────────
   return (
     <div className="w-full max-w-sm">
-      {/* Logo */}
-      <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <img
-            src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
-            alt="FullStack"
-            className="h-6 w-auto"
-          />
-          <span className="text-[#A6F84C] font-heading font-semibold text-sm border-l border-[#2A2A30] pl-2">
-            Connect++
-          </span>
-        </div>
-        <h1 className="font-heading font-bold text-2xl text-white mb-1">
-          Get started free
-        </h1>
-        <p className="text-[#9CA3AF] text-sm">Start your first AI-native engineering project</p>
+      <div className="text-center mb-2">
+        <LogoBlock />
       </div>
 
-      {/* Card */}
+      <StepIndicator current="form" />
+
       <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-8">
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="font-heading font-semibold text-lg text-white text-center mb-1">
+          Create Your Account
+        </h2>
+        <p className="text-[#9CA3AF] text-xs text-center mb-6">
+          Set up your login credentials to access Glassbox.
+        </p>
+
+        <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-white">Full name</label>
             <Input
@@ -214,22 +437,20 @@ export default function SignupPage() {
                 Creating account...
               </>
             ) : (
-              'Create account'
+              'Create Account'
             )}
           </Button>
         </form>
-
-        <p className="text-[#6B7280] text-xs text-center mt-4">
-          By signing up, you agree to FullStack&apos;s terms and privacy policy.
-        </p>
       </div>
 
-      <p className="text-center text-[#9CA3AF] text-sm mt-6">
-        Already have an account?{' '}
-        <Link href="/login" className="text-[#A6F84C] hover:text-[#BCFF6E] transition-colors font-medium">
-          Sign in
-        </Link>
-      </p>
+      <div className="text-center mt-4">
+        <button
+          onClick={() => { setStep('contract'); setError(null) }}
+          className="text-[#9CA3AF] text-sm hover:text-white transition-colors"
+        >
+          &larr; Back
+        </button>
+      </div>
     </div>
   )
 }

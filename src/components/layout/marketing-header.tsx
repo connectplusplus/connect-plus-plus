@@ -12,58 +12,34 @@ export function MarketingHeader() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#2A2A30] bg-[#0B0B0F]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          {/* FullStack logo + Connect++ wordmark */}
+        <Link href="/" className="flex items-center gap-3 shrink-0">
           <img
             src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
             alt="FullStack"
             className="h-6 w-auto"
           />
-          <span className="text-[#A6F84C] font-heading font-semibold text-sm tracking-tight border-l border-[#2A2A30] pl-2 ml-0.5">
-            Connect++
-          </span>
+          <span className="w-px h-5 bg-[#2A2A30]" />
+          <img
+            src="/logo.png"
+            alt="Glassbox"
+            className="h-6 w-auto"
+          />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="/marketplace/outcomes"
-            className="text-sm text-[#9CA3AF] hover:text-white transition-colors duration-150 font-medium"
-          >
-            Outcomes
-          </Link>
-          <Link
-            href="/marketplace/talent"
-            className="text-sm text-[#9CA3AF] hover:text-white transition-colors duration-150 font-medium"
-          >
-            Talent
-          </Link>
-          <Link
-            href="/marketplace"
-            className="text-sm text-[#9CA3AF] hover:text-white transition-colors duration-150 font-medium"
-          >
-            Marketplace
-          </Link>
-        </nav>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link href="/login">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-[#9CA3AF] hover:text-white hover:bg-[#1E1E24] border-0"
-            >
-              Sign in
-            </Button>
+        <div className="hidden md:flex items-center gap-0 text-sm font-semibold">
+          <Link
+            href="/login"
+            className="px-5 py-2 bg-[#1E1E24] text-[#A6F84C] hover:bg-[#2A2A30] rounded-l-lg border border-[#2A2A30] transition-colors duration-150"
+          >
+            Existing Customer Login
           </Link>
-          <Link href="/signup">
-            <Button
-              size="sm"
-              className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold transition-colors duration-150"
-            >
-              Get started
-            </Button>
+          <Link
+            href="/signup"
+            className="px-5 py-2 bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] rounded-r-lg transition-colors duration-150"
+          >
+            New Customer Onboarding
           </Link>
         </div>
 

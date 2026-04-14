@@ -1,5 +1,5 @@
 -- ─────────────────────────────────────────────────────────────────────────────
--- Connect++ Seed Data  (idempotent — safe to re-run)
+-- Glassbox Seed Data  (idempotent — safe to re-run)
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- ── Outcome Templates ─────────────────────────────────────────────────────────
@@ -238,7 +238,268 @@ insert into outcome_templates (slug, title, subtitle, description, category, pri
       "placeholder": "e.g. P95 API response < 200ms, page load < 2s on 4G"
     }
   ]
-}'::jsonb, 5)
+}'::jsonb, 5),
+
+-- 6. AI Feature Integration
+('ai-feature-integration', 'AI Feature Integration', 'Ship production AI features inside your existing product',
+'Your product already works — now make it intelligent. We integrate AI capabilities directly into your existing application: natural language search, intelligent recommendations, content generation, classification, summarisation, and conversational interfaces. No science projects — we deploy production-grade features backed by Claude, GPT-4, or open-source models, with proper guardrails, latency budgets, and cost controls. Includes prompt engineering, model selection, evaluation harness, and full integration testing.',
+'build', 2000000, 5000000, 10, 21, 'Sparkles',
+'["AI feature discovery & feasibility assessment", "Model selection & benchmarking (Claude, GPT-4, open-source)", "Prompt engineering & prompt management system", "Production API integration with latency & cost guardrails", "Evaluation harness with accuracy metrics", "Streaming UI for real-time AI responses", "Fallback & error handling for model failures", "Usage monitoring & cost dashboard"]'::jsonb,
+'{
+  "fields": [
+    {
+      "key": "product_description",
+      "type": "textarea",
+      "label": "Describe your product",
+      "placeholder": "What does your product do today? Who are the users? What tech stack is it built on?",
+      "required": true
+    },
+    {
+      "key": "ai_features",
+      "type": "textarea",
+      "label": "What AI features do you want to add?",
+      "placeholder": "e.g. Natural language search, smart recommendations, auto-categorisation, content generation, chatbot...",
+      "required": true
+    },
+    {
+      "key": "model_preference",
+      "type": "select",
+      "label": "Model preference",
+      "options": ["Claude (Anthropic)", "GPT-4 (OpenAI)", "Open-source (Llama, Mistral)", "No preference — recommend for us"],
+      "required": true
+    },
+    {
+      "key": "data_sensitivity",
+      "type": "select",
+      "label": "Data sensitivity level",
+      "options": ["Public data only", "Internal business data", "PII / regulated data", "Healthcare (HIPAA)", "Financial (SOC2)"],
+      "required": true
+    },
+    {
+      "key": "latency_requirement",
+      "type": "select",
+      "label": "Latency requirements",
+      "options": ["Real-time (< 1s)", "Near real-time (1–5s)", "Batch / async is fine", "Not sure"],
+      "required": true
+    },
+    {
+      "key": "existing_api_infra",
+      "type": "select",
+      "label": "Do you have existing API infrastructure?",
+      "options": ["Yes — REST APIs", "Yes — GraphQL", "Yes — both", "Minimal / greenfield"],
+      "required": true
+    }
+  ]
+}'::jsonb, 6),
+
+-- 7. Agentic Workflow Builder
+('agentic-workflows', 'Agentic Workflow Builder', 'Autonomous AI agents that execute complex business processes',
+'We design and deploy autonomous AI agent systems that handle multi-step business workflows end-to-end. These aren''t chatbots — they''re agents with tool access, memory, reasoning, and the ability to take real actions: querying databases, calling APIs, sending emails, updating records, and escalating to humans when confidence is low. Built on proven frameworks (LangGraph, CrewAI, or custom orchestration), with full observability and human-in-the-loop safeguards.',
+'automate', 2500000, 6000000, 15, 25, 'Bot',
+'["Workflow discovery & agent architecture design", "Agent orchestration framework (LangGraph / CrewAI / custom)", "Tool integration (APIs, databases, email, Slack, CRM)", "Memory & context management across sessions", "Human-in-the-loop escalation triggers", "Guardrails & safety layer (content filtering, action limits)", "Observability dashboard (traces, costs, success rates)", "Agent evaluation suite with regression testing"]'::jsonb,
+'{
+  "fields": [
+    {
+      "key": "workflow_description",
+      "type": "textarea",
+      "label": "Describe the workflow to automate",
+      "placeholder": "Walk us through the process step by step. What triggers it? What decisions are made? What systems are touched? What does ''done'' look like?",
+      "required": true
+    },
+    {
+      "key": "current_process",
+      "type": "select",
+      "label": "How is this workflow handled today?",
+      "options": ["Fully manual (people do it)", "Partially automated (scripts, Zapier, etc.)", "Outsourced to a BPO / VA team", "Not handled — it''s a new capability"],
+      "required": true
+    },
+    {
+      "key": "systems_involved",
+      "type": "multiselect",
+      "label": "Systems the agent needs to interact with",
+      "options": ["Internal database", "REST / GraphQL APIs", "Email / Slack", "CRM (Salesforce, HubSpot)", "ERP / accounting", "File storage (S3, Drive)", "Web scraping"]
+    },
+    {
+      "key": "volume",
+      "type": "select",
+      "label": "Expected volume",
+      "options": ["< 100 tasks/day", "100–1K tasks/day", "1K–10K tasks/day", "10K+ tasks/day"],
+      "required": true
+    },
+    {
+      "key": "human_oversight",
+      "type": "select",
+      "label": "Human oversight level needed",
+      "options": ["Full autonomy — agent decides", "Human approves high-risk actions", "Human reviews every output", "Not sure — help us decide"],
+      "required": true
+    },
+    {
+      "key": "success_criteria",
+      "type": "textarea",
+      "label": "How will you measure success?",
+      "placeholder": "e.g. 80% of tickets resolved without human intervention, < 5 min average processing time, 95% accuracy on classification..."
+    }
+  ]
+}'::jsonb, 7),
+
+-- 8. AI-SDLC Implementation
+('ai-sdlc', 'AI-SDLC Implementation', 'Transform your engineering team''s development lifecycle with AI',
+'We embed AI tooling into every phase of your software development lifecycle — from planning to production. This is not about buying Copilot licenses. We implement AI-augmented code review, automated PR summaries, intelligent test generation, AI-powered documentation, predictive bug detection, and developer productivity analytics. Your team ships faster and with fewer defects, measured by hard metrics before and after.',
+'optimize', 1500000, 4000000, 10, 20, 'Cpu',
+'["Developer workflow audit & AI readiness assessment", "AI code review pipeline (PR-level analysis & suggestions)", "Automated test generation from code changes", "AI-powered documentation generation & maintenance", "Intelligent PR summaries & changelog automation", "Predictive defect detection from code patterns", "Developer productivity metrics dashboard", "Team training & AI-SDLC playbook"]'::jsonb,
+'{
+  "fields": [
+    {
+      "key": "team_size",
+      "type": "select",
+      "label": "Engineering team size",
+      "options": ["1–5 engineers", "6–15 engineers", "16–50 engineers", "50+ engineers"],
+      "required": true
+    },
+    {
+      "key": "current_tools",
+      "type": "multiselect",
+      "label": "AI tools currently in use",
+      "options": ["GitHub Copilot", "Cursor / Windsurf", "ChatGPT / Claude (manual)", "AI code review tools", "None yet"]
+    },
+    {
+      "key": "primary_languages",
+      "type": "multiselect",
+      "label": "Primary languages / frameworks",
+      "options": ["TypeScript / JavaScript", "Python", "Go", "Java / Kotlin", "Ruby", "C# / .NET", "Rust"]
+    },
+    {
+      "key": "pain_points",
+      "type": "textarea",
+      "label": "Biggest development bottlenecks",
+      "placeholder": "e.g. Code reviews take 2+ days, test coverage is low, documentation is always stale, onboarding new engineers takes weeks...",
+      "required": true
+    },
+    {
+      "key": "repo_host",
+      "type": "select",
+      "label": "Source control & CI",
+      "options": ["GitHub + GitHub Actions", "GitLab + GitLab CI", "Bitbucket + Jenkins", "Azure DevOps", "Other"],
+      "required": true
+    },
+    {
+      "key": "priority",
+      "type": "select",
+      "label": "Top priority",
+      "options": ["Ship features faster", "Reduce bugs in production", "Improve code review speed", "Better documentation", "All of the above"],
+      "required": true
+    }
+  ]
+}'::jsonb, 8),
+
+-- 9. AI-Ready Data Modernisation
+('ai-ready-data', 'AI-Ready Data Modernisation', 'Structure your data so AI can actually use it',
+'AI is only as good as the data it runs on. We modernise your data infrastructure to be AI-ready: cleaning and normalising data, building vector stores and embeddings pipelines, implementing RAG (Retrieval-Augmented Generation) architectures, creating semantic search indices, and setting up data governance for AI workloads. The result is a data layer that makes every AI feature you build faster, cheaper, and more accurate.',
+'migrate', 2000000, 5500000, 15, 25, 'Database',
+'["Data audit & AI readiness assessment", "Data cleaning, normalisation & deduplication", "Vector database setup (Pinecone, Weaviate, or pgvector)", "Embeddings pipeline for documents, products, or content", "RAG architecture design & implementation", "Semantic search index with hybrid retrieval", "Data governance & access control for AI workloads", "Migration runbook & monitoring dashboard"]'::jsonb,
+'{
+  "fields": [
+    {
+      "key": "data_description",
+      "type": "textarea",
+      "label": "Describe your data landscape",
+      "placeholder": "What data do you have? Where does it live (databases, data warehouse, S3, APIs)? How much data are we talking about? What format is it in?",
+      "required": true
+    },
+    {
+      "key": "ai_use_case",
+      "type": "textarea",
+      "label": "What AI use cases will this data power?",
+      "placeholder": "e.g. Semantic search over 500K support tickets, RAG chatbot trained on internal docs, product recommendations from purchase history...",
+      "required": true
+    },
+    {
+      "key": "current_database",
+      "type": "select",
+      "label": "Primary database",
+      "options": ["PostgreSQL", "MySQL", "MongoDB", "Snowflake / BigQuery", "Multiple / mixed", "Other"],
+      "required": true
+    },
+    {
+      "key": "data_volume",
+      "type": "select",
+      "label": "Approximate data volume",
+      "options": ["< 1 GB", "1–100 GB", "100 GB – 1 TB", "1 TB+"],
+      "required": true
+    },
+    {
+      "key": "vector_db_preference",
+      "type": "select",
+      "label": "Vector database preference",
+      "options": ["Pinecone", "Weaviate", "pgvector (Postgres)", "Qdrant", "No preference — recommend for us"],
+      "required": true
+    },
+    {
+      "key": "compliance_requirements",
+      "type": "multiselect",
+      "label": "Compliance requirements",
+      "options": ["SOC2", "HIPAA", "GDPR", "PCI-DSS", "None / internal only"]
+    }
+  ]
+}'::jsonb, 9),
+
+-- 10. AI-Native Experience Build
+('ai-native-experience', 'AI-Native Experience Build', 'Build a product where AI is the experience, not a feature',
+'For products where AI isn''t a bolt-on — it IS the product. We build AI-native applications from scratch: conversational interfaces, generative content tools, AI copilots, intelligent dashboards, and multimodal experiences. The entire UX is designed around AI interaction patterns — streaming responses, progressive disclosure, confidence indicators, and graceful degradation. Built for production scale with proper evaluation, monitoring, and cost management from day one.',
+'build', 3000000, 7500000, 20, 30, 'Wand',
+'["AI-native product strategy & UX design", "Conversational / generative UI architecture", "Streaming response infrastructure", "Multi-model orchestration (routing, fallbacks, cost optimisation)", "Prompt management system with versioning & A/B testing", "Evaluation framework with automated quality scoring", "Usage analytics, cost tracking & rate limiting", "Production deployment with auto-scaling"]'::jsonb,
+'{
+  "fields": [
+    {
+      "key": "product_vision",
+      "type": "textarea",
+      "label": "Describe the AI-native product you want to build",
+      "placeholder": "What is the core experience? Who is the user? What problem does it solve? How does AI power the interaction?",
+      "required": true
+    },
+    {
+      "key": "interaction_model",
+      "type": "select",
+      "label": "Primary AI interaction model",
+      "options": ["Conversational (chat-like)", "Generative (content creation)", "Copilot (augments user actions)", "Analytical (AI-powered insights)", "Multi-modal (text + image + voice)"],
+      "required": true
+    },
+    {
+      "key": "platform",
+      "type": "select",
+      "label": "Target platform",
+      "options": ["Web application", "Mobile (iOS/Android)", "Desktop (Electron)", "API / headless", "Cross-platform"],
+      "required": true
+    },
+    {
+      "key": "target_users",
+      "type": "select",
+      "label": "Target users",
+      "options": ["Internal team / employees", "B2B customers", "B2C consumers", "Developers (API product)"],
+      "required": true
+    },
+    {
+      "key": "scale_expectations",
+      "type": "select",
+      "label": "Expected scale at launch",
+      "options": ["< 100 users", "100–1K users", "1K–10K users", "10K+ users"],
+      "required": true
+    },
+    {
+      "key": "existing_assets",
+      "type": "multiselect",
+      "label": "Existing assets to build on",
+      "options": ["Product spec / PRD", "Figma designs", "Brand guidelines", "Existing codebase", "Training data / knowledge base", "Starting from scratch"]
+    },
+    {
+      "key": "model_preference",
+      "type": "select",
+      "label": "AI model preference",
+      "options": ["Claude (Anthropic)", "GPT-4 (OpenAI)", "Open-source models", "Multiple / routing", "No preference"],
+      "required": true
+    }
+  ]
+}'::jsonb, 10)
 
 on conflict (slug) do nothing;
 

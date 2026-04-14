@@ -7,7 +7,6 @@ import {
   Wrench,
   CheckCircle2,
   ChevronRight,
-  Star,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -33,8 +32,8 @@ export default function HomePage() {
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-2 border border-[#2A2A30] bg-[#16161C] rounded-full px-4 py-2 mb-8">
               <span className="w-2 h-2 bg-[#A6F84C] rounded-full animate-pulse" />
-              <span className="text-[#9CA3AF] text-xs font-medium tracking-wide uppercase">
-                AI-Native Engineering at FullStack velocity
+              <span className="text-[#A6F84C] text-xs font-semibold tracking-wide uppercase">
+                The future of engineering services is here
               </span>
             </div>
 
@@ -45,130 +44,88 @@ export default function HomePage() {
             </h1>
 
             <p className="text-[#9CA3AF] text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
-              Connect++ is the AI-native platform where you procure engineering services — from
-              individual talent to complete product builds — with full transparency and measurable
-              velocity.
+              Glassbox by FullStack is a revolutionary platform that transforms traditional
+              engineering services engagements into transparent, AI-powered outcomes. This is the
+              future of sourcing.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               <Link href="/marketplace/outcomes">
                 <Button
                   size="lg"
-                  className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold text-base px-8 h-12 transition-colors duration-150 group"
+                  className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
                 >
                   Browse Outcomes
-                  <ArrowRight size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </Link>
+              <span className="text-[#6B7280] text-sm font-medium uppercase tracking-wide">or</span>
               <Link href="/marketplace/talent">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="border-[#2A2A30] text-white hover:bg-[#1E1E24] hover:border-[#3A3A40] font-semibold text-base px-8 h-12 transition-colors duration-150"
+                  className="bg-[#0B0B0F] text-[#A6F84C] border border-[#A6F84C] hover:bg-[#A6F84C]/10 font-semibold text-base px-8 h-12 w-52 transition-colors duration-150"
                 >
                   Explore Talent
                 </Button>
               </Link>
             </div>
 
-            {/* Social proof micro-strip */}
-            <div className="flex items-center gap-6 mt-12">
-              <div className="flex -space-x-2">
-                {['A', 'B', 'C', 'D', 'E'].map((l, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full bg-[#16161C] border-2 border-[#0B0B0F] flex items-center justify-center text-xs font-semibold text-[#A6F84C]"
-                  >
-                    {l}
-                  </div>
-                ))}
-              </div>
-              <p className="text-[#9CA3AF] text-sm">
-                Trusted by{' '}
-                <span className="text-white font-semibold">600+ companies</span>
-              </p>
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} className="text-[#A6F84C] fill-[#A6F84C]" />
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Social Proof Strip ───────────────────────────────────────────────── */}
-      <section className="border-y border-[#2A2A30] bg-[#111116] py-6">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-[#6B7280] text-xs font-medium tracking-widest uppercase text-center mb-6">
-            Trusted by engineering teams at
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 opacity-50">
-            {['Acme Corp', 'Bloom Health', 'Stripe Atlas', 'Vercel Pro', 'Linear', 'Figma Teams'].map(
-              (name) => (
-                <span key={name} className="text-[#9CA3AF] font-semibold text-sm tracking-tight">
-                  {name}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-      </section>
+
 
       {/* ── How It Works ────────────────────────────────────────────────────── */}
-      <section className="section-padding max-w-7xl mx-auto px-6">
+      <section className="bg-[#1E1E24] py-24">
+        <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-heading font-bold text-3xl md:text-4xl mb-4">How it works</h2>
-          <p className="text-[#9CA3AF] text-lg max-w-xl mx-auto">
-            From decision to deployment in days — not months.
+          <p className="text-[#A6F84C] text-sm font-semibold tracking-widest uppercase mb-4">
+            The Engineering Services Industry, redefined as a software platform
           </p>
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-white mb-4">
+            How Glassbox Works
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
               step: '01',
-              title: 'Choose Your Mode',
-              description:
-                'Select from individual Talent, cross-functional Pods, Predefined Outcomes, or fully Custom projects.',
-              icon: '⚡',
-            },
-            {
-              step: '02',
-              title: 'Configure Scope',
+              title: 'Scope Your Need',
               description:
                 'Answer a short intake questionnaire. Our AI generates a scope draft in minutes, not weeks.',
               icon: '🎯',
             },
             {
-              step: '03',
-              title: 'We Build',
+              step: '02',
+              title: 'We Build Using the World\'s Best AI',
               description:
                 'AI-accelerated engineers ship 2–3x faster than traditional teams without compromising quality.',
               icon: '🚀',
             },
             {
-              step: '04',
-              title: 'Track Everything',
+              step: '03',
+              title: 'You Track Everything',
               description:
                 'Real-time milestone tracking, a shared message thread, and live status — complete transparency.',
               icon: '📊',
             },
           ].map((item, i) => (
             <div key={i} className="relative">
-              {i < 3 && (
-                <div className="hidden md:block absolute top-8 left-full w-full h-px bg-gradient-to-r from-[#2A2A30] to-transparent z-10" />
+              {i < 2 && (
+                <div className="hidden md:block absolute top-8 left-full w-full h-px bg-gradient-to-r from-[#3A3A42] to-transparent z-10" />
               )}
-              <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-6 h-full hover:border-[#A6F84C]/30 transition-colors duration-150">
+              <div className="bg-[#2A2A32] border border-[#3A3A42] rounded-xl p-6 h-full hover:border-[#A6F84C]/30 transition-colors duration-150">
                 <div className="text-2xl mb-3">{item.icon}</div>
                 <div className="text-[#A6F84C] font-mono-brand text-xs font-medium mb-2 tracking-wider">
                   {item.step}
                 </div>
                 <h3 className="font-heading font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-[#9CA3AF] text-sm leading-relaxed">{item.description}</p>
+                <p className="text-[#B0B0B8] text-sm leading-relaxed">{item.description}</p>
               </div>
             </div>
           ))}
+        </div>
         </div>
       </section>
 
@@ -305,7 +262,7 @@ export default function HomePage() {
               The AI-native difference
             </h2>
             <p className="text-[#9CA3AF] text-lg leading-relaxed mb-8">
-              Every engineer on Connect++ works with AI as a core part of their workflow. Not as a
+              Every engineer on Glassbox works with AI as a core part of their workflow. Not as a
               gimmick — as a force multiplier. The result: faster delivery, lower cost, higher
               quality.
             </p>

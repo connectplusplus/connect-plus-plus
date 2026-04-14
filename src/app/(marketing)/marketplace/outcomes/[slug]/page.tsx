@@ -19,9 +19,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq('slug', slug)
     .single()
 
-  if (!data) return { title: 'Outcome — Connect++' }
+  if (!data) return { title: 'Outcome — Glassbox' }
   return {
-    title: `${data.title} — Connect++`,
+    title: `${data.title} — Glassbox`,
     description: data.subtitle ?? undefined,
   }
 }

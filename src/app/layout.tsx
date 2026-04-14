@@ -3,13 +3,13 @@ import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 
 export const metadata: Metadata = {
-  title: 'Connect++ | AI-Native Engineering Services',
+  title: 'Glassbox | AI-Native Engineering Services',
   description:
-    'Connect++ is the AI-native platform where you procure engineering services — from individual talent to complete product builds — with full transparency and measurable velocity.',
+    'Glassbox is the AI-native platform where you procure engineering services — from individual talent to complete product builds — with full transparency and measurable velocity.',
   openGraph: {
-    title: 'Connect++ | AI-Native Engineering Services',
+    title: 'Glassbox | AI-Native Engineering Services',
     description: 'Engineering outcomes, not headcount.',
-    siteName: 'Connect++',
+    siteName: 'Glassbox',
   },
 }
 

@@ -1,64 +1,43 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import {
   Home,
   Layers,
   Store,
   MessageCircle,
   Settings,
-  LogOut,
+  Users,
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
-import { getInitials } from '@/lib/utils'
-
-interface DashboardSidebarProps {
-  user: {
-    full_name: string
-    email: string
-    company_name?: string
-  }
-}
 
 const NAV_ITEMS = [
   { label: 'Overview', href: '/dashboard', icon: Home, exact: true },
   { label: 'Engagements', href: '/dashboard/engagements', icon: Layers, exact: false },
+  { label: 'Talent by FullStack', href: '/dashboard/my-talent', icon: Users, exact: false },
   { label: 'New Engagement', href: '/dashboard/new-engagement', icon: Store, exact: false },
   { label: 'Messages', href: '/dashboard/messages', icon: MessageCircle, exact: false },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings, exact: false },
 ]
 
-export function DashboardSidebar({ user }: DashboardSidebarProps) {
+export function DashboardSidebar() {
   const pathname = usePathname()
-  const router = useRouter()
-  const initials = getInitials(user.full_name)
 
   function isActive(href: string, exact: boolean) {
     if (exact) return pathname === href
     return pathname.startsWith(href)
   }
 
-  async function handleSignOut() {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/')
-    router.refresh()
-  }
-
   return (
     <aside className="w-60 min-h-screen bg-[#0B0B0F] border-r border-[#2A2A30] flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-4 py-5 border-b border-[#2A2A30]">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="px-3 py-5 border-b border-[#2A2A30]">
+        <Link href="/dashboard">
           <img
-            src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
-            alt="FullStack"
-            className="h-5 w-auto"
+            src="/logo.png"
+            alt="Glassbox"
+            className="w-[66%]"
           />
-          <span className="text-[#A6F84C] font-heading font-semibold text-xs border-l border-[#2A2A30] pl-2">
-            Connect++
-          </span>
         </Link>
       </div>
 
@@ -90,26 +69,16 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         })}
       </nav>
 
-      {/* User section */}
-      <div className="px-3 py-4 border-t border-[#2A2A30]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-lg bg-[#1E1E24] flex items-center justify-center text-[#A6F84C] font-mono-brand text-xs font-semibold shrink-0">
-            {initials}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-white text-sm font-medium truncate">{user.full_name}</p>
-            {user.company_name && (
-              <p className="text-[#6B7280] text-xs truncate">{user.company_name}</p>
-            )}
-          </div>
-        </div>
-        <button
-          onClick={handleSignOut}
-          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[#9CA3AF] hover:text-[#F87171] hover:bg-[#F87171]/5 text-sm transition-colors duration-150"
-        >
-          <LogOut size={15} strokeWidth={1.5} />
-          Sign out
-        </button>
+      {/* FullStack branding */}
+      <div className="px-4 py-4 border-t border-[#2A2A30]">
+        <a href="https://fullstack.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 opacity-50 hover:opacity-80 transition-opacity">
+          <span className="text-[#6B7280] text-[10px]">Powered by</span>
+          <img
+            src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
+            alt="FullStack"
+            className="h-4 w-auto"
+          />
+        </a>
       </div>
     </aside>
   )
