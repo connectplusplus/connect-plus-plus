@@ -49,12 +49,16 @@ export default async function EngagementsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">All Engagements</h2>
-          <p className="text-[#64748B] text-sm">{engagementsWithData.length} total</p>
+      <div className="flex items-start justify-between gap-8">
+        <div className="flex-1">
+          <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-2">All Engagements</h2>
+          <p className="text-[#64748B] text-sm leading-relaxed max-w-2xl">
+            Engagements are outcome-bounded projects with full commitment and transparency.
+            You pay by milestone as deliverables are accepted, with the final 25% released on
+            customer acceptance of the completed project. {engagementsWithData.length} active.
+          </p>
         </div>
-        <Link href="/dashboard/new-engagement">
+        <Link href="/dashboard/new-engagement" className="shrink-0">
           <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
             New Engagement
             <ArrowRight size={14} className="ml-2" />

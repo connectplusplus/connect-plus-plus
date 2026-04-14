@@ -274,21 +274,30 @@ export default function SignupPage() {
           </form>
         </div>
 
-        <div className="text-center mt-6 space-y-3">
-          <p className="text-[#94A3B8] text-xs leading-relaxed max-w-xs mx-auto">
-            Don&apos;t have a code? Contact your FullStack Sales Representative or write to{' '}
-            <a href="mailto:new_customer@fullstacklabs.co" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors">
-              new_customer@fullstacklabs.co
-            </a>
-            {' '}to complete your onboarding.
+        <div className="mt-6 bg-gradient-to-br from-[#7C3AED]/5 via-[#6366F1]/5 to-[#EC4899]/5 border border-[#7C3AED]/20 rounded-xl p-6 text-center">
+          <h3 className="font-heading font-semibold text-[#0F172A] text-base mb-2">
+            Don&apos;t have a code?
+          </h3>
+          <p className="text-[#64748B] text-sm leading-relaxed mb-4">
+            Contact your FullStack Sales Representative to get started, or reach out directly to begin your onboarding.
           </p>
-          <p className="text-[#64748B] text-sm">
-            Existing Customer?{' '}
-            <Link href="/login" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors font-medium">
-              Log in here
-            </Link>
+          <a
+            href="mailto:new_customer@fullstacklabs.co"
+            className="inline-flex items-center justify-center w-full px-5 py-3 bg-[#7C3AED] text-white font-semibold text-sm rounded-lg hover:bg-[#8B5CF6] transition-colors"
+          >
+            new_customer@fullstacklabs.co
+          </a>
+          <p className="text-[#94A3B8] text-xs mt-3">
+            Our team typically responds within 2 business hours.
           </p>
         </div>
+
+        <p className="text-center text-[#64748B] text-sm mt-4">
+          Existing Customer?{' '}
+          <Link href="/login" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors font-medium">
+            Log in here
+          </Link>
+        </p>
       </div>
     )
   }
