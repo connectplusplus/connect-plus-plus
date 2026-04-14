@@ -25,22 +25,22 @@ export default async function OutcomesPage() {
   const outcomeTemplates = (templates as OutcomeTemplate[]) ?? []
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F]">
+    <div className="min-h-screen bg-white">
       {/* Page header */}
-      <div className="border-b border-[#2A2A30] bg-[#0B0B0F]">
+      <div className="border-b border-[#E2E8F0] bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 border border-[#2A2A30] bg-[#16161C] rounded-full px-3 py-1.5 mb-6">
-              <span className="text-[#A6F84C] text-xs font-medium tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 border border-[#E2E8F0] bg-white rounded-full px-3 py-1.5 mb-6">
+              <span className="text-[#7C3AED] text-xs font-medium tracking-wide uppercase">
                 Predefined Outcomes
               </span>
             </div>
             <h1 className="font-heading font-bold text-4xl md:text-5xl mb-4">
               Fixed price. Defined timeline.
               <br />
-              <span className="text-[#A6F84C]">No surprises.</span>
+              <span className="text-[#7C3AED]">No surprises.</span>
             </h1>
-            <p className="text-[#9CA3AF] text-lg leading-relaxed">
+            <p className="text-[#64748B] text-lg leading-relaxed">
               Productized engineering services with upfront pricing and timelines. Browse the
               catalog, fill in the intake form, and our AI-native team handles the rest.
             </p>
@@ -52,8 +52,8 @@ export default async function OutcomesPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {outcomeTemplates.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-[#9CA3AF] text-lg mb-2">No outcomes available yet.</p>
-            <p className="text-[#6B7280] text-sm">
+            <p className="text-[#64748B] text-lg mb-2">No outcomes available yet.</p>
+            <p className="text-[#94A3B8] text-sm">
               Run the seed script in your Supabase project to populate the catalog.
             </p>
           </div>

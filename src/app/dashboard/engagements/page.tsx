@@ -51,11 +51,11 @@ export default async function EngagementsPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading font-bold text-2xl text-white mb-1">All Engagements</h2>
-          <p className="text-[#9CA3AF] text-sm">{engagementsWithData.length} total</p>
+          <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">All Engagements</h2>
+          <p className="text-[#64748B] text-sm">{engagementsWithData.length} total</p>
         </div>
         <Link href="/dashboard/new-engagement">
-          <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
+          <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
             New Engagement
             <ArrowRight size={14} className="ml-2" />
           </Button>
@@ -63,11 +63,11 @@ export default async function EngagementsPage() {
       </div>
 
       {engagementsWithData.length === 0 ? (
-        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-12 text-center">
-          <h3 className="font-heading font-semibold text-white text-lg mb-2">No engagements yet</h3>
-          <p className="text-[#9CA3AF] text-sm mb-6">Start your first project from the outcome catalog.</p>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-12 text-center">
+          <h3 className="font-heading font-semibold text-[#0F172A] text-lg mb-2">No engagements yet</h3>
+          <p className="text-[#64748B] text-sm mb-6">Start your first project from the outcome catalog.</p>
           <Link href="/marketplace/outcomes">
-            <Button className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold">
+            <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
               Browse outcomes
             </Button>
           </Link>

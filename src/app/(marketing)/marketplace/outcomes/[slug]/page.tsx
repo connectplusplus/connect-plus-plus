@@ -55,18 +55,18 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F]">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* ── Left column (60%) ──────────────────────────────────────────── */}
           <div className="lg:col-span-3 space-y-10">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-[#6B7280]">
-              <a href="/marketplace/outcomes" className="hover:text-white transition-colors">
+            <nav className="flex items-center gap-2 text-sm text-[#94A3B8]">
+              <a href="/marketplace/outcomes" className="hover:text-[#0F172A] transition-colors">
                 Outcomes
               </a>
               <span>/</span>
-              <span className="text-white">{t.title}</span>
+              <span className="text-[#0F172A]">{t.title}</span>
             </nav>
 
             {/* Header */}
@@ -77,22 +77,22 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
               >
                 {categoryLabel}
               </div>
-              <h1 className="font-heading font-bold text-4xl md:text-5xl text-white mb-3">
+              <h1 className="font-heading font-bold text-4xl md:text-5xl text-[#0F172A] mb-3">
                 {t.title}
               </h1>
               {t.subtitle && (
-                <p className="text-[#9CA3AF] text-xl">{t.subtitle}</p>
+                <p className="text-[#64748B] text-xl">{t.subtitle}</p>
               )}
             </div>
 
             {/* Description */}
             <div>
-              <p className="text-[#9CA3AF] text-base leading-relaxed">{t.description}</p>
+              <p className="text-[#64748B] text-base leading-relaxed">{t.description}</p>
             </div>
 
             {/* What's Included */}
             <div>
-              <h2 className="font-heading font-semibold text-xl text-white mb-5">
+              <h2 className="font-heading font-semibold text-xl text-[#0F172A] mb-5">
                 What&apos;s Included
               </h2>
               <div className="space-y-3">
@@ -100,10 +100,10 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2
                       size={16}
-                      className="text-[#A6F84C] shrink-0 mt-0.5"
+                      className="text-[#7C3AED] shrink-0 mt-0.5"
                       strokeWidth={2}
                     />
-                    <span className="text-[#9CA3AF] text-sm leading-relaxed">{feature}</span>
+                    <span className="text-[#64748B] text-sm leading-relaxed">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -111,34 +111,34 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
 
             {/* Timeline visualization */}
             <div>
-              <h2 className="font-heading font-semibold text-xl text-white mb-5">
+              <h2 className="font-heading font-semibold text-xl text-[#0F172A] mb-5">
                 How it unfolds
               </h2>
               <div className="relative">
-                <div className="absolute left-[11px] top-4 bottom-4 w-px bg-[#2A2A30]" />
+                <div className="absolute left-[11px] top-4 bottom-4 w-px bg-[#E2E8F0]" />
                 <div className="space-y-6">
                   {timelineSteps.map((step, i) => (
                     <div key={i} className="flex items-start gap-4 relative">
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 z-10 ${
                           i === 0
-                            ? 'bg-[#A6F84C]'
-                            : 'bg-[#16161C] border-2 border-[#2A2A30]'
+                            ? 'bg-[#7C3AED]'
+                            : 'bg-white border-2 border-[#E2E8F0]'
                         }`}
                       >
                         {i === 0 && (
-                          <div className="w-2 h-2 rounded-full bg-[#0B0B0F]" />
+                          <div className="w-2 h-2 rounded-full bg-white" />
                         )}
                       </div>
                       <div className="pb-4">
                         <div className="flex items-center gap-3 mb-1">
-                          <span className="text-white font-medium text-sm">{step.phase}</span>
-                          <span className="flex items-center gap-1 text-[#6B7280] text-xs">
+                          <span className="text-[#0F172A] font-medium text-sm">{step.phase}</span>
+                          <span className="flex items-center gap-1 text-[#94A3B8] text-xs">
                             <Clock size={11} strokeWidth={1.5} />
                             {step.days}
                           </span>
                         </div>
-                        <p className="text-[#9CA3AF] text-sm">{step.description}</p>
+                        <p className="text-[#64748B] text-sm">{step.description}</p>
                       </div>
                     </div>
                   ))}
@@ -147,11 +147,11 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
             </div>
 
             {/* Intake form — rendered client-side */}
-            <div id="intake-form" className="pt-4 border-t border-[#2A2A30]">
-              <h2 className="font-heading font-semibold text-2xl text-white mb-2">
+            <div id="intake-form" className="pt-4 border-t border-[#E2E8F0]">
+              <h2 className="font-heading font-semibold text-2xl text-[#0F172A] mb-2">
                 Start this project
               </h2>
-              <p className="text-[#9CA3AF] text-sm mb-8">
+              <p className="text-[#64748B] text-sm mb-8">
                 Fill out the intake form below. Our AI PM will review your scope within 24 hours
                 and follow up with questions.
               </p>

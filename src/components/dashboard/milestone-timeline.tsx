@@ -6,7 +6,7 @@ interface MilestoneTimelineProps {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  completed: '#A6F84C',
+  completed: '#7C3AED',
   in_progress: '#FBBF24',
   in_review: '#60A5FA',
   upcoming: '#2A2A30',
@@ -34,7 +34,7 @@ export function MilestoneTimeline({ milestones, compact = false }: MilestoneTime
         const isFlagged = !!flagLabel
         const color = isFlagged ? '#F87171' : (STATUS_COLORS[m.status] ?? '#2A2A30')
         const isCurrent = m.status === 'in_progress' || m.status === 'in_review'
-        const lineColor = m.status === 'completed' ? '#A6F84C' : '#2A2A30'
+        const lineColor = m.status === 'completed' ? '#7C3AED' : '#2A2A30'
 
         return (
           <div key={m.id} className={`flex items-start ${isLast ? '' : 'flex-1'}`}>
@@ -53,7 +53,7 @@ export function MilestoneTimeline({ milestones, compact = false }: MilestoneTime
               >
                 {!compact && m.status === 'completed' && (
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M1.5 4L3.2 5.7L6.5 2.3" stroke="#0B0B0F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1.5 4L3.2 5.7L6.5 2.3" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </div>
@@ -68,7 +68,7 @@ export function MilestoneTimeline({ milestones, compact = false }: MilestoneTime
                     {m.title}
                   </p>
                   {m.due_date && (
-                    <p className="text-[9px] text-[#6B7280] mt-0.5">
+                    <p className="text-[9px] text-[#94A3B8] mt-0.5">
                       {m.completed_at ? formatShortDate(m.completed_at) : formatShortDate(m.due_date)}
                     </p>
                   )}

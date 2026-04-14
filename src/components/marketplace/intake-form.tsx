@@ -158,14 +158,14 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   // ── Done state ──────────────────────────────────────────────────────────
   if (step === 'done') {
     return (
-      <div className="bg-[#16161C] border border-[#A6F84C]/30 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 bg-[#A6F84C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={32} className="text-[#A6F84C]" strokeWidth={1.5} />
+      <div className="bg-white border border-[#7C3AED]/30 rounded-xl p-8 text-center">
+        <div className="w-16 h-16 bg-[#7C3AED]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 size={32} className="text-[#7C3AED]" strokeWidth={1.5} />
         </div>
-        <h3 className="font-heading font-semibold text-xl text-white mb-2">
+        <h3 className="font-heading font-semibold text-xl text-[#0F172A] mb-2">
           Your engagement is live.
         </h3>
-        <p className="text-[#9CA3AF] text-sm leading-relaxed">
+        <p className="text-[#64748B] text-sm leading-relaxed">
           Contract signed. Your engagement dashboard is being set up — redirecting now...
         </p>
       </div>
@@ -175,12 +175,12 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   // ── Creating state ──────────────────────────────────────────────────────
   if (step === 'creating') {
     return (
-      <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-8 text-center">
-        <Loader2 size={32} className="text-[#A6F84C] animate-spin mx-auto mb-4" />
-        <h3 className="font-heading font-semibold text-lg text-white mb-2">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+        <Loader2 size={32} className="text-[#7C3AED] animate-spin mx-auto mb-4" />
+        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-2">
           Setting up your engagement...
         </h3>
-        <p className="text-[#9CA3AF] text-sm">
+        <p className="text-[#64748B] text-sm">
           Creating your project dashboard, assigning your PM, and preparing the workspace.
         </p>
       </div>
@@ -191,18 +191,18 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   if (step === 'contract') {
     return (
       <div className="space-y-4">
-        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden">
           {/* Header with sign button */}
-          <div className="flex items-center justify-between p-4 border-b border-[#2A2A30] bg-[#111116]">
+          <div className="flex items-center justify-between p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#A6F84C]/10 flex items-center justify-center">
-                <FileText size={16} className="text-[#A6F84C]" />
+              <div className="w-9 h-9 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+                <FileText size={16} className="text-[#7C3AED]" />
               </div>
               <div>
-                <h3 className="font-heading font-semibold text-white text-sm">
+                <h3 className="font-heading font-semibold text-[#0F172A] text-sm">
                   Glassbox Service Contract
                 </h3>
-                <p className="text-[#6B7280] text-xs">
+                <p className="text-[#94A3B8] text-xs">
                   {template.title} — Review and sign to proceed
                 </p>
               </div>
@@ -213,7 +213,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                   href={contractPdf}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 h-9 rounded-lg border border-[#2A2A30] text-[#9CA3AF] hover:text-white hover:border-[#3A3A42] text-sm transition-colors"
+                  className="flex items-center gap-1.5 px-3 h-9 rounded-lg border border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm transition-colors"
                 >
                   <ExternalLink size={13} />
                   Open in new tab
@@ -222,7 +222,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               <Button
                 onClick={handleSign}
                 disabled={loading}
-                className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-9 px-5 text-sm"
+                className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-9 px-5 text-sm"
               >
                 {loading ? (
                   <Loader2 size={14} className="mr-2 animate-spin" />
@@ -244,7 +244,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               />
             </div>
           ) : (
-            <div className="p-8 text-center text-[#6B7280] text-sm">
+            <div className="p-8 text-center text-[#94A3B8] text-sm">
               Contract document is being prepared. You can proceed to sign.
             </div>
           )}
@@ -258,7 +258,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
         <button
           onClick={() => setStep('intake')}
-          className="text-[#9CA3AF] text-sm hover:text-white transition-colors"
+          className="text-[#64748B] text-sm hover:text-[#0F172A] transition-colors"
         >
           &larr; Back to intake form
         </button>
@@ -270,10 +270,10 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   return (
     <form onSubmit={handleIntakeSubmit} className="space-y-6">
       <div>
-        <h3 className="font-heading font-semibold text-lg text-white mb-1">
+        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-1">
           Project Intake
         </h3>
-        <p className="text-[#9CA3AF] text-sm">
+        <p className="text-[#64748B] text-sm">
           Tell us about your project. The more context you share, the faster we can prepare
           your scope.
         </p>
@@ -282,7 +282,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       {/* Dynamic fields from intake_schema */}
       {schema.fields.map((field) => (
         <div key={field.key} className="space-y-2">
-          <label className="block text-sm font-medium text-white">
+          <label className="block text-sm font-medium text-[#0F172A]">
             {field.label}
             {field.required && <span className="text-[#F87171] ml-1">*</span>}
           </label>
@@ -293,7 +293,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               onChange={(e) => handleTextChange(field.key, e.target.value)}
               placeholder={field.placeholder}
               required={field.required}
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C] focus:ring-[#A6F84C]/20"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20"
             />
           )}
 
@@ -304,7 +304,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               placeholder={field.placeholder}
               required={field.required}
               rows={4}
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C] focus:ring-[#A6F84C]/20 resize-none"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20 resize-none"
             />
           )}
 
@@ -313,14 +313,14 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               value={(responses[field.key] as string) ?? ''}
               onChange={(e) => handleSelectChange(field.key, e.target.value)}
               required={field.required}
-              className="w-full h-10 px-3 rounded-lg bg-[#1E1E24] border border-[#2A2A30] text-white text-sm focus:border-[#A6F84C] focus:outline-none focus:ring-1 focus:ring-[#A6F84C]/30 transition-colors appearance-none"
+              className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors appearance-none"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
             >
-              <option value="" disabled className="text-[#6B7280]">
+              <option value="" disabled className="text-[#94A3B8]">
                 Select {field.label.toLowerCase()}
               </option>
               {field.options.map((opt) => (
-                <option key={opt} value={opt} className="bg-[#1E1E24] text-white">
+                <option key={opt} value={opt} className="bg-[#F1F5F9] text-[#0F172A]">
                   {opt}
                 </option>
               ))}
@@ -338,8 +338,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                     onClick={() => toggleMultiselect(field.key, opt)}
                     className={`px-3 py-1.5 rounded-lg text-sm border transition-colors duration-150 ${
                       selected
-                        ? 'bg-[#A6F84C]/10 border-[#A6F84C] text-[#A6F84C]'
-                        : 'bg-[#1E1E24] border-[#2A2A30] text-[#9CA3AF] hover:border-[#3A3A40]'
+                        ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
+                        : 'bg-[#F1F5F9] border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
                     }`}
                   >
                     {opt}
@@ -352,8 +352,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       ))}
 
       {/* Contact email */}
-      <div className="pt-4 border-t border-[#2A2A30] space-y-2">
-        <label className="block text-sm font-medium text-white">
+      <div className="pt-4 border-t border-[#E2E8F0] space-y-2">
+        <label className="block text-sm font-medium text-[#0F172A]">
           Your email <span className="text-[#F87171] ml-1">*</span>
         </label>
         <Input
@@ -362,9 +362,9 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@company.com"
           required
-          className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C] focus:ring-[#A6F84C]/20"
+          className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20"
         />
-        <p className="text-[#6B7280] text-xs">
+        <p className="text-[#94A3B8] text-xs">
           We&apos;ll use this to send your scope estimate and follow up with questions.
         </p>
       </div>
@@ -378,7 +378,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-12 text-base"
+        className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-12 text-base"
       >
         Continue to Contract
       </Button>

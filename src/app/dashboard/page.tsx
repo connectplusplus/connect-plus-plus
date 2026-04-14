@@ -96,44 +96,44 @@ export default async function DashboardPage() {
     <div className="max-w-6xl mx-auto space-y-10">
 
       {/* ── Client hero banner ─────────────────────────────────────────────── */}
-      <div className="bg-[#16161C] border border-[#2A2A30] rounded-2xl p-8">
+      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-8">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
           {/* Left: client info */}
           <div className="space-y-4">
             <div>
-              <p className="text-[#6B7280] text-xs font-medium uppercase tracking-widest mb-1">
+              <p className="text-[#94A3B8] text-xs font-medium uppercase tracking-widest mb-1">
                 Client Account
               </p>
-              <h2 className="font-heading font-bold text-3xl text-white">
+              <h2 className="font-heading font-bold text-3xl text-[#0F172A]">
                 {company?.name ?? 'Your Company'}
               </h2>
             </div>
             <div className="flex flex-wrap items-center gap-5">
               {clientSince && (
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#1E1E24] flex items-center justify-center">
-                    <Calendar size={13} className="text-[#A6F84C]" strokeWidth={1.5} />
+                  <div className="w-7 h-7 rounded-lg bg-[#F1F5F9] flex items-center justify-center">
+                    <Calendar size={13} className="text-[#7C3AED]" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[#6B7280] text-xs">FullStack client since</p>
-                    <p className="text-white text-sm font-medium">{clientSince}</p>
+                    <p className="text-[#94A3B8] text-xs">FullStack client since</p>
+                    <p className="text-[#0F172A] text-sm font-medium">{clientSince}</p>
                   </div>
                 </div>
               )}
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-[#1E1E24] flex items-center justify-center">
-                  <Clock size={13} className="text-[#A6F84C]" strokeWidth={1.5} />
+                <div className="w-7 h-7 rounded-lg bg-[#F1F5F9] flex items-center justify-center">
+                  <Clock size={13} className="text-[#7C3AED]" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="text-[#6B7280] text-xs">Active engagements</p>
-                  <p className="text-white text-sm font-medium">{activeEngagements.length}</p>
+                  <p className="text-[#94A3B8] text-xs">Active engagements</p>
+                  <p className="text-[#0F172A] text-sm font-medium">{activeEngagements.length}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Right: account manager card */}
-          <div className="flex items-center gap-0 bg-[#111116] border border-[#2A2A30] rounded-xl overflow-hidden shrink-0">
+          <div className="flex items-center gap-0 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl overflow-hidden shrink-0">
             <div className="w-36 h-36 shrink-0">
               <Image
                 src={ACCOUNT_MANAGER.photo}
@@ -144,14 +144,14 @@ export default async function DashboardPage() {
               />
             </div>
             <div className="px-5 py-4">
-              <p className="text-[#A6F84C] text-[10px] font-semibold uppercase tracking-widest mb-1">Your FullStack Partner</p>
-              <p className="text-white font-heading font-bold text-lg">{ACCOUNT_MANAGER.name}</p>
-              <p className="text-[#9CA3AF] text-sm mb-4">{ACCOUNT_MANAGER.title}</p>
+              <p className="text-[#7C3AED] text-[10px] font-semibold uppercase tracking-widest mb-1">Your FullStack Partner</p>
+              <p className="text-[#0F172A] font-heading font-bold text-lg">{ACCOUNT_MANAGER.name}</p>
+              <p className="text-[#64748B] text-sm mb-4">{ACCOUNT_MANAGER.title}</p>
               <a
                 href={ACCOUNT_MANAGER.calendly}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B0B0F] bg-[#A6F84C] hover:bg-[#BCFF6E] px-4 py-2 rounded-lg transition-colors duration-150"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#7C3AED] hover:bg-[#8B5CF6] px-4 py-2 rounded-lg transition-colors duration-150"
               >
                 <ExternalLink size={11} strokeWidth={2.5} />
                 Schedule a call
@@ -162,49 +162,49 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Special Offer Banner ─────────────────────────────────────────── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#A6F84C]/10 via-[#A6F84C]/5 to-transparent border border-[#A6F84C]/20 rounded-2xl p-6">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#7C3AED]/10 via-[#7C3AED]/5 to-transparent border border-[#7C3AED]/20 rounded-2xl p-6">
         <div className="flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#A6F84C]/15 flex items-center justify-center shrink-0">
-              <span className="text-[#A6F84C] font-mono-brand font-bold text-lg">%</span>
+            <div className="w-12 h-12 rounded-xl bg-[#7C3AED]/15 flex items-center justify-center shrink-0">
+              <span className="text-[#7C3AED] font-mono-brand font-bold text-lg">%</span>
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[#A6F84C] text-[10px] font-semibold uppercase tracking-widest">Limited Offer</span>
-                <span className="text-[#6B7280] text-[10px]">Expires Apr 30, 2026</span>
+                <span className="text-[#7C3AED] text-[10px] font-semibold uppercase tracking-widest">Limited Offer</span>
+                <span className="text-[#94A3B8] text-[10px]">Expires Apr 30, 2026</span>
               </div>
-              <h3 className="font-heading font-bold text-white text-base">
+              <h3 className="font-heading font-bold text-[#0F172A] text-base">
                 20% off billing rates for React developers
               </h3>
-              <p className="text-[#9CA3AF] text-sm mt-0.5">
+              <p className="text-[#64748B] text-sm mt-0.5">
                 Onboard before April 30th and lock in reduced rates for the duration of your engagement.
               </p>
             </div>
           </div>
           <Link
             href="/dashboard/talent"
-            className="shrink-0 px-5 py-2.5 bg-[#A6F84C] text-[#0B0B0F] font-semibold text-sm rounded-lg hover:bg-[#BCFF6E] transition-colors"
+            className="shrink-0 px-5 py-2.5 bg-[#7C3AED] text-white font-semibold text-sm rounded-lg hover:bg-[#8B5CF6] transition-colors"
           >
             Browse React Engineers
           </Link>
         </div>
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#A6F84C]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#7C3AED]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       </div>
 
       {/* ── Shortlisted talent ─────────────────────────────────────────────── */}
       <div>
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-heading font-semibold text-lg text-white">
+            <h3 className="font-heading font-semibold text-lg text-[#0F172A]">
               New Positions for {company?.name ?? 'Your Company'}
             </h3>
-            <p className="text-[#6B7280] text-xs mt-0.5">
+            <p className="text-[#94A3B8] text-xs mt-0.5">
               Shortlisted by your technology priorities
             </p>
           </div>
           <Link
             href="/dashboard/talent"
-            className="flex items-center gap-1 text-[#A6F84C] text-sm hover:text-[#BCFF6E] transition-colors"
+            className="flex items-center gap-1 text-[#7C3AED] text-sm hover:text-[#8B5CF6] transition-colors"
           >
             Browse all <ArrowRight size={14} />
           </Link>
@@ -214,32 +214,32 @@ export default async function DashboardPage() {
           {(shortlistedTalent as TalentProfile[] ?? []).map((talent) => (
             <div
               key={talent.id}
-              className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-5 hover:border-[#A6F84C]/30 hover:-translate-y-0.5 transition-all duration-150"
+              className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/30 hover:-translate-y-0.5 transition-all duration-150"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-lg bg-[#1E1E24] flex items-center justify-center text-[#A6F84C] font-mono-brand text-sm font-semibold shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-[#F1F5F9] flex items-center justify-center text-[#7C3AED] font-mono-brand text-sm font-semibold shrink-0">
                   {talent.display_name.charAt(0)}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-white text-sm font-semibold truncate">{talent.display_name}</p>
-                  <p className="text-[#6B7280] text-xs truncate">{talent.seniority}</p>
+                  <p className="text-[#0F172A] text-sm font-semibold truncate">{talent.display_name}</p>
+                  <p className="text-[#94A3B8] text-xs truncate">{talent.seniority}</p>
                 </div>
               </div>
-              <p className="text-[#9CA3AF] text-xs leading-relaxed mb-3 line-clamp-2">
+              <p className="text-[#64748B] text-xs leading-relaxed mb-3 line-clamp-2">
                 {talent.title}
               </p>
               <div className="flex flex-wrap gap-1 mb-3">
                 {((talent.skills as string[]) ?? []).slice(0, 3).map((skill) => (
                   <span
                     key={skill}
-                    className="px-2 py-0.5 rounded text-[10px] bg-[#1E1E24] text-[#9CA3AF] border border-[#2A2A30]"
+                    className="px-2 py-0.5 rounded text-[10px] bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0]"
                   >
                     {skill}
                   </span>
                 ))}
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#A6F84C] font-mono-brand text-xs font-semibold">
+                <span className="text-[#7C3AED] font-mono-brand text-xs font-semibold">
                   {talent.ai_velocity_score}x AI velocity
                 </span>
               </div>
@@ -251,13 +251,13 @@ export default async function DashboardPage() {
       {/* ── Active Engagements ─────────────────────────────────────────────── */}
       <div>
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-heading font-semibold text-lg text-white">
+          <h3 className="font-heading font-semibold text-lg text-[#0F172A]">
             Active Engagements
           </h3>
           {activeEngagements.length > 0 && (
             <Link
               href="/dashboard/engagements"
-              className="flex items-center gap-1 text-[#A6F84C] text-sm hover:text-[#BCFF6E] transition-colors"
+              className="flex items-center gap-1 text-[#7C3AED] text-sm hover:text-[#8B5CF6] transition-colors"
             >
               View all <ArrowRight size={14} />
             </Link>
@@ -265,12 +265,12 @@ export default async function DashboardPage() {
         </div>
 
         {activeEngagements.length === 0 ? (
-          <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-12 text-center space-y-4">
-            <p className="text-[#9CA3AF] text-sm">No active engagements yet.</p>
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-12 text-center space-y-4">
+            <p className="text-[#64748B] text-sm">No active engagements yet.</p>
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <SeedDemoButton />
               <Link href="/dashboard/new-engagement">
-                <Button variant="outline" className="border-[#2A2A30] text-[#9CA3AF] hover:text-white text-sm h-9">
+                <Button variant="outline" className="border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] text-sm h-9">
                   Browse catalog
                   <ArrowRight size={13} className="ml-1.5" />
                 </Button>

@@ -15,11 +15,11 @@ function LogoBlock() {
   return (
     <div className="flex items-center justify-center gap-3 mb-6">
       <img
-        src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg"
+        src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg" style={{ filter: "brightness(0) saturate(100%)" }}
         alt="FullStack"
         className="h-6 w-auto"
       />
-      <span className="w-px h-5 bg-[#2A2A30]" />
+      <span className="w-px h-5 bg-[#E2E8F0]" />
       <img
         src="/logo.png"
         alt="Glassbox"
@@ -45,7 +45,7 @@ function StepIndicator({ current }: { current: Step }) {
             <div
               className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
               style={{
-                backgroundColor: i <= currentIdx ? '#A6F84C' : '#1E1E24',
+                backgroundColor: i <= currentIdx ? '#7C3AED' : '#1E1E24',
                 color: i <= currentIdx ? '#0B0B0F' : '#6B7280',
                 border: i <= currentIdx ? 'none' : '1px solid #2A2A30',
               }}
@@ -54,7 +54,7 @@ function StepIndicator({ current }: { current: Step }) {
             </div>
             <span
               className="text-xs font-medium"
-              style={{ color: i <= currentIdx ? '#A6F84C' : '#6B7280' }}
+              style={{ color: i <= currentIdx ? '#7C3AED' : '#6B7280' }}
             >
               {s.label}
             </span>
@@ -62,7 +62,7 @@ function StepIndicator({ current }: { current: Step }) {
           {i < steps.length - 1 && (
             <div
               className="w-8 h-px"
-              style={{ backgroundColor: i < currentIdx ? '#A6F84C' : '#2A2A30' }}
+              style={{ backgroundColor: i < currentIdx ? '#7C3AED' : '#2A2A30' }}
             />
           )}
         </div>
@@ -125,7 +125,7 @@ function CodeInput({ value, onChange }: { value: string[]; onChange: (val: strin
           value={value[i] || ''}
           onChange={(e) => handleChange(i, e.target.value)}
           onKeyDown={(e) => handleKeyDown(i, e)}
-          className="w-11 h-13 text-center text-lg font-mono-brand font-bold text-white bg-[#1E1E24] border border-[#2A2A30] rounded-lg focus:border-[#A6F84C] focus:outline-none focus:ring-1 focus:ring-[#A6F84C]/30 transition-colors uppercase"
+          className="w-11 h-13 text-center text-lg font-mono-brand font-bold text-[#0F172A] bg-[#F1F5F9] border border-[#E2E8F0] rounded-lg focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors uppercase"
         />
       ))}
     </div>
@@ -218,14 +218,14 @@ export default function SignupPage() {
     return (
       <div className="w-full max-w-sm text-center">
         <LogoBlock />
-        <div className="bg-[#16161C] border border-[#A6F84C]/30 rounded-xl p-8">
-          <div className="w-14 h-14 bg-[#A6F84C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={28} className="text-[#A6F84C]" strokeWidth={1.5} />
+        <div className="bg-white border border-[#7C3AED]/30 rounded-xl p-8">
+          <div className="w-14 h-14 bg-[#7C3AED]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 size={28} className="text-[#7C3AED]" strokeWidth={1.5} />
           </div>
-          <h2 className="font-heading font-bold text-xl text-white mb-2">Check your email</h2>
-          <p className="text-[#9CA3AF] text-sm leading-relaxed">
+          <h2 className="font-heading font-bold text-xl text-[#0F172A] mb-2">Check your email</h2>
+          <p className="text-[#64748B] text-sm leading-relaxed">
             We sent a confirmation link to{' '}
-            <span className="text-white">{form.email}</span>. Click it to activate your account.
+            <span className="text-[#0F172A]">{form.email}</span>. Click it to activate your account.
           </p>
         </div>
       </div>
@@ -238,19 +238,19 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-2">
           <LogoBlock />
-          <h1 className="font-heading font-bold text-2xl text-white mb-1">
+          <h1 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">
             New Customer Onboarding
           </h1>
-          <p className="text-[#9CA3AF] text-sm mb-6">Start your guided onboarding process here.</p>
+          <p className="text-[#64748B] text-sm mb-6">Start your guided onboarding process here.</p>
         </div>
 
         <StepIndicator current="code" />
 
-        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-8">
-          <h2 className="font-heading font-semibold text-lg text-white text-center mb-2">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8">
+          <h2 className="font-heading font-semibold text-lg text-[#0F172A] text-center mb-2">
             Enter Your Customer Code
           </h2>
-          <p className="text-[#9CA3AF] text-sm text-center leading-relaxed mb-6">
+          <p className="text-[#64748B] text-sm text-center leading-relaxed mb-6">
             Enter the new customer code that you have received from the FullStack Sales Team.
           </p>
 
@@ -267,7 +267,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={code.join('').length < 7}
-              className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-11"
+              className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11"
             >
               Verify Code
             </Button>
@@ -275,16 +275,16 @@ export default function SignupPage() {
         </div>
 
         <div className="text-center mt-6 space-y-3">
-          <p className="text-[#6B7280] text-xs leading-relaxed max-w-xs mx-auto">
+          <p className="text-[#94A3B8] text-xs leading-relaxed max-w-xs mx-auto">
             Don&apos;t have a code? Contact your FullStack Sales Representative or write to{' '}
-            <a href="mailto:new_customer@fullstacklabs.co" className="text-[#A6F84C] hover:text-[#BCFF6E] transition-colors">
+            <a href="mailto:new_customer@fullstacklabs.co" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors">
               new_customer@fullstacklabs.co
             </a>
             {' '}to complete your onboarding.
           </p>
-          <p className="text-[#9CA3AF] text-sm">
+          <p className="text-[#64748B] text-sm">
             Existing Customer?{' '}
-            <Link href="/login" className="text-[#A6F84C] hover:text-[#BCFF6E] transition-colors font-medium">
+            <Link href="/login" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors font-medium">
               Log in here
             </Link>
           </p>
@@ -303,25 +303,25 @@ export default function SignupPage() {
 
         <StepIndicator current="contract" />
 
-        <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden">
           {/* Sign button at top */}
-          <div className="flex items-center justify-between p-5 border-b border-[#2A2A30] bg-[#111116]">
+          <div className="flex items-center justify-between p-5 border-b border-[#E2E8F0] bg-[#F8FAFC]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#A6F84C]/10 flex items-center justify-center">
-                <FileText size={18} className="text-[#A6F84C]" />
+              <div className="w-10 h-10 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+                <FileText size={18} className="text-[#7C3AED]" />
               </div>
               <div>
-                <h2 className="font-heading font-semibold text-white text-base">
+                <h2 className="font-heading font-semibold text-[#0F172A] text-base">
                   Master Services Agreement
                 </h2>
-                <p className="text-[#6B7280] text-xs">
+                <p className="text-[#94A3B8] text-xs">
                   FullStack Labs, Inc. — Glassbox Platform
                 </p>
               </div>
             </div>
             <Button
               onClick={handleContractSign}
-              className="bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-10 px-6"
+              className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-10 px-6"
             >
               <CheckCircle2 size={15} className="mr-2" />
               Sign and Get Access to Glassbox
@@ -341,7 +341,7 @@ export default function SignupPage() {
         <div className="text-center mt-4">
           <button
             onClick={() => { setStep('code'); setError(null) }}
-            className="text-[#9CA3AF] text-sm hover:text-white transition-colors"
+            className="text-[#64748B] text-sm hover:text-[#0F172A] transition-colors"
           >
             &larr; Back
           </button>
@@ -359,41 +359,41 @@ export default function SignupPage() {
 
       <StepIndicator current="form" />
 
-      <div className="bg-[#16161C] border border-[#2A2A30] rounded-xl p-8">
-        <h2 className="font-heading font-semibold text-lg text-white text-center mb-1">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8">
+        <h2 className="font-heading font-semibold text-lg text-[#0F172A] text-center mb-1">
           Create Your Account
         </h2>
-        <p className="text-[#9CA3AF] text-xs text-center mb-6">
+        <p className="text-[#64748B] text-xs text-center mb-6">
           Set up your login credentials to access Glassbox.
         </p>
 
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white">Full name</label>
+            <label className="block text-sm font-medium text-[#0F172A]">Full name</label>
             <Input
               value={form.fullName}
               onChange={(e) => handleChange('fullName', e.target.value)}
               placeholder="Alex Johnson"
               required
               autoComplete="name"
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C]"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white">Company name</label>
+            <label className="block text-sm font-medium text-[#0F172A]">Company name</label>
             <Input
               value={form.companyName}
               onChange={(e) => handleChange('companyName', e.target.value)}
               placeholder="Acme Corp"
               required
               autoComplete="organization"
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C]"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white">Work email</label>
+            <label className="block text-sm font-medium text-[#0F172A]">Work email</label>
             <Input
               type="email"
               value={form.email}
@@ -401,12 +401,12 @@ export default function SignupPage() {
               placeholder="you@company.com"
               required
               autoComplete="email"
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C]"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white">Password</label>
+            <label className="block text-sm font-medium text-[#0F172A]">Password</label>
             <Input
               type="password"
               value={form.password}
@@ -415,7 +415,7 @@ export default function SignupPage() {
               required
               minLength={8}
               autoComplete="new-password"
-              className="bg-[#1E1E24] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C]"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
             />
           </div>
 
@@ -429,7 +429,7 @@ export default function SignupPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#A6F84C] text-[#0B0B0F] hover:bg-[#BCFF6E] font-semibold h-11 mt-2"
+            className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11 mt-2"
           >
             {loading ? (
               <>
@@ -446,7 +446,7 @@ export default function SignupPage() {
       <div className="text-center mt-4">
         <button
           onClick={() => { setStep('contract'); setError(null) }}
-          className="text-[#9CA3AF] text-sm hover:text-white transition-colors"
+          className="text-[#64748B] text-sm hover:text-[#0F172A] transition-colors"
         >
           &larr; Back
         </button>

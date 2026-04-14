@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full" style={{ colorScheme: 'dark' }}>
-      <body className="min-h-full flex flex-col bg-[#0B0B0F] text-white antialiased">
+      <body className="min-h-full flex flex-col bg-white text-[#0F172A] antialiased">
         {children}
         <Toaster
           position="bottom-right"

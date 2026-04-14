@@ -79,26 +79,26 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" strokeWidth={1.5} />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" strokeWidth={1.5} />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, skill, or title..."
-              className="pl-9 bg-[#16161C] border-[#2A2A30] text-white placeholder:text-[#6B7280] focus:border-[#A6F84C]"
+              className="pl-9 bg-white border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
             />
           </div>
 
           {/* Seniority dropdown */}
           <Select value={seniority} onValueChange={(v) => setSeniority((v ?? 'all') as Seniority | 'all')}>
-            <SelectTrigger className="w-full sm:w-56 bg-[#16161C] border-[#2A2A30] text-white focus:border-[#A6F84C]">
+            <SelectTrigger className="w-full sm:w-56 bg-white border-[#E2E8F0] text-[#0F172A] focus:border-[#7C3AED]">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#16161C] border-[#2A2A30]">
+            <SelectContent className="bg-white border-[#E2E8F0]">
               {SENIORITY_OPTIONS.map((opt) => (
                 <SelectItem
                   key={opt.value}
                   value={opt.value}
-                  className="text-white hover:bg-[#1E1E24] focus:bg-[#1E1E24] cursor-pointer"
+                  className="text-[#0F172A] hover:bg-[#F1F5F9] focus:bg-[#F1F5F9] cursor-pointer"
                 >
                   {opt.label}
                 </SelectItem>
@@ -111,12 +111,12 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
             onClick={() => setAvailableOnly((v) => !v)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150 whitespace-nowrap ${
               availableOnly
-                ? 'bg-[#A6F84C]/10 border-[#A6F84C] text-[#A6F84C]'
-                : 'bg-[#16161C] border-[#2A2A30] text-[#9CA3AF] hover:border-[#3A3A40]'
+                ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
+                : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
             }`}
           >
             <span
-              className={`w-2 h-2 rounded-full ${availableOnly ? 'bg-[#A6F84C]' : 'bg-[#6B7280]'}`}
+              className={`w-2 h-2 rounded-full ${availableOnly ? 'bg-[#7C3AED]' : 'bg-[#6B7280]'}`}
             />
             Available now
           </button>
@@ -132,8 +132,8 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
                 onClick={() => toggleSkill(skill)}
                 className={`px-3 py-1.5 rounded-lg text-xs border transition-colors duration-150 ${
                   active
-                    ? 'bg-[#A6F84C]/10 border-[#A6F84C] text-[#A6F84C]'
-                    : 'bg-[#16161C] border-[#2A2A30] text-[#9CA3AF] hover:border-[#3A3A40]'
+                    ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
+                    : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
                 }`}
               >
                 {skill}
@@ -153,7 +153,7 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
 
       {/* Results count */}
       <div className="flex items-center justify-between mb-6">
-        <p className="text-[#9CA3AF] text-sm">
+        <p className="text-[#64748B] text-sm">
           {filtered.length === profiles.length
             ? `${profiles.length} engineers available`
             : `${filtered.length} of ${profiles.length} engineers`}
@@ -163,10 +163,10 @@ export function TalentBrowseClient({ profiles }: TalentBrowseClientProps) {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-[#9CA3AF] text-lg mb-2">No engineers match your filters.</p>
+          <p className="text-[#64748B] text-lg mb-2">No engineers match your filters.</p>
           <button
             onClick={() => { setSearch(''); setSeniority('all'); setActiveSkills([]); setAvailableOnly(false) }}
-            className="text-[#A6F84C] text-sm underline"
+            className="text-[#7C3AED] text-sm underline"
           >
             Clear all filters
           </button>
