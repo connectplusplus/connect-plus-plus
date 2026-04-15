@@ -97,6 +97,7 @@ export async function publishDailyReport(input: {
   baseline_score_computed: number
   ai_score_suggested: number
   pm_override_reason?: string
+  pm_notes?: string | null  // human-in-the-loop: PM's added context, visible to client
 }): Promise<{ success: boolean; report_id?: string; error?: string }> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -128,6 +129,7 @@ export async function publishDailyReport(input: {
       ai_score_suggested: input.ai_score_suggested,
       ai_generated_at: new Date().toISOString(),
       pm_override_reason: input.pm_override_reason || null,
+      pm_notes: input.pm_notes || null,
     })
     .select('id')
     .single()

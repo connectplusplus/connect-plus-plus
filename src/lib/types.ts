@@ -166,7 +166,8 @@ export interface DailyReport {
   baseline_score_computed?: number | null
   ai_score_suggested?: number | null
   ai_generated_at?: string | null
-  pm_override_reason?: string | null
+  pm_override_reason?: string | null  // internal only
+  pm_notes?: string | null            // visible to client — PM's added context
   created_at: string
   updated_at: string
   // Joined fields

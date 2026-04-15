@@ -12,6 +12,7 @@ alter table daily_reports add column ai_score_suggested integer;
 alter table daily_reports add column ai_reasoning text;
 alter table daily_reports add column ai_generated_at timestamptz;
 alter table daily_reports add column pm_override_reason text;
+alter table daily_reports add column pm_notes text;  -- human-in-the-loop: PM's own context, visible to client
 
 -- ── Glassbox Agent Configuration ─────────────────────────────────────────
 

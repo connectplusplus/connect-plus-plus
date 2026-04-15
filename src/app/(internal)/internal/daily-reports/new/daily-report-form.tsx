@@ -40,6 +40,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
   const [healthScore, setHealthScore] = useState(80)
   const [healthReasoning, setHealthReasoning] = useState('')
   const [aiVelocityNote, setAiVelocityNote] = useState('')
+  const [pmNotes, setPmNotes] = useState('')
   const [overrideReason, setOverrideReason] = useState('')
   const [editedFields, setEditedFields] = useState<Set<string>>(new Set())
 
@@ -104,6 +105,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
       baseline_score_computed: report?.baselineScore ?? healthScore,
       ai_score_suggested: report?.draft.health_score ?? healthScore,
       pm_override_reason: overrideReason || undefined,
+      pm_notes: pmNotes.trim() || null,
     })
 
     if (result.success) {
@@ -223,6 +225,22 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
                   />
                 </div>
               ))}
+
+              {/* PM Notes — human in the loop, visible to client */}
+              <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
+                <label className="text-sm font-medium text-[#2D2B27]">
+                  PM Notes
+                  <span className="ml-2 text-[10px] font-normal text-[#6B8F5E] bg-[#6B8F5E]/10 rounded px-1.5 py-0.5">Visible to client</span>
+                </label>
+                <Textarea
+                  value={pmNotes}
+                  onChange={(e) => setPmNotes(e.target.value)}
+                  placeholder="Add your own context — things the AI can't know. E.g. 'Had a productive call with the client today, aligned on the revised timeline.'"
+                  rows={3}
+                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+                />
+                <p className="text-[#B0ADA6] text-[10px]">This section is your voice — it goes directly to the client alongside the AI-generated report.</p>
+              </div>
 
               <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
                 <div className="flex items-center justify-between">
