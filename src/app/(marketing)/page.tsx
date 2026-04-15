@@ -7,6 +7,7 @@ import {
   Wrench,
   CheckCircle2,
   ChevronRight,
+  Hexagon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -121,6 +122,197 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+        </div>
+      </section>
+
+      {/* ── Glassbox Agent — Key Differentiator ──────────────────────────────── */}
+      <section className="bg-[#1A1F1A] text-white py-24">
+        <div className="max-w-7xl mx-auto px-6">
+
+          {/* Agent hero */}
+          <div className="max-w-3xl mb-20">
+            <div className="flex items-center gap-2 mb-6">
+              <Hexagon size={16} className="text-[#6B8F5E]" />
+              <span className="text-[#6B8F5E] text-xs font-semibold uppercase tracking-widest">The Glassbox Agent</span>
+              <div className="h-px flex-1 bg-[#6B8F5E]/30 ml-2" />
+            </div>
+            <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
+              Your project, under a{' '}
+              <em className="text-[#6B8F5E] not-italic">glass ceiling</em> — not a black box.
+            </h2>
+            <p className="text-[#9CA39A] text-lg leading-relaxed">
+              Traditional engineering engagements ask you to trust progress reports written by the team
+              delivering your project. Glassbox changes the equation with an independent AI agent that
+              works exclusively for you — monitoring every commitment, flagging every deviation, before
+              your team even knows you&apos;re watching.
+            </p>
+          </div>
+
+          {/* Traditional vs Glassbox comparison */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+            <div className="bg-[#232823] border border-[#2E332E] rounded-xl p-8">
+              <span className="text-[#9CA39A] text-[10px] font-semibold uppercase tracking-widest border border-[#3A3F3A] rounded px-2 py-1">Traditional Services</span>
+              <ul className="mt-6 space-y-4">
+                {[
+                  'Progress reports written by the same team being evaluated',
+                  'Health scores reflect what the PM wants you to believe',
+                  'Scope drift discovered at invoice time, not delivery time',
+                  'No independent verification that milestones reflect the original brief',
+                  'You find out something is wrong when it\'s already expensive to fix',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-[#9CA39A] text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#9CA39A]/40 mt-1.5 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-[#232823] border border-[#6B8F5E]/30 rounded-xl p-8">
+              <span className="text-[#6B8F5E] text-[10px] font-semibold uppercase tracking-widest border border-[#6B8F5E]/30 rounded px-2 py-1">With Glassbox Agent</span>
+              <ul className="mt-6 space-y-4">
+                {[
+                  'Independent AI auditor configured by you, answerable only to you',
+                  'Score computed from raw signals — milestone data, activity patterns, timeline position — never from PM narrative',
+                  'Scope fidelity checked on every assessment, against your original brief',
+                  'PM can add context to agent findings — but cannot edit, suppress, or reorder them',
+                  'Deploy the agent on-demand, any time, with no warning to your team',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-[#D4D8D2] text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6B8F5E] mt-1.5 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Three pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+            {[
+              {
+                num: '01',
+                title: 'You configure it.\nIt works for you.',
+                desc: 'Set your success definition, non-negotiables, and risk areas when you start an engagement. The agent reads your brief on every single assessment — not a template, your actual words.',
+              },
+              {
+                num: '02',
+                title: 'PM context.\nNot PM control.',
+                desc: 'Your PM gets a short window to add context alongside the agent\'s findings before they reach you. They cannot edit, reorder, or remove what the agent found. Silence is visible too — you see which findings went unanswered.',
+              },
+              {
+                num: '03',
+                title: 'On-demand.\nNo warning.',
+                desc: 'Deploy your agent at any moment for an unfiltered read of your project. Before a board meeting. After a difficult call. Whenever you need certainty. The assessment lands directly — no PM review window on on-demand runs.',
+              },
+            ].map((pillar) => (
+              <div key={pillar.num} className="bg-[#232823] border border-[#2E332E] rounded-xl p-6">
+                <span className="text-[#6B8F5E] font-mono-brand text-xs font-medium">{pillar.num}</span>
+                <h3 className="font-heading font-bold text-xl text-white mt-2 mb-3 whitespace-pre-line">{pillar.title}</h3>
+                <p className="text-[#9CA39A] text-sm leading-relaxed">{pillar.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Score transparency section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <h3 className="font-heading font-bold text-3xl md:text-4xl text-white mb-6 leading-tight">
+                Every report shows you exactly what drove the score.
+              </h3>
+              <p className="text-[#9CA39A] text-sm leading-relaxed mb-8">
+                The agent&apos;s health score is computed independently of anything your PM submits. When the two
+                diverge, you see both — side by side, with the gap clearly labeled. Every finding is traced to
+                its source: milestone completion rates, days of inactivity, blocker duration, timeline position
+                against budget burn. Not opinion. Data.
+              </p>
+
+              {/* Pipeline steps */}
+              <div className="space-y-4">
+                {[
+                  { icon: '⬡', label: 'Agent generates independently', desc: 'Collects signals, scores against your weights, writes findings via Claude' },
+                  { icon: '◎', label: 'PM adds context (read-only)', desc: '4-hour window to annotate findings — no edits, no suppressions' },
+                  { icon: '▤', label: 'Delivered to you, intact', desc: 'Agent findings unchanged, PM context alongside — both clearly labeled' },
+                ].map((step, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="text-[#6B8F5E] text-lg shrink-0 mt-0.5">{step.icon}</span>
+                    <div>
+                      <p className="text-white text-sm font-semibold">{step.label}</p>
+                      <p className="text-[#9CA39A] text-xs">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mock assessment card */}
+            <div className="bg-[#232823] border border-[#2E332E] rounded-xl overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#2E332E] flex items-center gap-2">
+                <Hexagon size={12} className="text-[#6B8F5E]" />
+                <span className="text-[#9CA39A] text-[10px] font-medium uppercase tracking-wider">Glassbox Agent · Independent Assessment</span>
+                <span className="text-[#9CA39A] text-[10px] ml-auto">Apr 14, 2026</span>
+              </div>
+              <div className="p-5 space-y-4">
+                <p className="text-white text-sm font-medium italic leading-snug">
+                  &ldquo;Milestone 3 is 11 days behind expected completion; scope is intact but timeline requires immediate attention.&rdquo;
+                </p>
+                <div className="flex items-center gap-6">
+                  <div>
+                    <p className="text-[#9CA39A] text-[10px]">Agent score</p>
+                    <p className="font-mono-brand font-bold text-3xl text-[#F59E0B]">72</p>
+                  </div>
+                  <div>
+                    <p className="text-[#9CA39A] text-[10px]">PM submitted</p>
+                    <p className="font-mono-brand font-bold text-3xl text-white">81</p>
+                  </div>
+                  <div className="bg-[#EF4444]/10 border border-[#EF4444]/20 rounded px-2 py-1">
+                    <p className="text-[#EF4444] font-mono-brand text-xs font-bold">−9 divergence</p>
+                  </div>
+                </div>
+                <div className="space-y-3 pt-3 border-t border-[#2E332E]">
+                  <div className="flex items-start gap-2">
+                    <span className="text-[#F59E0B] text-xs mt-0.5">●</span>
+                    <div>
+                      <p className="text-white text-xs font-medium">Timeline · Milestone 3 is 11 days behind</p>
+                      <p className="text-[#9CA39A] text-[11px]">68% through timeline, 52% milestones complete. Projected: May 13 vs. contracted May 2.</p>
+                      <div className="mt-1.5 ml-3 pl-3 border-l border-[#6B8F5E]/40">
+                        <p className="text-[#6B8F5E] text-[10px] font-medium">PM context:</p>
+                        <p className="text-[#9CA39A] text-[11px]">April 10 scope change added 3 deliverables. ~8 of 11 days attributable to approved change.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-[#10B981] text-xs mt-0.5">●</span>
+                    <div>
+                      <p className="text-white text-xs font-medium">Scope · All deliverables match original brief</p>
+                      <p className="text-[#9CA39A] text-[11px]">No scope drift detected. Deliverables align with contract specification.</p>
+                      <p className="text-[#9CA39A]/50 text-[10px] mt-1 italic">No PM response</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-[#F59E0B] text-xs mt-0.5">●</span>
+                    <div>
+                      <p className="text-white text-xs font-medium">Communication · No PM report for 48 hours</p>
+                      <p className="text-[#9CA39A] text-[11px]">At your configured alert threshold. Last report submitted April 12.</p>
+                      <p className="text-[#9CA39A]/50 text-[10px] mt-1 italic">No PM response</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Closing statement */}
+          <div className="flex items-center justify-between pt-8 border-t border-[#2E332E]">
+            <p className="text-[#9CA39A] text-sm max-w-lg">
+              <strong className="text-white">The firms that survive the next decade will be the ones that invite scrutiny.</strong>{' '}
+              Glassbox Agent is how FullStack puts that belief into practice — on every engagement, for every client, by default.
+            </p>
+            <Link href="/signup">
+              <Button className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold px-6">
+                See it in action <ArrowRight size={14} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

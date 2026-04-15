@@ -1155,20 +1155,26 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
     setLoading(false)
   }
 
+  const [agentError, setAgentError] = useState<string | null>(null)
+
   async function handleOnDemand() {
     setRequesting(true)
+    setAgentError(null)
     try {
       const res = await fetch('/api/agent/on-demand', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ engagement_id: engagementId }),
       })
-      if (res.ok) {
-        // Reload assessments after a short delay for the agent to complete
-        setTimeout(() => loadAssessments(), 8000)
+      const data = await res.json()
+      if (res.ok && data.success) {
+        // Agent completed — reload assessments
+        await loadAssessments()
+      } else {
+        setAgentError(data.error ?? `Request failed (${res.status})`)
       }
     } catch (e) {
-      console.error('On-demand request failed:', e)
+      setAgentError(e instanceof Error ? e.message : 'On-demand request failed')
     }
     setRequesting(false)
   }
@@ -1203,6 +1209,21 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
           )}
         </button>
       </div>
+
+      {agentError && (
+        <div className="flex items-start gap-2 text-[#EF4444] text-sm bg-[#EF4444]/10 border border-[#EF4444]/20 rounded-lg px-4 py-3">
+          <span className="shrink-0 mt-0.5">⚠</span>
+          <span>{agentError}</span>
+        </div>
+      )}
+
+      {requesting && (
+        <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/20 rounded-xl p-5 text-center">
+          <Loader2 size={24} className="text-[#6B8F5E] animate-spin mx-auto mb-2" />
+          <p className="text-[#2D2B27] text-sm font-medium">Your Glassbox Agent is analyzing this engagement...</p>
+          <p className="text-[#8B8781] text-xs mt-1">This typically takes 10-15 seconds.</p>
+        </div>
+      )}
 
       {loading ? (
         <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
