@@ -54,7 +54,7 @@ export default async function EngagementDetailPage({ params }: PageProps) {
   // TODO: Replace with a Postgres view (daily_reports_client_view) before first real client usage
   const { data: dailyReports } = await supabase
     .from('daily_reports')
-    .select('id, engagement_id, author_id, report_date, accomplishments, blockers, plan_tomorrow, health_score, created_at, updated_at, internal_users(full_name)')
+    .select('id, engagement_id, author_id, report_date, accomplishments, blockers, plan_tomorrow, health_score, pm_notes, created_at, updated_at, internal_users(full_name)')
     .eq('engagement_id', id)
     .order('report_date', { ascending: false })
 

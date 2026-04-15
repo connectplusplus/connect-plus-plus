@@ -188,7 +188,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
               onClick={handleNextEngagement}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#6B8F5E] text-white font-semibold text-sm rounded-lg hover:bg-[#7DA06E] transition-colors"
             >
-              {pendingEngagements.length} more engagement{pendingEngagements.length > 1 ? 's' : ''} need today&apos;s report
+              {pendingEngagements.length} more engagement{pendingEngagements.length > 1 ? 's' : ''}{' '}still need today&apos;s report
               <ArrowRight size={14} />
             </button>
           )}
@@ -226,22 +226,6 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
                 </div>
               ))}
 
-              {/* PM Notes — human in the loop, visible to client */}
-              <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
-                <label className="text-sm font-medium text-[#2D2B27]">
-                  PM Notes
-                  <span className="ml-2 text-[10px] font-normal text-[#6B8F5E] bg-[#6B8F5E]/10 rounded px-1.5 py-0.5">Visible to client</span>
-                </label>
-                <Textarea
-                  value={pmNotes}
-                  onChange={(e) => setPmNotes(e.target.value)}
-                  placeholder="Add your own context — things the AI can't know. E.g. 'Had a productive call with the client today, aligned on the revised timeline.'"
-                  rows={3}
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
-                />
-                <p className="text-[#B0ADA6] text-[10px]">This section is your voice — it goes directly to the client alongside the AI-generated report.</p>
-              </div>
-
               <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium text-[#2D2B27]">
@@ -261,6 +245,22 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
                   className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
                 />
               </div>
+            </div>
+
+            {/* PM Notes — human in the loop, at the end, distinct accent */}
+            <div className="bg-[#6B8F5E]/5 border-2 border-[#6B8F5E]/20 rounded-xl p-5 space-y-2">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-1 h-5 bg-[#6B8F5E] rounded-full" />
+                <label className="text-sm font-semibold text-[#2D2B27]">Your Notes to the Client</label>
+              </div>
+              <Textarea
+                value={pmNotes}
+                onChange={(e) => setPmNotes(e.target.value)}
+                placeholder="Add your own context — things the AI can't know. Client calls, decisions made, relationship context, or anything you want the client to hear directly from you."
+                rows={3}
+                className="bg-white border-[#6B8F5E]/20 text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+              />
+              <p className="text-[#8B8781] text-[10px]">This is your voice — it goes directly to the client alongside the AI-generated report.</p>
             </div>
 
             {error && (

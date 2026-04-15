@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import type { Engagement, Milestone, Message, OutcomeTemplate, DailyReport } from '@/lib/types'
 import { MilestoneTracker } from '@/components/dashboard/milestone-tracker'
@@ -8,6 +8,7 @@ import { MilestoneTimeline } from '@/components/dashboard/milestone-timeline'
 import { MessageThread } from '@/components/dashboard/message-thread'
 import { EngagementStatusBadge } from '@/components/dashboard/status-badge'
 import { formatCents } from '@/lib/utils'
+import { getHealthColor } from '@/lib/types'
 import {
   Calendar,
   DollarSign,
@@ -28,9 +29,11 @@ import {
   ChevronRight,
   Download,
   FolderOpen,
+  Hexagon,
+  Loader2,
 } from 'lucide-react'
 
-type Tab = 'overview' | 'milestones' | 'docs' | 'daily_reports' | 'codebase' | 'messages'
+type Tab = 'overview' | 'milestones' | 'docs' | 'daily_reports' | 'agent_reports' | 'codebase' | 'messages'
 
 interface TeamMember {
   name: string
@@ -131,6 +134,7 @@ export function EngagementDetailClient({
     { id: 'milestones', label: `Milestones (${totalMilestones})`, icon: Layers },
     { id: 'docs', label: 'Project Docs', icon: FileText },
     { id: 'daily_reports', label: 'Daily Reports', icon: FileText },
+    { id: 'agent_reports', label: 'Agent Reports', icon: Hexagon },
     { id: 'codebase', label: 'Codebase', icon: GitBranch },
     { id: 'messages', label: `Messages (${messages.filter((m) => !m.is_system_message).length})`, icon: MessageCircle },
   ]
@@ -436,6 +440,10 @@ export function EngagementDetailClient({
         />
       )}
 
+      {activeTab === 'agent_reports' && (
+        <AgentReportsTab engagementId={engagement.id} />
+      )}
+
       {activeTab === 'codebase' && (
         <CodebaseTab engagementTitle={engagement.title} />
       )}
@@ -646,6 +654,7 @@ interface DemoReport {
   highlights: string[]
   blockers: string[]
   tomorrow: string[]
+  pm_notes?: string | null
 }
 
 function generateDemoReports(title: string, lead: ProjectLead | undefined, startDate: string | null): DemoReport[] {
@@ -785,6 +794,7 @@ function DailyReportsTab({
     tomorrow: r.plan_tomorrow.split('\n').filter(Boolean).length > 1
       ? r.plan_tomorrow.split('\n').filter(Boolean)
       : [r.plan_tomorrow],
+    pm_notes: r.pm_notes ?? null,
   }))
 
   const reports: DemoReport[] = hasRealReports
@@ -891,14 +901,14 @@ function DailyReportsTab({
               </ul>
             </div>
 
-            {activeReport.blockers.length > 0 && (
-              <div>
-                <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#F87171]/20 flex items-center justify-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#F87171]" />
-                  </span>
-                  Blockers
-                </h4>
+            <div>
+              <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#F87171]/20 flex items-center justify-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F87171]" />
+                </span>
+                Blockers
+              </h4>
+              {activeReport.blockers.length > 0 ? (
                 <ul className="space-y-2">
                   {activeReport.blockers.map((b, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-[#F87171]/80">
@@ -907,8 +917,10 @@ function DailyReportsTab({
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              ) : (
+                <p className="text-[#B0ADA6] text-sm italic">No blockers reported.</p>
+              )}
+            </div>
 
             <div>
               <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
@@ -924,6 +936,15 @@ function DailyReportsTab({
                 ))}
               </ul>
             </div>
+
+            {activeReport.pm_notes && (
+              <div className="bg-[#6B8F5E]/5 border-l-2 border-[#6B8F5E] rounded-r-lg p-4">
+                <h4 className="text-[#2D2B27] text-sm font-semibold mb-2">
+                  PM Notes
+                </h4>
+                <p className="text-[#8B8781] text-sm leading-relaxed">{activeReport.pm_notes}</p>
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex items-center justify-center h-full text-[#B0ADA6] text-sm">
@@ -1100,6 +1121,182 @@ function CodebaseTab({ engagementTitle }: { engagementTitle: string }) {
       <div className="max-h-[500px] overflow-y-auto">
         <FileTree files={DEMO_REPO} />
       </div>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Agent Reports Tab
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function AgentReportsTab({ engagementId }: { engagementId: string }) {
+  const [assessments, setAssessments] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [requesting, setRequesting] = useState(false)
+  const [selected, setSelected] = useState<any | null>(null)
+
+  useEffect(() => {
+    loadAssessments()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [engagementId])
+
+  async function loadAssessments() {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/agent/assessments?engagement_id=${engagementId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setAssessments(data.assessments ?? [])
+        if (data.assessments?.length > 0) setSelected(data.assessments[0])
+      }
+    } catch (e) {
+      console.error('Failed to load assessments:', e)
+    }
+    setLoading(false)
+  }
+
+  async function handleOnDemand() {
+    setRequesting(true)
+    try {
+      const res = await fetch('/api/agent/on-demand', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ engagement_id: engagementId }),
+      })
+      if (res.ok) {
+        // Reload assessments after a short delay for the agent to complete
+        setTimeout(() => loadAssessments(), 8000)
+      }
+    } catch (e) {
+      console.error('On-demand request failed:', e)
+    }
+    setRequesting(false)
+  }
+
+  const SEVERITY_ICONS: Record<string, { color: string; icon: string }> = {
+    positive: { color: '#10B981', icon: '✓' },
+    neutral: { color: '#8B8781', icon: '•' },
+    concern: { color: '#F59E0B', icon: '⚠' },
+    critical: { color: '#EF4444', icon: '⛔' },
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Header with on-demand button */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="font-heading font-semibold text-[#2D2B27] text-sm flex items-center gap-2">
+            <Hexagon size={14} className="text-[#6B8F5E]" />
+            Glassbox Agent · Independent Assessments
+          </h3>
+          <p className="text-[#B0ADA6] text-xs mt-0.5">AI assessments of your project — independent of the PM&apos;s reporting.</p>
+        </div>
+        <button
+          onClick={handleOnDemand}
+          disabled={requesting}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6B8F5E] text-white text-xs font-semibold rounded-lg hover:bg-[#7DA06E] transition-colors disabled:opacity-50"
+        >
+          {requesting ? (
+            <><Loader2 size={12} className="animate-spin" /> Analyzing...</>
+          ) : (
+            <><Hexagon size={12} /> Get Assessment</>
+          )}
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
+          <Loader2 size={24} className="text-[#6B8F5E] animate-spin mx-auto mb-2" />
+          <p className="text-[#8B8781] text-sm">Loading agent assessments...</p>
+        </div>
+      ) : assessments.length === 0 ? (
+        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
+          <Hexagon size={28} className="text-[#B0ADA6] mx-auto mb-3" />
+          <h4 className="font-heading font-semibold text-[#2D2B27] text-base mb-1">No agent assessments yet</h4>
+          <p className="text-[#8B8781] text-sm mb-4">
+            Click &quot;Get Assessment&quot; to run your Glassbox Agent now, or assessments will appear automatically based on your configured cadence.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Assessment list */}
+          {assessments.map((a: any) => (
+            <div
+              key={a.id}
+              className="bg-[#FAFAF7] border-l-4 border border-[#E0DDD6] rounded-xl p-5"
+              style={{ borderLeftColor: '#6B8F5E' }}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Hexagon size={14} className="text-[#6B8F5E]" />
+                    <span className="text-[#8B8781] text-xs">
+                      Glassbox Agent · {a.trigger_type === 'on_demand' ? 'On-demand' : 'Scheduled'} ·{' '}
+                      {new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <p className="text-[#2D2B27] text-sm font-semibold leading-snug">{a.headline}</p>
+                </div>
+                <div className="text-right shrink-0 ml-4">
+                  <p className="font-mono-brand font-bold text-2xl" style={{ color: getHealthColor(a.weighted_score) }}>
+                    {a.weighted_score}
+                  </p>
+                  {a.pm_submitted_score && Math.abs(a.weighted_score - a.pm_submitted_score) > 5 && (
+                    <p className="text-[#B0ADA6] text-[10px]">
+                      PM score: {a.pm_submitted_score} · {a.weighted_score - a.pm_submitted_score > 0 ? '+' : ''}{a.weighted_score - a.pm_submitted_score} divergence
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <p className="text-[#8B8781] text-sm mb-4">{a.executive_summary}</p>
+
+              {/* Findings */}
+              {a.findings && (
+                <div className="space-y-2 mb-4">
+                  {(a.findings as any[]).map((f: any, i: number) => {
+                    const sev = SEVERITY_ICONS[f.severity] ?? SEVERITY_ICONS.neutral
+                    return (
+                      <div key={i} className="flex items-start gap-2">
+                        <span className="text-xs mt-0.5 shrink-0" style={{ color: sev.color }}>{sev.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[#2D2B27] text-xs font-medium">{f.title}</p>
+                          <p className="text-[#8B8781] text-xs">{f.detail}</p>
+                          {f.pm_context && (
+                            <div className="mt-1 ml-3 pl-3 border-l-2 border-[#6B8F5E]/30">
+                              <p className="text-[#6B8F5E] text-[10px] font-medium">PM added context</p>
+                              <p className="text-[#8B8781] text-xs">{f.pm_context}</p>
+                            </div>
+                          )}
+                          {!f.pm_context && (
+                            <p className="text-[#B0ADA6] text-[10px] mt-0.5 italic">No PM response</p>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {/* Recommendation */}
+              {a.recommendation && (
+                <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/15 rounded-lg p-3">
+                  <p className="text-[#2D2B27] text-xs font-semibold mb-1">Recommendation</p>
+                  <p className="text-[#8B8781] text-xs">{a.recommendation}</p>
+                </div>
+              )}
+
+              {/* PM response */}
+              {a.pm_response && (
+                <div className="mt-3 bg-[#EFEDE8] rounded-lg p-3">
+                  <p className="text-[#2D2B27] text-xs font-semibold mb-1">PM Response</p>
+                  <p className="text-[#8B8781] text-xs">{a.pm_response}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

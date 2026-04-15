@@ -71,13 +71,15 @@ export default async function InternalDashboardPage() {
                       )}
                     </div>
                   </div>
-                  {hasReport ? (
-                    <span className="text-[#10B981] text-xs font-medium">Done</span>
-                  ) : (
-                    <Link href={`/internal/daily-reports/new?engagement=${eng.id}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6B8F5E] text-white text-xs font-semibold rounded-lg hover:bg-[#7DA06E] transition-colors">
-                      Generate Report <ArrowRight size={12} />
-                    </Link>
-                  )}
+                  <div className="w-36 shrink-0 text-right">
+                    {hasReport ? (
+                      <span className="text-[#10B981] text-xs font-medium">Done</span>
+                    ) : (
+                      <Link href={`/internal/daily-reports/new?engagement=${eng.id}`} className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-1.5 bg-[#6B8F5E] text-white text-xs font-semibold rounded-lg hover:bg-[#7DA06E] transition-colors">
+                        Generate Report <ArrowRight size={12} />
+                      </Link>
+                    )}
+                  </div>
                 </div>
               )
             })}

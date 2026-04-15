@@ -27,16 +27,14 @@ export function InternalSidebar() {
   return (
     <aside className="w-60 min-h-screen bg-[#FAFAF7] border-r border-[#E0DDD6] flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-3 h-14 flex items-center border-b border-[#E0DDD6]">
-        <Link href="/internal" className="flex items-center gap-2.5">
+      <div className="px-4 py-3 border-b border-[#E0DDD6]">
+        <Link href="/internal">
           <img
             src="/logo.png"
             alt="Glassbox"
-            className="h-7 w-auto"
+            className="h-5 w-auto mb-1"
           />
-          <span className="text-[#6B8F5E] font-heading font-semibold text-xs border-l border-[#E0DDD6] pl-2">
-            Internal
-          </span>
+          <p className="text-[#B0ADA6] text-[10px] font-medium uppercase tracking-widest">PM Console</p>
         </Link>
       </div>
 
