@@ -58,13 +58,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect authenticated internal users away from internal login
-  // (Role check happens at the page level since middleware can't query DB)
-  if (user && pathname === '/internal-login') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/internal'
-    return NextResponse.redirect(url)
-  }
+  // Note: We intentionally do NOT redirect authenticated users away from /internal-login
+  // because a client user visiting /internal-login should see the login page, not get
+  // redirected to /internal (which would reject them). Role checking happens at the
+  // page/layout level, not in middleware.
 
   return supabaseResponse
 }

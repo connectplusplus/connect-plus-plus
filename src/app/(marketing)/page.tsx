@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="bg-[#FAFAF7] text-[#2D2B27]">
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[#F5F3EE] via-[#FAFAF7] to-[#F0EDE6]">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[#FCFCFB] via-[#FDFDFB] to-[#FAFAF7]">
         {/* Glass particles — interactive background */}
         <GlassParticles />
 

@@ -30,15 +30,18 @@ export default function InternalLoginPage() {
       if (authError) throw authError
 
       // Verify internal user role
+      const { data: { user } } = await supabase.auth.getUser()
       const { data: internalUser, error: roleError } = await supabase
         .from('internal_users')
         .select('id, role')
+        .eq('id', user?.id ?? '')
         .single()
 
       if (roleError || !internalUser) {
         // Not an internal user — sign out
         await supabase.auth.signOut()
-        throw new Error('This login is for FullStack internal team members only.')
+        const detail = roleError ? `: ${roleError.message}` : ''
+        throw new Error(`This login is for FullStack internal team members only${detail}`)
       }
 
       router.push('/internal')

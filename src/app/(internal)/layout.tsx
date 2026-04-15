@@ -26,8 +26,8 @@ export default async function InternalLayout({
     .single()
 
   if (!internalUser) {
-    // Authenticated but not an internal user — sign out and redirect
-    await supabase.auth.signOut()
+    // Authenticated but not an internal user — redirect without signing out
+    // (they may be a client user who navigated here by mistake)
     redirect('/internal-login')
   }
 
