@@ -160,7 +160,13 @@ export interface DailyReport {
   blockers: string | null
   plan_tomorrow: string
   health_score: number
-  ai_velocity_note?: string | null // only present for internal users
+  // AI metadata — only present for internal users
+  ai_velocity_note?: string | null
+  ai_reasoning?: string | null
+  baseline_score_computed?: number | null
+  ai_score_suggested?: number | null
+  ai_generated_at?: string | null
+  pm_override_reason?: string | null
   created_at: string
   updated_at: string
   // Joined fields
@@ -174,7 +180,161 @@ export interface DailyReport {
   author?: {
     full_name: string
   }
+  internal_users?: {
+    full_name: string
+  }
 }
+
+// ─── Engagement Signals (for AI analysis) ───────────────────────────────────
+
+export interface EngagementSignals {
+  engagement: {
+    title: string
+    status: string
+    budget: number | null
+    start_date: string | null
+    end_date: string | null
+    current_health_score: number
+    mode: string
+  }
+  timeline: {
+    days_total: number
+    days_elapsed: number
+    days_remaining: number
+    percent_through: number
+    is_overdue: boolean
+    days_overdue?: number
+  }
+  milestones: {
+    total: number
+    completed: number
+    in_review: number
+    in_progress: number
+    blocked: number
+    upcoming: number
+    percent_complete: number
+    expected_percent_complete: number
+    variance: number
+    current_milestone?: {
+      title: string
+      status: string
+      due_date: string | null
+      days_until_due: number
+      deliverables_total: number
+      deliverables_completed: number
+      is_blocked: boolean
+      blocked_reason?: string
+    }
+  }
+  recent_activity: {
+    last_report_date: string | null
+    last_report_health: number | null
+    health_trend: 'improving' | 'stable' | 'declining' | 'no_data'
+    days_since_last_report: number
+    last_message_date: string | null
+    recent_messages_count: number
+  }
+  team: {
+    size: number
+    lead_name: string
+    members: string[]
+  }
+}
+
+export interface ReportDraft {
+  health_score: number
+  health_reasoning: string
+  accomplishments: string
+  blockers: string | null
+  plan_tomorrow: string
+  ai_velocity_note: string | null
+}
+
+export interface GeneratedReport {
+  signals: EngagementSignals
+  baselineScore: number
+  draft: ReportDraft
+  generated_at: string
+  fallback?: boolean
+}
+
+// ─── Glassbox Agent Types ───────────────────────────────────────────────────
+
+export interface GlassboxAgentConfig {
+  id: string
+  engagement_id: string
+  success_definition: string
+  critical_requirements: string[]
+  risk_areas: string[]
+  monitor_milestone_adherence: boolean
+  monitor_scope_fidelity: boolean
+  monitor_code_activity: boolean
+  monitor_quality_metrics: boolean
+  monitor_budget_adherence: boolean
+  monitor_pm_communication: boolean
+  monitor_blocker_resolution: boolean
+  monitor_velocity_trend: boolean
+  weight_timeline: number
+  weight_quality: number
+  weight_scope: number
+  weight_communication: number
+  weight_velocity: number
+  alert_critical_threshold: number
+  alert_milestone_slip_days: number
+  alert_no_commit_hours: number
+  alert_blocker_hours: number
+  alert_pm_silence_hours: number
+  report_cadence: 'daily' | 'every_2_days' | 'weekly'
+  report_tone: 'technical' | 'executive' | 'balanced'
+  include_raw_signals: boolean
+  on_demand_enabled: boolean
+  pm_review_window_hours: number
+  escalation_contacts: string[]
+  configured_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type AgentTriggerType = 'scheduled' | 'on_demand' | 'alert_threshold' | 'milestone_slip' | 'blocker_alert' | 'pm_silence'
+
+export interface AgentAssessment {
+  id: string
+  engagement_id: string
+  agent_config_id: string
+  trigger_type: AgentTriggerType
+  triggered_by: string | null
+  signals_snapshot: EngagementSignals
+  component_scores: Record<string, { score: number; weight: number; finding: string }>
+  weighted_score: number
+  pm_submitted_score: number | null
+  score_divergence: number | null
+  critical_requirements_status: Array<{ requirement: string; status: 'met' | 'at_risk' | 'breached'; detail: string }> | null
+  scope_drift_detected: boolean
+  scope_drift_detail: string | null
+  headline: string
+  executive_summary: string
+  findings: Array<{
+    category: string
+    severity: 'positive' | 'neutral' | 'concern' | 'critical'
+    title: string
+    detail: string
+    data_source: string
+    pm_context: string | null
+  }>
+  recommendation: string
+  status: string
+  pm_review_deadline: string | null
+  pm_response: string | null
+  pm_reviewed_at: string | null
+  sent_to_client_at: string | null
+  client_viewed_at: string | null
+  model_used: string
+  generation_duration_ms: number | null
+  tokens_used: number | null
+  created_at: string
+}
+
+// ─── Health Score Helpers ────────────────────────────────────────────────────
 
 export type HealthScoreLabel = 'Excellent' | 'Good' | 'At Risk' | 'Critical'
 
@@ -187,7 +347,7 @@ export function getHealthLabel(score: number): HealthScoreLabel {
 
 export function getHealthColor(score: number): string {
   if (score >= 85) return '#10B981'
-  if (score >= 70) return '#64748B'
+  if (score >= 70) return '#6B8F5E'
   if (score >= 50) return '#F59E0B'
   return '#EF4444'
 }
