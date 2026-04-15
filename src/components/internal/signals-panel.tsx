@@ -100,15 +100,15 @@ export function SignalsPanel({ signals }: SignalsPanelProps) {
   const signalCount = rows.length
 
   return (
-    <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl overflow-hidden">
+    <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-5 py-3 hover:bg-[#F5F3EE] transition-colors"
+        className="w-full flex items-center justify-between px-5 py-3 hover:bg-[#F8FAFC] transition-colors"
       >
-        <span className="text-xs font-medium text-[#8B8781]">
+        <span className="text-xs font-medium text-[#64748B]">
           Engagement Signals ({signalCount})
         </span>
-        {expanded ? <ChevronUp size={14} className="text-[#B0ADA6]" /> : <ChevronDown size={14} className="text-[#B0ADA6]" />}
+        {expanded ? <ChevronUp size={14} className="text-[#94A3B8]" /> : <ChevronDown size={14} className="text-[#94A3B8]" />}
       </button>
 
       {expanded && (
@@ -120,8 +120,8 @@ export function SignalsPanel({ signals }: SignalsPanelProps) {
                 style={{ backgroundColor: STATUS_COLORS[row.status] }}
               />
               <div className="flex-1 min-w-0">
-                <span className="text-[#B0ADA6] text-xs font-medium">{row.label}</span>
-                <p className="text-[#2D2B27] text-xs whitespace-pre-line">{row.value}</p>
+                <span className="text-[#94A3B8] text-xs font-medium">{row.label}</span>
+                <p className="text-[#0F172A] text-xs whitespace-pre-line">{row.value}</p>
               </div>
             </div>
           ))}

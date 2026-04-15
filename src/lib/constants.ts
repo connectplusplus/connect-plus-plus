@@ -10,9 +10,9 @@ export const COLORS = {
   textPrimary: '#0F172A',
   textSecondary: '#64748B',
   textTertiary: '#94A3B8',
-  accent: '#6B8F5E',
-  accentHover: '#7DA06E',
-  accentPressed: '#5A7D4E',
+  accent: '#7C3AED',
+  accentHover: '#8B5CF6',
+  accentPressed: '#6D28D9',
   accentText: '#FFFFFF',
   success: '#34D399',
   warning: '#FBBF24',
@@ -22,9 +22,9 @@ export const COLORS = {
 
 // ─── Mode Badge Colors ─────────────────────────────────────────────────────────
 export const MODE_COLORS: Record<EngagementMode, string> = {
-  talent: '#D4A574',
-  pod: '#C9956A',
-  predefined_outcome: '#6B8F5E',
+  talent: '#EC4899',
+  pod: '#EC4899',
+  predefined_outcome: '#7C3AED',
   custom_outcome: '#FB923C',
 }
 
@@ -38,7 +38,7 @@ export const MODE_LABELS: Record<EngagementMode, string> = {
 // ─── Status Colors ────────────────────────────────────────────────────────────
 export const MILESTONE_STATUS_COLORS: Record<MilestoneStatus, string> = {
   upcoming: '#6B7280',
-  in_progress: '#6B8F5E',
+  in_progress: '#7C3AED',
   in_review: '#FBBF24',
   completed: '#34D399',
 }
@@ -62,7 +62,7 @@ export const ENGAGEMENT_STATUS_LABELS: Record<EngagementStatus, string> = {
 export const ENGAGEMENT_STATUS_COLORS: Record<EngagementStatus, string> = {
   intake: '#60A5FA',
   scoping: '#FBBF24',
-  active: '#6B8F5E',
+  active: '#7C3AED',
   in_review: '#FBBF24',
   completed: '#34D399',
   cancelled: '#F87171',
@@ -78,25 +78,52 @@ export const SENDER_ROLE_LABELS: Record<SenderRole, string> = {
 
 export const SENDER_ROLE_COLORS: Record<SenderRole, string> = {
   client: '#60A5FA',
-  pm: '#6B8F5E',
-  engineer: '#D4A574',
+  pm: '#7C3AED',
+  engineer: '#EC4899',
   system: '#6B7280',
 }
 
 // ─── Category Labels ──────────────────────────────────────────────────────────
+// Custom covers all bespoke FullStack outcomes; the rest are partnership categories
+// keyed to the partner's brand.
 export const CATEGORY_LABELS: Record<OutcomeCategory, string> = {
-  build: 'Build',
-  automate: 'Automate',
-  migrate: 'Migrate',
-  optimize: 'Optimize',
+  custom: 'Custom',
+  google_cloud: 'Google Cloud',
+  nvidia: 'NVIDIA',
+  aws: 'AWS',
+  azure: 'Azure',
+  databricks: 'Databricks',
+  domo: 'Domo',
+  servicenow: 'ServiceNow',
+  salesforce: 'Salesforce',
 }
 
+// Colors use each partner's primary brand color so the category badge reads as a
+// "powered by" signal; Custom falls back to the Glassbox brand purple.
 export const CATEGORY_COLORS: Record<OutcomeCategory, string> = {
-  build: '#60A5FA',
-  automate: '#D4A574',
-  migrate: '#C9956A',
-  optimize: '#FBBF24',
+  custom: '#7C3AED',
+  google_cloud: '#4285F4',
+  nvidia: '#76B900',
+  aws: '#FF9900',
+  azure: '#0078D4',
+  databricks: '#FF3621',
+  domo: '#00A0DF',
+  servicenow: '#62D84E',
+  salesforce: '#00A1E0',
 }
+
+// Preferred display order for the category filter pills (used by the catalog UI).
+export const CATEGORY_ORDER: OutcomeCategory[] = [
+  'custom',
+  'google_cloud',
+  'nvidia',
+  'aws',
+  'azure',
+  'databricks',
+  'domo',
+  'servicenow',
+  'salesforce',
+]
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 export const DASHBOARD_NAV = [

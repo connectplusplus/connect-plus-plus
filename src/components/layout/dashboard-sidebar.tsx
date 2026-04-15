@@ -29,12 +29,12 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="w-60 min-h-screen bg-[#FAFAF7] border-r border-[#E0DDD6] flex flex-col shrink-0">
+    <aside className="w-60 min-h-screen bg-white border-r border-[#E2E8F0] flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-3 h-14 flex items-center border-b border-[#E0DDD6]">
+      <div className="px-3 h-14 flex items-center border-b border-[#E2E8F0]">
         <Link href="/dashboard">
           <img
-            src="/logo.png"
+            src="/logo2.png"
             alt="Glassbox"
             className="w-[66%]"
           />
@@ -51,17 +51,17 @@ export function DashboardSidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
                 active
-                  ? 'bg-[#6B8F5E]/10 text-[#6B8F5E]'
-                  : 'text-[#8B8781] hover:text-[#2D2B27] hover:bg-[#EFEDE8]'
+                  ? 'bg-[#7C3AED]/10 text-[#7C3AED]'
+                  : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
               }`}
             >
               {active && (
-                <span className="absolute left-0 w-0.5 h-5 bg-[#6B8F5E] rounded-r" />
+                <span className="absolute left-0 w-0.5 h-5 bg-[#7C3AED] rounded-r" />
               )}
               <item.icon
                 size={17}
                 strokeWidth={1.5}
-                className={active ? 'text-[#6B8F5E]' : ''}
+                className={active ? 'text-[#7C3AED]' : ''}
               />
               {item.label}
             </Link>
@@ -70,9 +70,9 @@ export function DashboardSidebar() {
       </nav>
 
       {/* FullStack branding */}
-      <div className="px-4 py-4 border-t border-[#E0DDD6]">
+      <div className="px-4 py-4 border-t border-[#E2E8F0]">
         <a href="https://fullstack.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 opacity-50 hover:opacity-80 transition-opacity">
-          <span className="text-[#B0ADA6] text-[10px]">Powered by</span>
+          <span className="text-[#94A3B8] text-[10px]">Powered by</span>
           <img
             src="https://cdn.prod.website-files.com/63ea859d3ade03089d7e65c6/651c3035ed3443430da378d1_fs_logo_horizontal_white.svg" style={{ filter: "brightness(0) saturate(100%)" }}
             alt="FullStack"

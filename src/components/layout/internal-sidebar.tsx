@@ -25,16 +25,16 @@ export function InternalSidebar() {
   }
 
   return (
-    <aside className="w-60 min-h-screen bg-[#FAFAF7] border-r border-[#E0DDD6] flex flex-col shrink-0">
+    <aside className="w-60 min-h-screen bg-white border-r border-[#E2E8F0] flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-4 py-3 border-b border-[#E0DDD6]">
+      <div className="px-4 py-3 border-b border-[#E2E8F0]">
         <Link href="/internal">
           <img
-            src="/logo.png"
+            src="/logo2.png"
             alt="Glassbox"
             className="h-5 w-auto mb-1"
           />
-          <p className="text-[#B0ADA6] text-[10px] font-medium uppercase tracking-widest">PM Console</p>
+          <p className="text-[#94A3B8] text-[10px] font-medium uppercase tracking-widest">PM Console</p>
         </Link>
       </div>
 
@@ -46,7 +46,7 @@ export function InternalSidebar() {
             return (
               <div
                 key={item.href}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#B0ADA6] cursor-not-allowed opacity-50"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#94A3B8] cursor-not-allowed opacity-50"
               >
                 <item.icon size={17} strokeWidth={1.5} />
                 {item.label}
@@ -59,17 +59,17 @@ export function InternalSidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
                 active
-                  ? 'bg-[#6B8F5E]/10 text-[#6B8F5E]'
-                  : 'text-[#8B8781] hover:text-[#2D2B27] hover:bg-[#EFEDE8]'
+                  ? 'bg-[#7C3AED]/10 text-[#7C3AED]'
+                  : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
               }`}
             >
               {active && (
-                <span className="absolute left-0 w-0.5 h-5 bg-[#6B8F5E] rounded-r" />
+                <span className="absolute left-0 w-0.5 h-5 bg-[#7C3AED] rounded-r" />
               )}
               <item.icon
                 size={17}
                 strokeWidth={1.5}
-                className={active ? 'text-[#6B8F5E]' : ''}
+                className={active ? 'text-[#7C3AED]' : ''}
               />
               {item.label}
             </Link>
@@ -78,8 +78,8 @@ export function InternalSidebar() {
       </nav>
 
       {/* FullStack branding */}
-      <div className="px-4 py-4 border-t border-[#E0DDD6]">
-        <p className="text-[#B0ADA6] text-[10px]">FullStack Internal Portal</p>
+      <div className="px-4 py-4 border-t border-[#E2E8F0]">
+        <p className="text-[#94A3B8] text-[10px]">FullStack Internal Portal</p>
       </div>
     </aside>
   )

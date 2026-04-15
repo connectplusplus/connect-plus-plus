@@ -34,7 +34,7 @@ export default async function NewDailyReportPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Suspense fallback={<div className="text-[#8B8781] text-sm">Loading...</div>}>
+      <Suspense fallback={<div className="text-[#64748B] text-sm">Loading...</div>}>
         <DailyReportForm engagements={engagementsWithStatus} />
       </Suspense>
     </div>

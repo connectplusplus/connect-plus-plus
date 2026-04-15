@@ -28,7 +28,7 @@ export function SeedDemoButton() {
       <button
         onClick={handleClick}
         disabled={loading}
-        className="text-[#B0ADA6] hover:text-[#8B8781] text-xs transition-colors disabled:opacity-50"
+        className="text-[#94A3B8] hover:text-[#64748B] text-xs transition-colors disabled:opacity-50"
       >
         {loading ? (
           <span className="flex items-center gap-1.5">

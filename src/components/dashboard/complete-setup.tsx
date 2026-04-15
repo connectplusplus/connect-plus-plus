@@ -31,11 +31,11 @@ export function CompleteSetup() {
 
   return (
     <div className="max-w-md mx-auto text-center py-20">
-      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8">
-        <h2 className="font-heading font-bold text-xl text-[#2D2B27] mb-2">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8">
+        <h2 className="font-heading font-bold text-xl text-[#0F172A] mb-2">
           One last step
         </h2>
-        <p className="text-[#8B8781] text-sm mb-6">
+        <p className="text-[#64748B] text-sm mb-6">
           What&apos;s the name of your company?
         </p>
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
@@ -44,7 +44,7 @@ export function CompleteSetup() {
             onChange={(e) => setCompanyName(e.target.value)}
             placeholder="Acme Corp"
             required
-            className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
+            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
           />
           {error && (
             <p className="text-[#F87171] text-sm">{error}</p>
@@ -52,7 +52,7 @@ export function CompleteSetup() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11"
+            className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11"
           >
             {loading ? <Loader2 size={16} className="animate-spin" /> : 'Continue'}
           </Button>

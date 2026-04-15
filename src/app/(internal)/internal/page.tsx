@@ -34,19 +34,19 @@ export default async function InternalDashboardPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <div>
-        <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">Good morning, {firstName}.</h2>
-        <p className="text-[#8B8781] text-sm">{internalUser.role === 'pm' ? 'Project Manager' : internalUser.role.replace('_', ' ')} — FullStack Internal Portal</p>
+        <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">Good morning, {firstName}.</h2>
+        <p className="text-[#64748B] text-sm">{internalUser.role === 'pm' ? 'Project Manager' : internalUser.role.replace('_', ' ')} — FullStack Internal Portal</p>
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-heading font-semibold text-lg text-[#2D2B27]">Today&apos;s Reports</h3>
-          <span className="text-[#B0ADA6] text-xs">{dateStr}</span>
+          <h3 className="font-heading font-semibold text-lg text-[#0F172A]">Today&apos;s Reports</h3>
+          <span className="text-[#94A3B8] text-xs">{dateStr}</span>
         </div>
 
         {(!engagements || engagements.length === 0) ? (
-          <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
-            <p className="text-[#8B8781] text-sm">No engagements assigned to you.</p>
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+            <p className="text-[#64748B] text-sm">No engagements assigned to you.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -56,16 +56,16 @@ export default async function InternalDashboardPage() {
               const companyName = (eng.companies as any)?.name
 
               return (
-                <div key={eng.id} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-4 flex items-center justify-between">
+                <div key={eng.id} className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasReport ? 'bg-[#10B981]/10' : 'bg-[#6B8F5E]/10'}`}>
-                      {hasReport ? <CheckCircle2 size={16} className="text-[#10B981]" /> : <Zap size={16} className="text-[#6B8F5E]" />}
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasReport ? 'bg-[#10B981]/10' : 'bg-[#7C3AED]/10'}`}>
+                      {hasReport ? <CheckCircle2 size={16} className="text-[#10B981]" /> : <Zap size={16} className="text-[#7C3AED]" />}
                     </div>
                     <div>
-                      <p className="text-[#2D2B27] text-sm font-medium">{companyName ? `${companyName} — ` : ''}{eng.title}</p>
+                      <p className="text-[#0F172A] text-sm font-medium">{companyName ? `${companyName} — ` : ''}{eng.title}</p>
                       {hasReport && healthScore && (
                         <p className="text-xs mt-0.5">
-                          <span className="text-[#8B8781]">Published · Health </span>
+                          <span className="text-[#64748B]">Published · Health </span>
                           <span className="font-mono-brand font-semibold" style={{ color: getHealthColor(healthScore) }}>{healthScore}</span>
                         </p>
                       )}
@@ -75,7 +75,7 @@ export default async function InternalDashboardPage() {
                     {hasReport ? (
                       <span className="text-[#10B981] text-xs font-medium">Done</span>
                     ) : (
-                      <Link href={`/internal/daily-reports/new?engagement=${eng.id}`} className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-1.5 bg-[#6B8F5E] text-white text-xs font-semibold rounded-lg hover:bg-[#7DA06E] transition-colors">
+                      <Link href={`/internal/daily-reports/new?engagement=${eng.id}`} className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-1.5 bg-[#7C3AED] text-white text-xs font-semibold rounded-lg hover:bg-[#8B5CF6] transition-colors">
                         Generate Report <ArrowRight size={12} />
                       </Link>
                     )}

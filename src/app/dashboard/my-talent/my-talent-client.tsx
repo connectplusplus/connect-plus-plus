@@ -138,22 +138,22 @@ function daysSince(dateStr: string) {
 
 function FeedbackModal({ name, type, onClose }: { name: string; type: 'kudos' | 'feedback' | 'concern'; onClose: () => void }) {
   const config = {
-    kudos: { title: `Give Kudos to ${name}`, color: '#6B8F5E', placeholder: 'What did they do great? Be specific — it helps them grow.' },
+    kudos: { title: `Give Kudos to ${name}`, color: '#7C3AED', placeholder: 'What did they do great? Be specific — it helps them grow.' },
     feedback: { title: `Feedback for ${name}`, color: '#60A5FA', placeholder: 'Share constructive feedback about their work, communication, or delivery...' },
     concern: { title: `Report Concern about ${name}`, color: '#F87171', placeholder: 'Describe the issue. This will be shared with the FullStack talent team confidentially.' },
   }[type]
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl w-full max-w-md p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
-        <h3 className="font-heading font-semibold text-[#2D2B27] text-lg">{config.title}</h3>
+      <div className="bg-white border border-[#E2E8F0] rounded-xl w-full max-w-md p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+        <h3 className="font-heading font-semibold text-[#0F172A] text-lg">{config.title}</h3>
         <textarea
           rows={4}
           placeholder={config.placeholder}
-          className="w-full rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm p-3 placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:outline-none resize-none"
+          className="w-full rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm p-3 placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:outline-none resize-none"
         />
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="border-[#E0DDD6] text-[#8B8781] hover:text-[#2D2B27] text-sm h-9">
+          <Button variant="outline" onClick={onClose} className="border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] text-sm h-9">
             Cancel
           </Button>
           <Button onClick={onClose} className="text-sm h-9 font-semibold" style={{ backgroundColor: config.color, color: '#FFFFFF' }}>
@@ -178,8 +178,8 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div>
-        <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">Talent by FullStack</h2>
-        <p className="text-[#8B8781] text-sm">
+        <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">Talent by FullStack</h2>
+        <p className="text-[#64748B] text-sm">
           Your dedicated AI-native engineers working on {companyName} projects.
         </p>
       </div>
@@ -187,33 +187,33 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
       {/* ── Summary cards ───────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Active Engineers', value: `${ACTIVE_TALENT.length}`, icon: Users, color: '#6B8F5E' },
-          { label: 'Avg AI Velocity', value: `${(ACTIVE_TALENT.reduce((s, t) => s + t.velocity, 0) / ACTIVE_TALENT.length).toFixed(1)}x`, icon: Zap, color: '#D4A574' },
+          { label: 'Active Engineers', value: `${ACTIVE_TALENT.length}`, icon: Users, color: '#7C3AED' },
+          { label: 'Avg AI Velocity', value: `${(ACTIVE_TALENT.reduce((s, t) => s + t.velocity, 0) / ACTIVE_TALENT.length).toFixed(1)}x`, icon: Zap, color: '#EC4899' },
           { label: 'Monthly Run Rate', value: formatCurrency(totalMonthlySpend), icon: DollarSign, color: '#34D399' },
           { label: 'Total Billed to Date', value: formatCurrency(totalBilled), icon: DollarSign, color: '#60A5FA' },
         ].map((card) => (
-          <div key={card.label} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-4">
+          <div key={card.label} className="bg-white border border-[#E2E8F0] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${card.color}10` }}>
                 <card.icon size={14} style={{ color: card.color }} />
               </div>
-              <span className="text-[#B0ADA6] text-xs">{card.label}</span>
+              <span className="text-[#94A3B8] text-xs">{card.label}</span>
             </div>
-            <p className="font-mono-brand font-bold text-xl text-[#2D2B27]">{card.value}</p>
+            <p className="font-mono-brand font-bold text-xl text-[#0F172A]">{card.value}</p>
           </div>
         ))}
       </div>
 
       {/* ── Active Talent ───────────────────────────────────────────────── */}
       <div>
-        <h3 className="font-heading font-semibold text-lg text-[#2D2B27] mb-5">Active Engineers</h3>
+        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-5">Active Engineers</h3>
         <div className="space-y-4">
           {ACTIVE_TALENT.map((talent) => {
             const days = daysSince(talent.startDate)
             const totalBilledForTalent = talent.hourlyRate * talent.hoursWorked
 
             return (
-              <div key={talent.id} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 hover:border-[#6B8F5E]/20 transition-colors">
+              <div key={talent.id} className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/20 transition-colors">
                 <div className="flex gap-5">
                   {/* Photo */}
                   <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0">
@@ -224,39 +224,39 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h4 className="font-heading font-semibold text-[#2D2B27] text-base">{talent.name}</h4>
-                        <p className="text-[#8B8781] text-sm">{talent.title}</p>
+                        <h4 className="font-heading font-semibold text-[#0F172A] text-base">{talent.name}</h4>
+                        <p className="text-[#64748B] text-sm">{talent.title}</p>
                       </div>
-                      <div className="flex items-center gap-1.5 bg-[#6B8F5E]/10 border border-[#6B8F5E]/20 rounded-lg px-2.5 py-1">
-                        <Zap size={12} className="text-[#6B8F5E]" fill="#6B8F5E" />
-                        <span className="text-[#6B8F5E] font-mono-brand font-semibold text-sm">{talent.velocity}x</span>
-                        <span className="text-[#B0ADA6] text-xs">velocity</span>
+                      <div className="flex items-center gap-1.5 bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-lg px-2.5 py-1">
+                        <Zap size={12} className="text-[#7C3AED]" fill="#7C3AED" />
+                        <span className="text-[#7C3AED] font-mono-brand font-semibold text-sm">{talent.velocity}x</span>
+                        <span className="text-[#94A3B8] text-xs">velocity</span>
                       </div>
                     </div>
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {talent.skills.map((s) => (
-                        <span key={s} className="text-[10px] bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-0.5 border border-[#E0DDD6]">{s}</span>
+                        <span key={s} className="text-[10px] bg-[#F1F5F9] text-[#64748B] rounded px-2 py-0.5 border border-[#E2E8F0]">{s}</span>
                       ))}
                     </div>
 
                     {/* Stats row */}
                     <div className="flex flex-wrap items-center gap-5 text-xs">
-                      <div className="flex items-center gap-1.5 text-[#8B8781]">
-                        <Calendar size={12} className="text-[#B0ADA6]" />
+                      <div className="flex items-center gap-1.5 text-[#64748B]">
+                        <Calendar size={12} className="text-[#94A3B8]" />
                         <span>Since {new Date(talent.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
-                        <span className="text-[#B0ADA6]">({days} days)</span>
+                        <span className="text-[#94A3B8]">({days} days)</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[#8B8781]">
-                        <Clock size={12} className="text-[#B0ADA6]" />
+                      <div className="flex items-center gap-1.5 text-[#64748B]">
+                        <Clock size={12} className="text-[#94A3B8]" />
                         <span>{talent.hoursWorked} hrs logged</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[#8B8781]">
-                        <DollarSign size={12} className="text-[#B0ADA6]" />
+                      <div className="flex items-center gap-1.5 text-[#64748B]">
+                        <DollarSign size={12} className="text-[#94A3B8]" />
                         <span>{formatCurrency(talent.hourlyRate)}/hr</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[#2D2B27] font-medium">
+                      <div className="flex items-center gap-1.5 text-[#0F172A] font-medium">
                         <DollarSign size={12} className="text-[#34D399]" />
                         <span>{formatCurrency(totalBilledForTalent)} billed</span>
                       </div>
@@ -265,10 +265,10 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
                 </div>
 
                 {/* Action buttons */}
-                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E0DDD6]">
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E2E8F0]">
                   <button
                     onClick={() => setModal({ name: talent.name, type: 'kudos' })}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#6B8F5E]/10 text-[#6B8F5E] border border-[#6B8F5E]/20 hover:bg-[#6B8F5E]/20 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#7C3AED]/10 text-[#7C3AED] border border-[#7C3AED]/20 hover:bg-[#7C3AED]/20 transition-colors"
                   >
                     <ThumbsUp size={12} /> Give Kudos
                   </button>
@@ -295,32 +295,32 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
       <div>
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-heading font-semibold text-lg text-[#2D2B27]">Suggested Engineers</h3>
-            <p className="text-[#B0ADA6] text-xs mt-0.5">Based on your active projects and technology stack</p>
+            <h3 className="font-heading font-semibold text-lg text-[#0F172A]">Suggested Engineers</h3>
+            <p className="text-[#94A3B8] text-xs mt-0.5">Based on your active projects and technology stack</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {SUGGESTED_TALENT.map((t) => (
-            <div key={t.name} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 hover:border-[#6B8F5E]/30 transition-colors">
+            <div key={t.name} className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/30 transition-colors">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-[#EFEDE8] flex items-center justify-center text-[#6B8F5E] font-mono-brand text-sm font-bold shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-[#F1F5F9] flex items-center justify-center text-[#7C3AED] font-mono-brand text-sm font-bold shrink-0">
                   {t.initials}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[#2D2B27] text-sm font-semibold truncate">{t.name}</p>
-                  <p className="text-[#B0ADA6] text-xs truncate">{t.title}</p>
+                  <p className="text-[#0F172A] text-sm font-semibold truncate">{t.name}</p>
+                  <p className="text-[#94A3B8] text-xs truncate">{t.title}</p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-1 mb-3">
                 {t.skills.map((s) => (
-                  <span key={s} className="text-[10px] bg-[#EFEDE8] text-[#8B8781] rounded px-1.5 py-0.5 border border-[#E0DDD6]">{s}</span>
+                  <span key={s} className="text-[10px] bg-[#F1F5F9] text-[#64748B] rounded px-1.5 py-0.5 border border-[#E2E8F0]">{s}</span>
                 ))}
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-[#6B8F5E] font-mono-brand font-semibold">{t.velocity}x velocity</span>
-                <span className="text-[#8B8781]">{formatCurrency(t.hourlyRate)}/hr</span>
+                <span className="text-[#7C3AED] font-mono-brand font-semibold">{t.velocity}x velocity</span>
+                <span className="text-[#64748B]">{formatCurrency(t.hourlyRate)}/hr</span>
               </div>
-              <Button className="w-full mt-3 bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] hover:bg-[#E2E8F0] text-xs h-8 font-medium">
+              <Button className="w-full mt-3 bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] hover:bg-[#E2E8F0] text-xs h-8 font-medium">
                 Request Interview
               </Button>
             </div>
@@ -332,49 +332,49 @@ export function MyTalentClient({ companyName }: { companyName: string }) {
       <div>
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-heading font-semibold text-lg text-[#2D2B27]">Suggested Pods</h3>
-            <p className="text-[#B0ADA6] text-xs mt-0.5">Pre-configured cross-functional teams ready to deploy</p>
+            <h3 className="font-heading font-semibold text-lg text-[#0F172A]">Suggested Pods</h3>
+            <p className="text-[#94A3B8] text-xs mt-0.5">Pre-configured cross-functional teams ready to deploy</p>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {SUGGESTED_PODS.map((pod) => (
-            <div key={pod.name} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 hover:border-[#6B8F5E]/30 transition-colors flex flex-col">
+            <div key={pod.name} className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/30 transition-colors flex flex-col">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-[#D4A574]/10 flex items-center justify-center shrink-0">
-                  <Users size={16} className="text-[#D4A574]" />
+                <div className="w-10 h-10 rounded-lg bg-[#EC4899]/10 flex items-center justify-center shrink-0">
+                  <Users size={16} className="text-[#EC4899]" />
                 </div>
                 <div>
-                  <h4 className="text-[#2D2B27] font-semibold text-sm">{pod.name}</h4>
-                  <p className="text-[#B0ADA6] text-xs">{pod.members} engineers</p>
+                  <h4 className="text-[#0F172A] font-semibold text-sm">{pod.name}</h4>
+                  <p className="text-[#94A3B8] text-xs">{pod.members} engineers</p>
                 </div>
               </div>
 
-              <p className="text-[#8B8781] text-xs leading-relaxed mb-3">{pod.description}</p>
+              <p className="text-[#64748B] text-xs leading-relaxed mb-3">{pod.description}</p>
 
               <div className="flex flex-wrap gap-1 mb-3">
                 {pod.skills.map((s) => (
-                  <span key={s} className="text-[10px] bg-[#EFEDE8] text-[#8B8781] rounded px-1.5 py-0.5 border border-[#E0DDD6]">{s}</span>
+                  <span key={s} className="text-[10px] bg-[#F1F5F9] text-[#64748B] rounded px-1.5 py-0.5 border border-[#E2E8F0]">{s}</span>
                 ))}
               </div>
 
               <div className="mb-3">
-                <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest mb-2">Pod tasks</p>
+                <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest mb-2">Pod tasks</p>
                 <ul className="space-y-1">
                   {pod.tasks.map((task) => (
-                    <li key={task} className="flex items-center gap-2 text-xs text-[#8B8781]">
-                      <ChevronRight size={10} className="text-[#6B8F5E] shrink-0" />
+                    <li key={task} className="flex items-center gap-2 text-xs text-[#64748B]">
+                      <ChevronRight size={10} className="text-[#7C3AED] shrink-0" />
                       {task}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="mt-auto pt-3 border-t border-[#E0DDD6] flex items-center justify-between">
+              <div className="mt-auto pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
                 <div>
-                  <span className="text-[#2D2B27] font-mono-brand font-bold text-lg">{formatCurrency(pod.monthlyRate)}</span>
-                  <span className="text-[#B0ADA6] text-xs">/month</span>
+                  <span className="text-[#0F172A] font-mono-brand font-bold text-lg">{formatCurrency(pod.monthlyRate)}</span>
+                  <span className="text-[#94A3B8] text-xs">/month</span>
                 </div>
-                <Button className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] text-xs h-8 font-semibold px-4">
+                <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] text-xs h-8 font-semibold px-4">
                   Deploy Pod
                 </Button>
               </div>

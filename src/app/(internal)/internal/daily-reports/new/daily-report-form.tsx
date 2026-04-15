@@ -132,16 +132,16 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">Daily Report</h2>
-        <p className="text-[#8B8781] text-sm">AI generates the draft. You review and publish.</p>
+        <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">Daily Report</h2>
+        <p className="text-[#64748B] text-sm">AI generates the draft. You review and publish.</p>
       </div>
 
       {/* Engagement selector */}
       <select
         value={engagementId}
         onChange={(e) => { setEngagementId(e.target.value); setReport(null); setSuccess(null) }}
-        className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none transition-colors appearance-none"
-        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23B0ADA6' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
+        className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none transition-colors appearance-none"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
       >
         <option value="">Select an engagement...</option>
         {engagements.map((eng) => (
@@ -157,17 +157,17 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             <p className="font-medium">AI generation failed — manual entry mode</p>
-            <p className="text-xs text-[#8B8781] mt-0.5">Health score computed from metrics. Fill in the text fields manually.</p>
+            <p className="text-xs text-[#64748B] mt-0.5">Health score computed from metrics. Fill in the text fields manually.</p>
           </div>
         </div>
       )}
 
       {/* Loading state */}
       {generating && (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
-          <Loader2 size={28} className="text-[#6B8F5E] animate-spin mx-auto mb-3" />
-          <h3 className="font-heading font-semibold text-[#2D2B27] text-base mb-1">Generating report...</h3>
-          <p className="text-[#8B8781] text-xs">Analyzing engagement signals and drafting your report</p>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+          <Loader2 size={28} className="text-[#7C3AED] animate-spin mx-auto mb-3" />
+          <h3 className="font-heading font-semibold text-[#0F172A] text-base mb-1">Generating report...</h3>
+          <p className="text-[#64748B] text-xs">Analyzing engagement signals and drafting your report</p>
         </div>
       )}
 
@@ -177,8 +177,8 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
           <div className="bg-[#10B981]/10 border border-[#10B981]/20 rounded-xl p-5 flex items-start gap-3">
             <CheckCircle2 size={20} className="text-[#10B981] shrink-0 mt-0.5" />
             <div>
-              <p className="text-[#2D2B27] text-sm font-semibold">Report published. Your client can see it now.</p>
-              <p className="text-[#8B8781] text-xs mt-1">
+              <p className="text-[#0F172A] text-sm font-semibold">Report published. Your client can see it now.</p>
+              <p className="text-[#64748B] text-xs mt-1">
                 {new Date(success.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} — {success.engagement}
               </p>
             </div>
@@ -186,7 +186,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
           {pendingEngagements.length > 0 && (
             <button
               onClick={handleNextEngagement}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#6B8F5E] text-white font-semibold text-sm rounded-lg hover:bg-[#7DA06E] transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#7C3AED] text-white font-semibold text-sm rounded-lg hover:bg-[#8B5CF6] transition-colors"
             >
               {pendingEngagements.length} more engagement{pendingEngagements.length > 1 ? 's' : ''}{' '}still need today&apos;s report
               <ArrowRight size={14} />
@@ -199,7 +199,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
       {report && !success && !generating && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-5">
-            <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 space-y-5">
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 space-y-5">
               {[
                 { key: 'accomplishments', label: 'What we accomplished', value: accomplishments, setter: setAccomplishments, rows: 4 },
                 { key: 'blockers', label: 'Blockers', value: blockers, setter: setBlockers, rows: 3, hint: '(leave empty for "None")' },
@@ -207,12 +207,12 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
               ].map((field) => (
                 <div key={field.key} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-[#2D2B27]">
+                    <label className="text-sm font-medium text-[#0F172A]">
                       {field.label}
-                      {field.hint && <span className="text-[#B0ADA6] text-xs font-normal ml-1">{field.hint}</span>}
+                      {field.hint && <span className="text-[#94A3B8] text-xs font-normal ml-1">{field.hint}</span>}
                     </label>
                     {!editedFields.has(field.key) && field.value && (
-                      <span className="text-[10px] text-[#6B8F5E] bg-[#6B8F5E]/10 rounded px-1.5 py-0.5 flex items-center gap-1">
+                      <span className="text-[10px] text-[#7C3AED] bg-[#7C3AED]/10 rounded px-1.5 py-0.5 flex items-center gap-1">
                         <Sparkles size={9} /> AI generated
                       </span>
                     )}
@@ -221,19 +221,19 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
                     value={field.value}
                     onChange={(e) => { field.setter(e.target.value); markEdited(field.key) }}
                     rows={field.rows}
-                    className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
                   />
                 </div>
               ))}
 
-              <div className="space-y-2 pt-4 border-t border-[#E0DDD6]">
+              <div className="space-y-2 pt-4 border-t border-[#E2E8F0]">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-[#2D2B27]">
+                  <label className="text-sm font-medium text-[#0F172A]">
                     AI Velocity Note
-                    <span className="ml-2 text-[10px] font-normal text-[#B0ADA6] bg-[#EFEDE8] rounded px-1.5 py-0.5">Internal only</span>
+                    <span className="ml-2 text-[10px] font-normal text-[#94A3B8] bg-[#F1F5F9] rounded px-1.5 py-0.5">Internal only</span>
                   </label>
                   {!editedFields.has('ai_velocity_note') && aiVelocityNote && (
-                    <span className="text-[10px] text-[#6B8F5E] bg-[#6B8F5E]/10 rounded px-1.5 py-0.5 flex items-center gap-1">
+                    <span className="text-[10px] text-[#7C3AED] bg-[#7C3AED]/10 rounded px-1.5 py-0.5 flex items-center gap-1">
                       <Sparkles size={9} /> AI generated
                     </span>
                   )}
@@ -242,25 +242,25 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
                   value={aiVelocityNote}
                   onChange={(e) => { setAiVelocityNote(e.target.value); markEdited('ai_velocity_note') }}
                   rows={2}
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
                 />
               </div>
             </div>
 
             {/* PM Notes — human in the loop, at the end, distinct accent */}
-            <div className="bg-[#6B8F5E]/5 border-2 border-[#6B8F5E]/20 rounded-xl p-5 space-y-2">
+            <div className="bg-[#7C3AED]/5 border-2 border-[#7C3AED]/20 rounded-xl p-5 space-y-2">
               <div className="flex items-center gap-2 mb-1">
-                <div className="w-1 h-5 bg-[#6B8F5E] rounded-full" />
-                <label className="text-sm font-semibold text-[#2D2B27]">Your Notes to the Client</label>
+                <div className="w-1 h-5 bg-[#7C3AED] rounded-full" />
+                <label className="text-sm font-semibold text-[#0F172A]">Your Notes to the Client</label>
               </div>
               <Textarea
                 value={pmNotes}
                 onChange={(e) => setPmNotes(e.target.value)}
                 placeholder="Add your own context — things the AI can't know. Client calls, decisions made, relationship context, or anything you want the client to hear directly from you."
                 rows={3}
-                className="bg-white border-[#6B8F5E]/20 text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+                className="bg-white border-[#7C3AED]/20 text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
               />
-              <p className="text-[#8B8781] text-[10px]">This is your voice — it goes directly to the client alongside the AI-generated report.</p>
+              <p className="text-[#64748B] text-[10px]">This is your voice — it goes directly to the client alongside the AI-generated report.</p>
             </div>
 
             {error && (
@@ -273,7 +273,7 @@ export function DailyReportForm({ engagements }: DailyReportFormProps) {
             <Button
               onClick={handlePublish}
               disabled={publishing || !accomplishments.trim() || !planTomorrow.trim()}
-              className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-12 text-base"
+              className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-12 text-base"
             >
               {publishing ? <><Loader2 size={16} className="mr-2 animate-spin" />Publishing...</> : 'Publish to Client'}
             </Button>

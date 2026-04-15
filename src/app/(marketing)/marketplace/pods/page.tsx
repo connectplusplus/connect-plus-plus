@@ -48,26 +48,26 @@ const PODS = [
 
 export default function PodsPage() {
   return (
-    <div className="min-h-screen bg-[#FAFAF7]">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <nav className="flex items-center gap-2 text-sm text-[#B0ADA6] mb-10">
-          <Link href="/" className="flex items-center gap-1.5 hover:text-[#2D2B27] transition-colors">
+        <nav className="flex items-center gap-2 text-sm text-[#94A3B8] mb-10">
+          <Link href="/" className="flex items-center gap-1.5 hover:text-[#0F172A] transition-colors">
             <ArrowLeft size={14} />
             Home
           </Link>
           <span>/</span>
-          <span className="text-[#2D2B27]">Pods</span>
+          <span className="text-[#0F172A]">Pods</span>
         </nav>
 
         <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 border border-[#C9956A]/30 rounded-full px-3 py-1 mb-6">
-            <Zap size={12} className="text-[#C9956A]" />
-            <span className="text-[#C9956A] text-xs font-medium">Pre-configured Teams</span>
+          <div className="inline-flex items-center gap-2 border border-[#EC4899]/30 rounded-full px-3 py-1 mb-6">
+            <Zap size={12} className="text-[#EC4899]" />
+            <span className="text-[#EC4899] text-xs font-medium">Pre-configured Teams</span>
           </div>
-          <h1 className="font-heading font-bold text-4xl md:text-5xl text-[#2D2B27] mb-4">
+          <h1 className="font-heading font-bold text-4xl md:text-5xl text-[#0F172A] mb-4">
             Pods by FullStack
           </h1>
-          <p className="text-[#8B8781] text-lg leading-relaxed">
+          <p className="text-[#64748B] text-lg leading-relaxed">
             Cross-functional engineering teams assembled around a defined capability set. Each pod operates
             as an autonomous delivery unit with an embedded lead — like hiring a team, without the hiring.
             Every pod member is an AI-native engineer with a measured velocity score.
@@ -76,53 +76,53 @@ export default function PodsPage() {
 
         <div className="space-y-8">
           {PODS.map((pod) => (
-            <div key={pod.name} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 hover:border-[#C9956A]/30 transition-colors">
+            <div key={pod.name} className="bg-white border border-[#E2E8F0] rounded-xl p-8 hover:border-[#EC4899]/30 transition-colors">
               <div className="flex flex-col lg:flex-row gap-8">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#C9956A]/10 flex items-center justify-center">
-                      <Users size={18} className="text-[#C9956A]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#EC4899]/10 flex items-center justify-center">
+                      <Users size={18} className="text-[#EC4899]" />
                     </div>
                     <div>
-                      <h2 className="font-heading font-bold text-xl text-[#2D2B27]">{pod.name}</h2>
-                      <p className="text-[#B0ADA6] text-xs">{pod.members} engineers — {pod.roles.join(', ')}</p>
+                      <h2 className="font-heading font-bold text-xl text-[#0F172A]">{pod.name}</h2>
+                      <p className="text-[#94A3B8] text-xs">{pod.members} engineers — {pod.roles.join(', ')}</p>
                     </div>
                   </div>
 
-                  <p className="text-[#8B8781] text-sm leading-relaxed mb-5">{pod.description}</p>
+                  <p className="text-[#64748B] text-sm leading-relaxed mb-5">{pod.description}</p>
 
                   <div className="flex flex-wrap gap-1.5 mb-5">
                     {pod.skills.map((s) => (
-                      <span key={s} className="text-xs bg-[#EFEDE8] text-[#8B8781] rounded px-2 py-1 border border-[#E0DDD6]">{s}</span>
+                      <span key={s} className="text-xs bg-[#F1F5F9] text-[#64748B] rounded px-2 py-1 border border-[#E2E8F0]">{s}</span>
                     ))}
                   </div>
 
-                  <h3 className="text-[#2D2B27] text-sm font-semibold mb-3">What this pod delivers:</h3>
+                  <h3 className="text-[#0F172A] text-sm font-semibold mb-3">What this pod delivers:</h3>
                   <ul className="space-y-2 mb-5">
                     {pod.tasks.map((task) => (
-                      <li key={task} className="flex items-start gap-2.5 text-sm text-[#8B8781]">
-                        <CheckCircle2 size={14} className="text-[#6B8F5E] mt-0.5 shrink-0" />
+                      <li key={task} className="flex items-start gap-2.5 text-sm text-[#64748B]">
+                        <CheckCircle2 size={14} className="text-[#7C3AED] mt-0.5 shrink-0" />
                         {task}
                       </li>
                     ))}
                   </ul>
 
-                  <p className="text-[#B0ADA6] text-xs"><strong className="text-[#8B8781]">Ideal for:</strong> {pod.ideal}</p>
+                  <p className="text-[#94A3B8] text-xs"><strong className="text-[#64748B]">Ideal for:</strong> {pod.ideal}</p>
                 </div>
 
                 <div className="lg:w-64 shrink-0">
-                  <div className="bg-[#F5F3EE] border border-[#E0DDD6] rounded-xl p-6 text-center">
-                    <p className="text-[#B0ADA6] text-xs uppercase tracking-widest mb-2">Monthly Rate</p>
-                    <p className="font-mono-brand font-bold text-3xl text-[#2D2B27] mb-1">{pod.monthlyRate}</p>
-                    <p className="text-[#B0ADA6] text-xs mb-5">{pod.members} engineers / month</p>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 text-center">
+                    <p className="text-[#94A3B8] text-xs uppercase tracking-widest mb-2">Monthly Rate</p>
+                    <p className="font-mono-brand font-bold text-3xl text-[#0F172A] mb-1">{pod.monthlyRate}</p>
+                    <p className="text-[#94A3B8] text-xs mb-5">{pod.members} engineers / month</p>
                     <a
                       href="mailto:new_customer@fullstacklabs.co?subject=Pod%20Inquiry:%20${encodeURIComponent(pod.name)}"
-                      className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#6B8F5E] text-white font-semibold text-sm rounded-lg hover:bg-[#7DA06E] transition-colors"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#7C3AED] text-white font-semibold text-sm rounded-lg hover:bg-[#8B5CF6] transition-colors"
                     >
                       <ExternalLink size={13} />
                       Contact FullStack
                     </a>
-                    <p className="text-[#B0ADA6] text-[10px] mt-3">1-month minimum, rolling</p>
+                    <p className="text-[#94A3B8] text-[10px] mt-3">1-month minimum, rolling</p>
                   </div>
                 </div>
               </div>
@@ -130,14 +130,14 @@ export default function PodsPage() {
           ))}
         </div>
 
-        <div className="mt-12 bg-gradient-to-br from-[#6B8F5E]/5 via-[#9B8B6E]/5 to-[#D4A574]/5 border border-[#6B8F5E]/20 rounded-xl p-8 text-center">
-          <h3 className="font-heading font-bold text-xl text-[#2D2B27] mb-2">Need a custom pod configuration?</h3>
-          <p className="text-[#8B8781] text-sm mb-5 max-w-lg mx-auto">
+        <div className="mt-12 bg-gradient-to-br from-[#7C3AED]/5 via-[#6366F1]/5 to-[#EC4899]/5 border border-[#7C3AED]/20 rounded-xl p-8 text-center">
+          <h3 className="font-heading font-bold text-xl text-[#0F172A] mb-2">Need a custom pod configuration?</h3>
+          <p className="text-[#64748B] text-sm mb-5 max-w-lg mx-auto">
             We can assemble a pod with any combination of skills and team size. Tell us what you need and we'll configure the right team.
           </p>
           <a
             href="mailto:new_customer@fullstacklabs.co?subject=Custom%20Pod%20Request"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#6B8F5E] text-white font-semibold text-sm rounded-lg hover:bg-[#7DA06E] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#7C3AED] text-white font-semibold text-sm rounded-lg hover:bg-[#8B5CF6] transition-colors"
           >
             <ExternalLink size={13} />
             Contact FullStack to get onboarded

@@ -25,11 +25,11 @@ export default async function DailyReportsListPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">My Daily Reports</h2>
-          <p className="text-[#8B8781] text-sm">{(reports ?? []).length} reports submitted</p>
+          <h2 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">My Daily Reports</h2>
+          <p className="text-[#64748B] text-sm">{(reports ?? []).length} reports submitted</p>
         </div>
         <Link href="/internal/daily-reports/new">
-          <Button className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold">
+          <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
             <Plus size={14} className="mr-2" />
             New Report
           </Button>
@@ -37,14 +37,14 @@ export default async function DailyReportsListPage() {
       </div>
 
       {(!reports || reports.length === 0) ? (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-12 text-center">
-          <div className="w-14 h-14 rounded-full bg-[#6B8F5E]/10 flex items-center justify-center mx-auto mb-4">
-            <FileText size={24} className="text-[#6B8F5E]" />
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-12 text-center">
+          <div className="w-14 h-14 rounded-full bg-[#7C3AED]/10 flex items-center justify-center mx-auto mb-4">
+            <FileText size={24} className="text-[#7C3AED]" />
           </div>
-          <h3 className="font-heading font-semibold text-[#2D2B27] text-lg mb-2">No reports yet</h3>
-          <p className="text-[#8B8781] text-sm mb-5">Submit your first daily report to get started.</p>
+          <h3 className="font-heading font-semibold text-[#0F172A] text-lg mb-2">No reports yet</h3>
+          <p className="text-[#64748B] text-sm mb-5">Submit your first daily report to get started.</p>
           <Link href="/internal/daily-reports/new">
-            <Button className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold">
+            <Button className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold">
               Write your first report
             </Button>
           </Link>
@@ -64,11 +64,11 @@ export default async function DailyReportsListPage() {
             })
 
             return (
-              <div key={report.id} className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5 hover:border-[#6B8F5E]/20 transition-colors">
+              <div key={report.id} className="bg-white border border-[#E2E8F0] rounded-xl p-5 hover:border-[#7C3AED]/20 transition-colors">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-[#2D2B27] text-sm font-semibold">{dateStr}</p>
-                    <p className="text-[#6B8F5E] text-xs font-medium mt-0.5">
+                    <p className="text-[#0F172A] text-sm font-semibold">{dateStr}</p>
+                    <p className="text-[#7C3AED] text-xs font-medium mt-0.5">
                       {companyName ? `${companyName} — ` : ''}{engTitle}
                     </p>
                   </div>
@@ -84,7 +84,7 @@ export default async function DailyReportsListPage() {
                     </span>
                   </div>
                 </div>
-                <p className="text-[#8B8781] text-sm line-clamp-2">{report.accomplishments}</p>
+                <p className="text-[#64748B] text-sm line-clamp-2">{report.accomplishments}</p>
                 {report.blockers && (
                   <p className="text-[#EF4444] text-xs mt-2">Blocker: {report.blockers.slice(0, 100)}{report.blockers.length > 100 ? '...' : ''}</p>
                 )}

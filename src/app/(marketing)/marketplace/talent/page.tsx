@@ -25,22 +25,22 @@ export default async function TalentPage() {
   const talentProfiles = (profiles as TalentProfile[]) ?? []
 
   return (
-    <div className="min-h-screen bg-[#FAFAF7]">
+    <div className="min-h-screen bg-white">
       {/* Page header */}
-      <div className="border-b border-[#E0DDD6] bg-[#FAFAF7]">
+      <div className="border-b border-[#E2E8F0] bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 border border-[#E0DDD6] bg-[#FAFAF7] rounded-full px-3 py-1.5 mb-6">
-              <span className="text-[#D4A574] text-xs font-medium tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 border border-[#E2E8F0] bg-white rounded-full px-3 py-1.5 mb-6">
+              <span className="text-[#EC4899] text-xs font-medium tracking-wide uppercase">
                 Individual Talent
               </span>
             </div>
             <h1 className="font-heading font-bold text-4xl md:text-5xl mb-4">
               Engineers with an
               <br />
-              <span className="text-[#6B8F5E]">AI velocity edge.</span>
+              <span className="text-[#7C3AED]">AI velocity edge.</span>
             </h1>
-            <p className="text-[#8B8781] text-lg leading-relaxed">
+            <p className="text-[#64748B] text-lg leading-relaxed">
               Every engineer on Glassbox ships 1.8x–2.7x faster than traditional teams. Browse
               profiles, filter by skill, and request the right engineer for your project.
             </p>
@@ -52,8 +52,8 @@ export default async function TalentPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {talentProfiles.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-[#8B8781] text-lg mb-2">No talent profiles available yet.</p>
-            <p className="text-[#B0ADA6] text-sm">
+            <p className="text-[#64748B] text-lg mb-2">No talent profiles available yet.</p>
+            <p className="text-[#94A3B8] text-sm">
               Run the seed script in your Supabase project to populate talent profiles.
             </p>
           </div>

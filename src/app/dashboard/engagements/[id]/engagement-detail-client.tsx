@@ -66,7 +66,7 @@ interface EngagementDetailClientProps {
 }
 
 function HealthRing({ score }: { score: number }) {
-  const color = score >= 80 ? '#6B8F5E' : score >= 70 ? '#FBBF24' : '#F87171'
+  const color = score >= 80 ? '#7C3AED' : score >= 70 ? '#FBBF24' : '#F87171'
   const label = score >= 80 ? 'Excellent' : score >= 70 ? 'On Track' : 'At Risk'
   const radius = 36
   const circ = 2 * Math.PI * radius
@@ -87,11 +87,11 @@ function HealthRing({ score }: { score: number }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-mono-brand font-bold text-xl" style={{ color }}>{score}</span>
-          <span className="text-[#B0ADA6] text-[9px] uppercase tracking-wide">/ 100</span>
+          <span className="text-[#94A3B8] text-[9px] uppercase tracking-wide">/ 100</span>
         </div>
       </div>
       <span className="text-xs font-medium" style={{ color }}>{label}</span>
-      <span className="text-[#B0ADA6] text-[10px]">Project Health</span>
+      <span className="text-[#94A3B8] text-[10px]">Project Health</span>
     </div>
   )
 }
@@ -143,33 +143,33 @@ export function EngagementDetailClient({
     <div className="max-w-5xl mx-auto space-y-6">
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-2xl p-6">
+      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-3">
               <EngagementStatusBadge status={engagement.status} />
             </div>
-            <h1 className="font-heading font-bold text-2xl text-[#2D2B27] leading-snug mb-4">
+            <h1 className="font-heading font-bold text-2xl text-[#0F172A] leading-snug mb-4">
               {engagement.title}
             </h1>
             {/* Key metrics row */}
             <div className="flex flex-wrap items-center gap-5">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-[#6B8F5E]/10 rounded-lg flex items-center justify-center">
-                  <TrendingUp size={13} className="text-[#6B8F5E]" strokeWidth={2} />
+                <div className="w-7 h-7 bg-[#7C3AED]/10 rounded-lg flex items-center justify-center">
+                  <TrendingUp size={13} className="text-[#7C3AED]" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[#B0ADA6] text-[10px] uppercase tracking-wide">Progress</p>
-                  <p className="text-[#2D2B27] text-sm font-mono-brand font-semibold">{progressPct}%</p>
+                  <p className="text-[#94A3B8] text-[10px] uppercase tracking-wide">Progress</p>
+                  <p className="text-[#0F172A] text-sm font-mono-brand font-semibold">{progressPct}%</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-[#D4A574]/10 rounded-lg flex items-center justify-center">
-                  <Zap size={13} className="text-[#D4A574]" strokeWidth={2} />
+                <div className="w-7 h-7 bg-[#EC4899]/10 rounded-lg flex items-center justify-center">
+                  <Zap size={13} className="text-[#EC4899]" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[#B0ADA6] text-[10px] uppercase tracking-wide">AI Velocity</p>
-                  <p className="text-[#2D2B27] text-sm font-mono-brand font-semibold">{aiVelocity}x</p>
+                  <p className="text-[#94A3B8] text-[10px] uppercase tracking-wide">AI Velocity</p>
+                  <p className="text-[#0F172A] text-sm font-mono-brand font-semibold">{aiVelocity}x</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -177,8 +177,8 @@ export function EngagementDetailClient({
                   <Clock size={13} className="text-[#60A5FA]" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[#B0ADA6] text-[10px] uppercase tracking-wide">Days Left</p>
-                  <p className="text-[#2D2B27] text-sm font-mono-brand font-semibold">
+                  <p className="text-[#94A3B8] text-[10px] uppercase tracking-wide">Days Left</p>
+                  <p className="text-[#0F172A] text-sm font-mono-brand font-semibold">
                     {daysRemaining !== null ? `${daysRemaining}d` : '—'}
                   </p>
                 </div>
@@ -188,8 +188,8 @@ export function EngagementDetailClient({
                   <DollarSign size={13} className="text-[#34D399]" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[#B0ADA6] text-[10px] uppercase tracking-wide">Budget</p>
-                  <p className="text-[#2D2B27] text-sm font-mono-brand font-semibold">
+                  <p className="text-[#94A3B8] text-[10px] uppercase tracking-wide">Budget</p>
+                  <p className="text-[#0F172A] text-sm font-mono-brand font-semibold">
                     {engagement.price_cents ? formatCents(engagement.price_cents) : 'TBD'}
                   </p>
                 </div>
@@ -206,14 +206,14 @@ export function EngagementDetailClient({
 
       {/* ── Phase Timeline ──────────────────────────────────────────────────── */}
       {milestones.length > 0 && (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl px-6 py-5">
-          <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest mb-4">How it unfolds</p>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl px-6 py-5">
+          <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest mb-4">How it unfolds</p>
           <MilestoneTimeline milestones={milestones} />
         </div>
       )}
 
       {/* ── Tabs ─────────────────────────────────────────────────────────────── */}
-      <div className="border-b border-[#E0DDD6]">
+      <div className="border-b border-[#E2E8F0]">
         <div className="flex gap-1">
           {tabs.map((tab) => (
             <button
@@ -221,8 +221,8 @@ export function EngagementDetailClient({
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors duration-150 -mb-px ${
                 activeTab === tab.id
-                  ? 'border-[#6B8F5E] text-[#6B8F5E]'
-                  : 'border-transparent text-[#8B8781] hover:text-[#2D2B27]'
+                  ? 'border-[#7C3AED] text-[#7C3AED]'
+                  : 'border-transparent text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
               <tab.icon size={14} strokeWidth={1.5} />
@@ -240,18 +240,18 @@ export function EngagementDetailClient({
           <div className="lg:col-span-2 space-y-6">
 
             {/* Progress bar */}
-            <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-heading font-semibold text-[#2D2B27] text-sm">Overall Progress</h3>
-                <span className="font-mono-brand text-[#6B8F5E] font-semibold text-sm">{progressPct}%</span>
+                <h3 className="font-heading font-semibold text-[#0F172A] text-sm">Overall Progress</h3>
+                <span className="font-mono-brand text-[#7C3AED] font-semibold text-sm">{progressPct}%</span>
               </div>
-              <div className="h-2.5 bg-[#EFEDE8] rounded-full overflow-hidden mb-3">
+              <div className="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden mb-3">
                 <div
-                  className="h-full bg-[#6B8F5E] rounded-full transition-all duration-700"
+                  className="h-full bg-[#7C3AED] rounded-full transition-all duration-700"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
-              <div className="flex items-center justify-between text-xs text-[#B0ADA6]">
+              <div className="flex items-center justify-between text-xs text-[#94A3B8]">
                 <span>{completedMilestones} of {totalMilestones} milestones completed</span>
                 {currentMilestone && (
                   <span className="text-[#FBBF24]">Active: {currentMilestone.title}</span>
@@ -260,15 +260,15 @@ export function EngagementDetailClient({
             </div>
 
             {/* Milestone summary */}
-            <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-              <h3 className="font-heading font-semibold text-[#2D2B27] text-sm mb-4 flex items-center gap-2">
-                <Layers size={14} strokeWidth={1.5} className="text-[#8B8781]" />
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+              <h3 className="font-heading font-semibold text-[#0F172A] text-sm mb-4 flex items-center gap-2">
+                <Layers size={14} strokeWidth={1.5} className="text-[#64748B]" />
                 Milestones
               </h3>
               <div className="space-y-3">
                 {milestones.map((m) => {
                   const statusConfig = {
-                    completed: { color: '#6B8F5E', label: 'Completed', dot: 'bg-[#6B8F5E]' },
+                    completed: { color: '#7C3AED', label: 'Completed', dot: 'bg-[#7C3AED]' },
                     in_progress: { color: '#FBBF24', label: 'In Progress', dot: 'bg-[#FBBF24]' },
                     in_review: { color: '#60A5FA', label: 'In Review', dot: 'bg-[#60A5FA]' },
                     upcoming: { color: '#6B7280', label: 'Upcoming', dot: 'bg-[#E2E8F0]' },
@@ -277,9 +277,9 @@ export function EngagementDetailClient({
                   return (
                     <div key={m.id} className="flex items-center gap-3">
                       <div className={`w-2 h-2 rounded-full shrink-0 ${statusConfig.dot}`} />
-                      <span className="text-[#2D2B27] text-sm flex-1 truncate">{m.title}</span>
+                      <span className="text-[#0F172A] text-sm flex-1 truncate">{m.title}</span>
                       {m.due_date && (
-                        <span className="text-[#B0ADA6] text-xs shrink-0">
+                        <span className="text-[#94A3B8] text-xs shrink-0">
                           {new Date(m.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </span>
                       )}
@@ -294,27 +294,27 @@ export function EngagementDetailClient({
 
             {/* Scope */}
             {engagement.scope_summary && (
-              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-                <h3 className="font-heading font-semibold text-[#2D2B27] text-sm mb-3">Scope Summary</h3>
-                <p className="text-[#8B8781] text-sm leading-relaxed">{engagement.scope_summary}</p>
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+                <h3 className="font-heading font-semibold text-[#0F172A] text-sm mb-3">Scope Summary</h3>
+                <p className="text-[#64748B] text-sm leading-relaxed">{engagement.scope_summary}</p>
               </div>
             )}
 
             {/* Timeline */}
-            <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-              <h3 className="font-heading font-semibold text-[#2D2B27] text-sm mb-4">Timeline</h3>
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+              <h3 className="font-heading font-semibold text-[#0F172A] text-sm mb-4">Timeline</h3>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: 'Start Date', value: startDate, icon: Calendar },
                   { label: 'Target End', value: targetEndDate, icon: Calendar },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#EFEDE8] rounded-lg flex items-center justify-center shrink-0">
-                      <item.icon size={14} className="text-[#8B8781]" strokeWidth={1.5} />
+                    <div className="w-8 h-8 bg-[#F1F5F9] rounded-lg flex items-center justify-center shrink-0">
+                      <item.icon size={14} className="text-[#64748B]" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <p className="text-[#B0ADA6] text-xs">{item.label}</p>
-                      <p className="text-[#2D2B27] text-sm font-medium">{item.value ?? '—'}</p>
+                      <p className="text-[#94A3B8] text-xs">{item.label}</p>
+                      <p className="text-[#0F172A] text-sm font-medium">{item.value ?? '—'}</p>
                     </div>
                   </div>
                 ))}
@@ -327,12 +327,12 @@ export function EngagementDetailClient({
 
             {/* Project Lead card */}
             {projectLead && (
-              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-                <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest mb-4">
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+                <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest mb-4">
                   Project Delivery Lead
                 </p>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-[#6B8F5E]/20 shrink-0">
+                  <div className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-[#7C3AED]/20 shrink-0">
                     <Image
                       src={projectLead.photo}
                       alt={projectLead.name}
@@ -342,15 +342,15 @@ export function EngagementDetailClient({
                     />
                   </div>
                   <div>
-                    <p className="text-[#2D2B27] font-semibold text-sm">{projectLead.name}</p>
-                    <p className="text-[#8B8781] text-xs">{projectLead.title}</p>
+                    <p className="text-[#0F172A] font-semibold text-sm">{projectLead.name}</p>
+                    <p className="text-[#64748B] text-xs">{projectLead.title}</p>
                   </div>
                 </div>
                 <a
                   href={projectLead.calendly}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 w-full text-xs font-semibold text-white bg-[#6B8F5E] hover:bg-[#7DA06E] px-3 py-2 rounded-lg transition-colors duration-150"
+                  className="flex items-center justify-center gap-1.5 w-full text-xs font-semibold text-white bg-[#7C3AED] hover:bg-[#8B5CF6] px-3 py-2 rounded-lg transition-colors duration-150"
                 >
                   <ExternalLink size={11} strokeWidth={2.5} />
                   Schedule Project Review
@@ -360,31 +360,31 @@ export function EngagementDetailClient({
 
             {/* Team */}
             {team.length > 0 && (
-              <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-                <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest mb-4 flex items-center gap-2">
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+                <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest mb-4 flex items-center gap-2">
                   <Users size={11} />
                   Engineering Team
                 </p>
                 <div className="space-y-3">
                   {team.map((member) => (
                     <div key={member.name} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] flex items-center justify-center text-[#6B8F5E] font-mono-brand text-xs font-bold shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] flex items-center justify-center text-[#7C3AED] font-mono-brand text-xs font-bold shrink-0">
                         {member.initials}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[#2D2B27] text-sm font-medium truncate">{member.name}</p>
-                        <p className="text-[#B0ADA6] text-[11px] truncate">{member.role}</p>
+                        <p className="text-[#0F172A] text-sm font-medium truncate">{member.name}</p>
+                        <p className="text-[#94A3B8] text-[11px] truncate">{member.role}</p>
                       </div>
                       <div className="shrink-0 text-right">
-                        <p className="text-[#6B8F5E] font-mono-brand text-xs font-semibold">{member.velocity}x</p>
-                        <p className="text-[#B0ADA6] text-[10px]">velocity</p>
+                        <p className="text-[#7C3AED] font-mono-brand text-xs font-semibold">{member.velocity}x</p>
+                        <p className="text-[#94A3B8] text-[10px]">velocity</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-[#E0DDD6] flex items-center justify-between">
-                  <span className="text-[#8B8781] text-xs">Team avg velocity</span>
-                  <span className="text-[#6B8F5E] font-mono-brand text-sm font-bold">
+                <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex items-center justify-between">
+                  <span className="text-[#64748B] text-xs">Team avg velocity</span>
+                  <span className="text-[#7C3AED] font-mono-brand text-sm font-bold">
                     {team.length > 0
                       ? (team.reduce((s, m) => s + m.velocity, 0) / team.length).toFixed(1)
                       : aiVelocity}x
@@ -394,16 +394,16 @@ export function EngagementDetailClient({
             )}
 
             {/* AI acceleration */}
-            <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5">
-              <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2">
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+              <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2">
                 <Zap size={11} />
                 AI Acceleration
               </p>
               <div className="flex items-end gap-2 mb-2">
-                <span className="font-mono-brand font-bold text-3xl text-[#6B8F5E]">{aiVelocity}x</span>
-                <span className="text-[#8B8781] text-sm mb-1">faster delivery</span>
+                <span className="font-mono-brand font-bold text-3xl text-[#7C3AED]">{aiVelocity}x</span>
+                <span className="text-[#64748B] text-sm mb-1">faster delivery</span>
               </div>
-              <p className="text-[#B0ADA6] text-xs leading-relaxed">
+              <p className="text-[#94A3B8] text-xs leading-relaxed">
                 AI-native workflows are accelerating this engagement {aiVelocity}× vs. traditional delivery.
               </p>
             </div>
@@ -421,7 +421,7 @@ export function EngagementDetailClient({
       )}
 
       {activeTab === 'messages' && (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-5" style={{ height: '600px', display: 'flex', flexDirection: 'column' }}>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-5" style={{ height: '600px', display: 'flex', flexDirection: 'column' }}>
           <MessageThread
             messages={messages}
             engagementId={engagement.id}
@@ -471,7 +471,7 @@ const DOC_TYPE_CONFIG: Record<string, { color: string; label: string }> = {
   docx: { color: '#60A5FA', label: 'DOCX' },
   xlsx: { color: '#34D399', label: 'XLSX' },
   pptx: { color: '#FB923C', label: 'PPTX' },
-  figma: { color: '#D4A574', label: 'FIG' },
+  figma: { color: '#EC4899', label: 'FIG' },
   md: { color: '#9CA3AF', label: 'MD' },
 }
 
@@ -527,16 +527,16 @@ function ProjectDocsTab() {
   return (
     <div className="flex gap-4 h-[600px]">
       {/* Left: folder nav */}
-      <div className="w-64 shrink-0 bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl flex flex-col overflow-hidden">
-        <div className="p-3 border-b border-[#E0DDD6]">
+      <div className="w-64 shrink-0 bg-white border border-[#E2E8F0] rounded-xl flex flex-col overflow-hidden">
+        <div className="p-3 border-b border-[#E2E8F0]">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0ADA6]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search documents..."
-              className="w-full h-9 pl-9 pr-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:outline-none transition-colors"
+              className="w-full h-9 pl-9 pr-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:outline-none transition-colors"
             />
           </div>
         </div>
@@ -545,18 +545,18 @@ function ProjectDocsTab() {
           <button
             onClick={() => setActiveFolder(null)}
             className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-              !activeFolder ? 'bg-[#6B8F5E]/10 border-r-2 border-[#6B8F5E]' : 'hover:bg-[#EFEDE8]'
+              !activeFolder ? 'bg-[#7C3AED]/10 border-r-2 border-[#7C3AED]' : 'hover:bg-[#F1F5F9]'
             }`}
           >
-            <Folder size={14} className={!activeFolder ? 'text-[#6B8F5E]' : 'text-[#B0ADA6]'} />
-            <span className={`text-sm font-medium ${!activeFolder ? 'text-[#6B8F5E]' : 'text-[#2D2B27]'}`}>
+            <Folder size={14} className={!activeFolder ? 'text-[#7C3AED]' : 'text-[#94A3B8]'} />
+            <span className={`text-sm font-medium ${!activeFolder ? 'text-[#7C3AED]' : 'text-[#0F172A]'}`}>
               All Documents
             </span>
-            <span className="text-[#B0ADA6] text-xs ml-auto">{DEMO_DOCS.length}</span>
+            <span className="text-[#94A3B8] text-xs ml-auto">{DEMO_DOCS.length}</span>
           </button>
 
           <div className="px-4 py-2">
-            <p className="text-[#B0ADA6] text-[10px] uppercase tracking-widest font-medium">Folders</p>
+            <p className="text-[#94A3B8] text-[10px] uppercase tracking-widest font-medium">Folders</p>
           </div>
 
           {folders.map((folder) => {
@@ -567,14 +567,14 @@ function ProjectDocsTab() {
                 key={folder}
                 onClick={() => setActiveFolder(folder)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
-                  isActive ? 'bg-[#6B8F5E]/10 border-r-2 border-[#6B8F5E]' : 'hover:bg-[#EFEDE8]'
+                  isActive ? 'bg-[#7C3AED]/10 border-r-2 border-[#7C3AED]' : 'hover:bg-[#F1F5F9]'
                 }`}
               >
-                <FolderOpen size={14} className={isActive ? 'text-[#6B8F5E]' : 'text-[#B0ADA6]'} />
-                <span className={`text-sm truncate ${isActive ? 'text-[#6B8F5E]' : 'text-[#8B8781]'}`}>
+                <FolderOpen size={14} className={isActive ? 'text-[#7C3AED]' : 'text-[#94A3B8]'} />
+                <span className={`text-sm truncate ${isActive ? 'text-[#7C3AED]' : 'text-[#64748B]'}`}>
                   {folder}
                 </span>
-                <span className="text-[#B0ADA6] text-xs ml-auto shrink-0">{count}</span>
+                <span className="text-[#94A3B8] text-xs ml-auto shrink-0">{count}</span>
               </button>
             )
           })}
@@ -582,16 +582,16 @@ function ProjectDocsTab() {
       </div>
 
       {/* Right: document list */}
-      <div className="flex-1 bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-[#E0DDD6]">
-          <h3 className="font-heading font-semibold text-[#2D2B27] text-sm">
+      <div className="flex-1 bg-white border border-[#E2E8F0] rounded-xl overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#E2E8F0]">
+          <h3 className="font-heading font-semibold text-[#0F172A] text-sm">
             {activeFolder ?? 'All Documents'}
           </h3>
-          <span className="text-[#B0ADA6] text-xs">{filtered.length} document{filtered.length !== 1 ? 's' : ''}</span>
+          <span className="text-[#94A3B8] text-xs">{filtered.length} document{filtered.length !== 1 ? 's' : ''}</span>
         </div>
 
         {/* Column headers */}
-        <div className="flex items-center gap-3 px-5 py-2 border-b border-[#E0DDD6] bg-[#F5F3EE] text-[10px] text-[#B0ADA6] uppercase tracking-wider">
+        <div className="flex items-center gap-3 px-5 py-2 border-b border-[#E2E8F0] bg-[#F8FAFC] text-[10px] text-[#94A3B8] uppercase tracking-wider">
           <span className="flex-1">Document</span>
           <span className="w-16 text-center">Type</span>
           <span className="w-20 text-right">Size</span>
@@ -601,7 +601,7 @@ function ProjectDocsTab() {
 
         <div className="flex-1 overflow-y-auto">
           {filtered.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-[#B0ADA6] text-sm">
+            <div className="flex items-center justify-center h-full text-[#94A3B8] text-sm">
               No documents match your search.
             </div>
           ) : (
@@ -610,14 +610,14 @@ function ProjectDocsTab() {
               return (
                 <div
                   key={doc.id}
-                  className="flex items-center gap-3 px-5 py-3 border-b border-[#E0DDD6] hover:bg-[#EFEDE8] transition-colors group"
+                  className="flex items-center gap-3 px-5 py-3 border-b border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors group"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <File size={13} className="text-[#8B8781] shrink-0" />
-                      <span className="text-[#2D2B27] text-sm font-medium truncate">{doc.name}</span>
+                      <File size={13} className="text-[#64748B] shrink-0" />
+                      <span className="text-[#0F172A] text-sm font-medium truncate">{doc.name}</span>
                     </div>
-                    <p className="text-[#B0ADA6] text-xs truncate pl-5">{doc.description}</p>
+                    <p className="text-[#94A3B8] text-xs truncate pl-5">{doc.description}</p>
                   </div>
                   <span
                     className="w-16 text-center text-[10px] font-bold rounded px-2 py-1 shrink-0"
@@ -625,11 +625,11 @@ function ProjectDocsTab() {
                   >
                     {typeConfig.label}
                   </span>
-                  <span className="w-20 text-right text-[#B0ADA6] text-xs shrink-0">{doc.size}</span>
-                  <span className="w-24 text-right text-[#B0ADA6] text-xs shrink-0">
+                  <span className="w-20 text-right text-[#94A3B8] text-xs shrink-0">{doc.size}</span>
+                  <span className="w-24 text-right text-[#94A3B8] text-xs shrink-0">
                     {new Date(doc.uploadedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
-                  <button className="w-10 flex items-center justify-center text-[#B0ADA6] hover:text-[#6B8F5E] transition-colors opacity-0 group-hover:opacity-100 shrink-0">
+                  <button className="w-10 flex items-center justify-center text-[#94A3B8] hover:text-[#7C3AED] transition-colors opacity-0 group-hover:opacity-100 shrink-0">
                     <Download size={14} />
                   </button>
                 </div>
@@ -815,22 +815,22 @@ function DailyReportsTab({
   return (
     <div className="flex gap-4 h-[600px]">
       {/* Left: report list */}
-      <div className="w-80 shrink-0 bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl flex flex-col overflow-hidden">
-        <div className="p-3 border-b border-[#E0DDD6]">
+      <div className="w-80 shrink-0 bg-white border border-[#E2E8F0] rounded-xl flex flex-col overflow-hidden">
+        <div className="p-3 border-b border-[#E2E8F0]">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0ADA6]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
             <input
               type="text"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setSelectedReport(null) }}
               placeholder="Search reports..."
-              className="w-full h-9 pl-9 pr-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:outline-none transition-colors"
+              className="w-full h-9 pl-9 pr-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:outline-none transition-colors"
             />
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
           {filtered.length === 0 ? (
-            <div className="p-4 text-center text-[#B0ADA6] text-sm">No reports match your search.</div>
+            <div className="p-4 text-center text-[#94A3B8] text-sm">No reports match your search.</div>
           ) : (
             filtered.map((report) => {
               const isActive = activeReport?.id === report.id
@@ -839,19 +839,19 @@ function DailyReportsTab({
                 <button
                   key={report.id}
                   onClick={() => setSelectedReport(report.id)}
-                  className={`w-full text-left px-4 py-3 border-b border-[#E0DDD6] transition-colors ${
-                    isActive ? 'bg-[#6B8F5E]/10 border-l-2 border-l-[#6B8F5E]' : 'hover:bg-[#EFEDE8]'
+                  className={`w-full text-left px-4 py-3 border-b border-[#E2E8F0] transition-colors ${
+                    isActive ? 'bg-[#7C3AED]/10 border-l-2 border-l-[#7C3AED]' : 'hover:bg-[#F1F5F9]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm font-medium ${isActive ? 'text-[#6B8F5E]' : 'text-[#2D2B27]'}`}>
+                    <span className={`text-sm font-medium ${isActive ? 'text-[#7C3AED]' : 'text-[#0F172A]'}`}>
                       {date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                     </span>
-                    <span className="text-[#B0ADA6] text-xs">
+                    <span className="text-[#94A3B8] text-xs">
                       {date.toLocaleDateString('en-US', { year: 'numeric' })}
                     </span>
                   </div>
-                  <p className="text-[#8B8781] text-xs line-clamp-2">{report.summary}</p>
+                  <p className="text-[#64748B] text-xs line-clamp-2">{report.summary}</p>
                   {report.blockers.length > 0 && (
                     <span className="inline-block mt-1.5 text-[9px] font-semibold text-[#F87171] bg-[#F87171]/10 border border-[#F87171]/20 rounded px-1.5 py-0.5">
                       {report.blockers.length} blocker{report.blockers.length > 1 ? 's' : ''}
@@ -865,36 +865,36 @@ function DailyReportsTab({
       </div>
 
       {/* Right: report detail */}
-      <div className="flex-1 bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl overflow-y-auto">
+      <div className="flex-1 bg-white border border-[#E2E8F0] rounded-xl overflow-y-auto">
         {activeReport ? (
           <div className="p-6 space-y-6">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-heading font-semibold text-xl text-[#2D2B27]">
+                <h3 className="font-heading font-semibold text-xl text-[#0F172A]">
                   Daily Report — {new Date(activeReport.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                 </h3>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded bg-[#6B8F5E]/10 flex items-center justify-center">
-                  <FileText size={12} className="text-[#6B8F5E]" />
+                <div className="w-6 h-6 rounded bg-[#7C3AED]/10 flex items-center justify-center">
+                  <FileText size={12} className="text-[#7C3AED]" />
                 </div>
-                <span className="text-[#8B8781] text-sm">{activeReport.author} — Project Delivery Lead</span>
+                <span className="text-[#64748B] text-sm">{activeReport.author} — Project Delivery Lead</span>
               </div>
             </div>
 
             <div>
-              <p className="text-[#3D3A35] text-sm leading-relaxed">{activeReport.summary}</p>
+              <p className="text-[#1E293B] text-sm leading-relaxed">{activeReport.summary}</p>
             </div>
 
             <div>
-              <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 size={14} className="text-[#6B8F5E]" />
+              <h4 className="text-[#0F172A] text-sm font-semibold mb-3 flex items-center gap-2">
+                <CheckCircle2 size={14} className="text-[#7C3AED]" />
                 Completed Today
               </h4>
               <ul className="space-y-2">
                 {activeReport.highlights.map((h, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#8B8781]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#6B8F5E] mt-1.5 shrink-0" />
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#64748B]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] mt-1.5 shrink-0" />
                     {h}
                   </li>
                 ))}
@@ -902,7 +902,7 @@ function DailyReportsTab({
             </div>
 
             <div>
-              <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
+              <h4 className="text-[#0F172A] text-sm font-semibold mb-3 flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#F87171]/20 flex items-center justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F87171]" />
                 </span>
@@ -918,18 +918,18 @@ function DailyReportsTab({
                   ))}
                 </ul>
               ) : (
-                <p className="text-[#B0ADA6] text-sm italic">No blockers reported.</p>
+                <p className="text-[#94A3B8] text-sm italic">No blockers reported.</p>
               )}
             </div>
 
             <div>
-              <h4 className="text-[#2D2B27] text-sm font-semibold mb-3 flex items-center gap-2">
+              <h4 className="text-[#0F172A] text-sm font-semibold mb-3 flex items-center gap-2">
                 <ChevronRight size={14} className="text-[#60A5FA]" />
                 Plan for Tomorrow
               </h4>
               <ul className="space-y-2">
                 {activeReport.tomorrow.map((t, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#8B8781]">
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#64748B]">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#60A5FA] mt-1.5 shrink-0" />
                     {t}
                   </li>
@@ -938,16 +938,16 @@ function DailyReportsTab({
             </div>
 
             {activeReport.pm_notes && (
-              <div className="bg-[#6B8F5E]/5 border-l-2 border-[#6B8F5E] rounded-r-lg p-4">
-                <h4 className="text-[#2D2B27] text-sm font-semibold mb-2">
+              <div className="bg-[#7C3AED]/5 border-l-2 border-[#7C3AED] rounded-r-lg p-4">
+                <h4 className="text-[#0F172A] text-sm font-semibold mb-2">
                   PM Notes
                 </h4>
-                <p className="text-[#8B8781] text-sm leading-relaxed">{activeReport.pm_notes}</p>
+                <p className="text-[#64748B] text-sm leading-relaxed">{activeReport.pm_notes}</p>
               </div>
             )}
           </div>
         ) : (
-          <div className="flex items-center justify-center h-full text-[#B0ADA6] text-sm">
+          <div className="flex items-center justify-center h-full text-[#94A3B8] text-sm">
             Select a report to view.
           </div>
         )}
@@ -1040,13 +1040,13 @@ function FileTree({ files, depth = 0 }: { files: RepoFile[]; depth?: number }) {
           <div key={file.name}>
             <button
               onClick={() => isFolder && toggle(file.name)}
-              className="w-full flex items-center gap-2 px-4 py-2 hover:bg-[#EFEDE8] transition-colors text-left group"
+              className="w-full flex items-center gap-2 px-4 py-2 hover:bg-[#F1F5F9] transition-colors text-left group"
               style={{ paddingLeft: `${16 + depth * 20}px` }}
             >
               {isFolder ? (
                 <ChevronRight
                   size={12}
-                  className={`text-[#B0ADA6] shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  className={`text-[#94A3B8] shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
                 />
               ) : (
                 <span className="w-3" />
@@ -1054,18 +1054,18 @@ function FileTree({ files, depth = 0 }: { files: RepoFile[]; depth?: number }) {
               {isFolder ? (
                 <Folder size={14} className="text-[#60A5FA] shrink-0" />
               ) : (
-                <File size={14} className="text-[#8B8781] shrink-0" />
+                <File size={14} className="text-[#64748B] shrink-0" />
               )}
-              <span className={`text-sm flex-1 truncate ${isFolder ? 'text-[#2D2B27] font-medium' : 'text-[#3D3A35]'}`}>
+              <span className={`text-sm flex-1 truncate ${isFolder ? 'text-[#0F172A] font-medium' : 'text-[#1E293B]'}`}>
                 {file.name}
               </span>
               {file.lastCommit && (
-                <span className="text-[#B0ADA6] text-xs truncate max-w-[300px] hidden lg:block">
+                <span className="text-[#94A3B8] text-xs truncate max-w-[300px] hidden lg:block">
                   {file.lastCommit}
                 </span>
               )}
               {file.size && (
-                <span className="text-[#B0ADA6] text-xs shrink-0 w-14 text-right">{file.size}</span>
+                <span className="text-[#94A3B8] text-xs shrink-0 w-14 text-right">{file.size}</span>
               )}
             </button>
             {isFolder && isOpen && file.children && (
@@ -1080,26 +1080,26 @@ function FileTree({ files, depth = 0 }: { files: RepoFile[]; depth?: number }) {
 
 function CodebaseTab({ engagementTitle }: { engagementTitle: string }) {
   return (
-    <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl overflow-hidden">
+    <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden">
       {/* Repo header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[#E0DDD6]">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#EFEDE8] flex items-center justify-center">
-            <GitBranch size={15} className="text-[#6B8F5E]" />
+          <div className="w-8 h-8 rounded-lg bg-[#F1F5F9] flex items-center justify-center">
+            <GitBranch size={15} className="text-[#7C3AED]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-heading font-semibold text-[#2D2B27] text-sm">Project Repository</h3>
-              <span className="text-[10px] font-mono-brand text-[#6B8F5E] bg-[#6B8F5E]/10 border border-[#6B8F5E]/20 rounded px-1.5 py-0.5">
+              <h3 className="font-heading font-semibold text-[#0F172A] text-sm">Project Repository</h3>
+              <span className="text-[10px] font-mono-brand text-[#7C3AED] bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded px-1.5 py-0.5">
                 main
               </span>
             </div>
-            <p className="text-[#B0ADA6] text-xs mt-0.5">Read-only access — live codebase</p>
+            <p className="text-[#94A3B8] text-xs mt-0.5">Read-only access — live codebase</p>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs text-[#8B8781]">
+        <div className="flex items-center gap-4 text-xs text-[#64748B]">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#6B8F5E]" />
+            <span className="w-2 h-2 rounded-full bg-[#7C3AED]" />
             <span>147 commits</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -1111,7 +1111,7 @@ function CodebaseTab({ engagementTitle }: { engagementTitle: string }) {
       </div>
 
       {/* File tree header */}
-      <div className="flex items-center gap-4 px-5 py-2.5 border-b border-[#E0DDD6] bg-[#F5F3EE] text-xs text-[#B0ADA6]">
+      <div className="flex items-center gap-4 px-5 py-2.5 border-b border-[#E2E8F0] bg-[#F8FAFC] text-xs text-[#94A3B8]">
         <span className="flex-1">Name</span>
         <span className="max-w-[300px] w-[300px] hidden lg:block">Last commit message</span>
         <span className="w-14 text-right">Size</span>
@@ -1181,7 +1181,7 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
 
   const SEVERITY_ICONS: Record<string, { color: string; icon: string }> = {
     positive: { color: '#10B981', icon: '✓' },
-    neutral: { color: '#8B8781', icon: '•' },
+    neutral: { color: '#64748B', icon: '•' },
     concern: { color: '#F59E0B', icon: '⚠' },
     critical: { color: '#EF4444', icon: '⛔' },
   }
@@ -1191,16 +1191,16 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
       {/* Header with on-demand button */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-heading font-semibold text-[#2D2B27] text-sm flex items-center gap-2">
-            <Hexagon size={14} className="text-[#6B8F5E]" />
+          <h3 className="font-heading font-semibold text-[#0F172A] text-sm flex items-center gap-2">
+            <Hexagon size={14} className="text-[#7C3AED]" />
             Glassbox Agent · Independent Assessments
           </h3>
-          <p className="text-[#B0ADA6] text-xs mt-0.5">AI assessments of your project — independent of the PM&apos;s reporting.</p>
+          <p className="text-[#94A3B8] text-xs mt-0.5">AI assessments of your project — independent of the PM&apos;s reporting.</p>
         </div>
         <button
           onClick={handleOnDemand}
           disabled={requesting}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6B8F5E] text-white text-xs font-semibold rounded-lg hover:bg-[#7DA06E] transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#7C3AED] text-white text-xs font-semibold rounded-lg hover:bg-[#8B5CF6] transition-colors disabled:opacity-50"
         >
           {requesting ? (
             <><Loader2 size={12} className="animate-spin" /> Analyzing...</>
@@ -1218,23 +1218,23 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
       )}
 
       {requesting && (
-        <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/20 rounded-xl p-5 text-center">
-          <Loader2 size={24} className="text-[#6B8F5E] animate-spin mx-auto mb-2" />
-          <p className="text-[#2D2B27] text-sm font-medium">Your Glassbox Agent is analyzing this engagement...</p>
-          <p className="text-[#8B8781] text-xs mt-1">This typically takes 10-15 seconds.</p>
+        <div className="bg-[#7C3AED]/5 border border-[#7C3AED]/20 rounded-xl p-5 text-center">
+          <Loader2 size={24} className="text-[#7C3AED] animate-spin mx-auto mb-2" />
+          <p className="text-[#0F172A] text-sm font-medium">Your Glassbox Agent is analyzing this engagement...</p>
+          <p className="text-[#64748B] text-xs mt-1">This typically takes 10-15 seconds.</p>
         </div>
       )}
 
       {loading ? (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
-          <Loader2 size={24} className="text-[#6B8F5E] animate-spin mx-auto mb-2" />
-          <p className="text-[#8B8781] text-sm">Loading agent assessments...</p>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+          <Loader2 size={24} className="text-[#7C3AED] animate-spin mx-auto mb-2" />
+          <p className="text-[#64748B] text-sm">Loading agent assessments...</p>
         </div>
       ) : assessments.length === 0 ? (
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
-          <Hexagon size={28} className="text-[#B0ADA6] mx-auto mb-3" />
-          <h4 className="font-heading font-semibold text-[#2D2B27] text-base mb-1">No agent assessments yet</h4>
-          <p className="text-[#8B8781] text-sm mb-4">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+          <Hexagon size={28} className="text-[#94A3B8] mx-auto mb-3" />
+          <h4 className="font-heading font-semibold text-[#0F172A] text-base mb-1">No agent assessments yet</h4>
+          <p className="text-[#64748B] text-sm mb-4">
             Click &quot;Get Assessment&quot; to run your Glassbox Agent now, or assessments will appear automatically based on your configured cadence.
           </p>
         </div>
@@ -1244,33 +1244,33 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
           {assessments.map((a: any) => (
             <div
               key={a.id}
-              className="bg-[#FAFAF7] border-l-4 border border-[#E0DDD6] rounded-xl p-5"
-              style={{ borderLeftColor: '#6B8F5E' }}
+              className="bg-white border-l-4 border border-[#E2E8F0] rounded-xl p-5"
+              style={{ borderLeftColor: '#7C3AED' }}
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <Hexagon size={14} className="text-[#6B8F5E]" />
-                    <span className="text-[#8B8781] text-xs">
+                    <Hexagon size={14} className="text-[#7C3AED]" />
+                    <span className="text-[#64748B] text-xs">
                       Glassbox Agent · {a.trigger_type === 'on_demand' ? 'On-demand' : 'Scheduled'} ·{' '}
                       {new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
-                  <p className="text-[#2D2B27] text-sm font-semibold leading-snug">{a.headline}</p>
+                  <p className="text-[#0F172A] text-sm font-semibold leading-snug">{a.headline}</p>
                 </div>
                 <div className="text-right shrink-0 ml-4">
                   <p className="font-mono-brand font-bold text-2xl" style={{ color: getHealthColor(a.weighted_score) }}>
                     {a.weighted_score}
                   </p>
                   {a.pm_submitted_score && Math.abs(a.weighted_score - a.pm_submitted_score) > 5 && (
-                    <p className="text-[#B0ADA6] text-[10px]">
+                    <p className="text-[#94A3B8] text-[10px]">
                       PM score: {a.pm_submitted_score} · {a.weighted_score - a.pm_submitted_score > 0 ? '+' : ''}{a.weighted_score - a.pm_submitted_score} divergence
                     </p>
                   )}
                 </div>
               </div>
 
-              <p className="text-[#8B8781] text-sm mb-4">{a.executive_summary}</p>
+              <p className="text-[#64748B] text-sm mb-4">{a.executive_summary}</p>
 
               {/* Findings */}
               {a.findings && (
@@ -1281,16 +1281,16 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
                       <div key={i} className="flex items-start gap-2">
                         <span className="text-xs mt-0.5 shrink-0" style={{ color: sev.color }}>{sev.icon}</span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[#2D2B27] text-xs font-medium">{f.title}</p>
-                          <p className="text-[#8B8781] text-xs">{f.detail}</p>
+                          <p className="text-[#0F172A] text-xs font-medium">{f.title}</p>
+                          <p className="text-[#64748B] text-xs">{f.detail}</p>
                           {f.pm_context && (
-                            <div className="mt-1 ml-3 pl-3 border-l-2 border-[#6B8F5E]/30">
-                              <p className="text-[#6B8F5E] text-[10px] font-medium">PM added context</p>
-                              <p className="text-[#8B8781] text-xs">{f.pm_context}</p>
+                            <div className="mt-1 ml-3 pl-3 border-l-2 border-[#7C3AED]/30">
+                              <p className="text-[#7C3AED] text-[10px] font-medium">PM added context</p>
+                              <p className="text-[#64748B] text-xs">{f.pm_context}</p>
                             </div>
                           )}
                           {!f.pm_context && (
-                            <p className="text-[#B0ADA6] text-[10px] mt-0.5 italic">No PM response</p>
+                            <p className="text-[#94A3B8] text-[10px] mt-0.5 italic">No PM response</p>
                           )}
                         </div>
                       </div>
@@ -1301,17 +1301,17 @@ function AgentReportsTab({ engagementId }: { engagementId: string }) {
 
               {/* Recommendation */}
               {a.recommendation && (
-                <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/15 rounded-lg p-3">
-                  <p className="text-[#2D2B27] text-xs font-semibold mb-1">Recommendation</p>
-                  <p className="text-[#8B8781] text-xs">{a.recommendation}</p>
+                <div className="bg-[#7C3AED]/5 border border-[#7C3AED]/15 rounded-lg p-3">
+                  <p className="text-[#0F172A] text-xs font-semibold mb-1">Recommendation</p>
+                  <p className="text-[#64748B] text-xs">{a.recommendation}</p>
                 </div>
               )}
 
               {/* PM response */}
               {a.pm_response && (
-                <div className="mt-3 bg-[#EFEDE8] rounded-lg p-3">
-                  <p className="text-[#2D2B27] text-xs font-semibold mb-1">PM Response</p>
-                  <p className="text-[#8B8781] text-xs">{a.pm_response}</p>
+                <div className="mt-3 bg-[#F1F5F9] rounded-lg p-3">
+                  <p className="text-[#0F172A] text-xs font-semibold mb-1">PM Response</p>
+                  <p className="text-[#64748B] text-xs">{a.pm_response}</p>
                 </div>
               )}
             </div>

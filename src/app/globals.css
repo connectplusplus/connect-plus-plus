@@ -19,21 +19,21 @@
   --color-foreground: var(--foreground);
 
   /* Brand Palette */
-  --color-bg-primary: #FAFAF7;
-  --color-bg-secondary: #F5F3EE;
-  --color-surface: #FAFAF7;
-  --color-surface-elevated: #EFEDE8;
-  --color-border-subtle: #E0DDD6;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #F1F5F9;
+  --color-border-subtle: #E2E8F0;
 
   /* Text */
-  --color-text-primary: #2D2B27;
-  --color-text-secondary: #8B8781;
-  --color-text-tertiary: #B0ADA6;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #64748B;
+  --color-text-tertiary: #94A3B8;
 
   /* Accent / Brand Green */
-  --color-accent: #6B8F5E;
-  --color-accent-hover: #7DA06E;
-  --color-accent-pressed: #5A7D4E;
+  --color-accent: #7C3AED;
+  --color-accent-hover: #8B5CF6;
+  --color-accent-pressed: #6D28D9;
   --color-accent-text: #FFFFFF;
 
   /* Status */
@@ -43,9 +43,9 @@
   --color-info: #60A5FA;
 
   /* Mode badge colors */
-  --color-mode-talent: #D4A574;
-  --color-mode-pod: #C9956A;
-  --color-mode-outcome: #6B8F5E;
+  --color-mode-talent: #EC4899;
+  --color-mode-pod: #EC4899;
+  --color-mode-outcome: #7C3AED;
   --color-mode-custom: #FB923C;
 
   /* shadcn tokens — mapped to brand */
@@ -88,37 +88,37 @@
   color-scheme: light;
 
   /* FullStack brand dark palette */
-  --background: #FAFAF7;
-  --foreground: #2D2B27;
+  --background: #FFFFFF;
+  --foreground: #0F172A;
 
   /* shadcn tokens — all dark */
-  --card: #FAFAF7;
-  --card-foreground: #2D2B27;
-  --popover: #FAFAF7;
-  --popover-foreground: #2D2B27;
-  --primary: #6B8F5E;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+  --primary: #7C3AED;
   --primary-foreground: #FFFFFF;
-  --secondary: #EFEDE8;
-  --secondary-foreground: #2D2B27;
-  --muted: #EFEDE8;
-  --muted-foreground: #8B8781;
-  --accent: #EFEDE8;
-  --accent-foreground: #2D2B27;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #0F172A;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
   --destructive: #F87171;
-  --border: #E0DDD6;
-  --input: #EFEDE8;
-  --ring: #6B8F5E;
+  --border: #E2E8F0;
+  --input: #F1F5F9;
+  --ring: #7C3AED;
   --radius: 0.75rem;
 
   /* Sidebar */
-  --sidebar: #F5F3EE;
-  --sidebar-foreground: #2D2B27;
-  --sidebar-primary: #6B8F5E;
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #7C3AED;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EFEDE8;
-  --sidebar-accent-foreground: #2D2B27;
-  --sidebar-border: #E0DDD6;
-  --sidebar-ring: #6B8F5E;
+  --sidebar-accent: #F1F5F9;
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #7C3AED;
 }
 
 /* ── Base styles ──────────────────────────────────────────────────────────── */
@@ -135,15 +135,15 @@
   }
 
   body {
-    background-color: #2D2B27;
-    color: #2D2B27;
+    background-color: #0F172A;
+    color: #0F172A;
     font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    color: #2D2B27;
+    color: #0F172A;
   }
 
   /* Dark scrollbars */
@@ -152,14 +152,14 @@
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #EFEDE8;
+    background: #F1F5F9;
   }
   ::-webkit-scrollbar-thumb {
-    background: #E0DDD6;
+    background: #E2E8F0;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #D4D0C8;
+    background: #CBD5E1;
   }
 
   /* Focus rings */
@@ -181,7 +181,7 @@
 
   /* Brand green text */
   .text-accent {
-    color: #6B8F5E;
+    color: #7C3AED;
   }
 
   /* Card base */
@@ -200,7 +200,7 @@
 
   /* Brand gradient text */
   .text-gradient-brand {
-    background: linear-gradient(135deg, #6B8F5E 0%, #7DA06E 100%);
+    background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

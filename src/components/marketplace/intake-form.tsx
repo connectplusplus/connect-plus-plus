@@ -202,14 +202,14 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   // ── Done state ──────────────────────────────────────────────────────────
   if (step === 'done') {
     return (
-      <div className="bg-[#FAFAF7] border border-[#6B8F5E]/30 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 bg-[#6B8F5E]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={32} className="text-[#6B8F5E]" strokeWidth={1.5} />
+      <div className="bg-white border border-[#7C3AED]/30 rounded-xl p-8 text-center">
+        <div className="w-16 h-16 bg-[#7C3AED]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 size={32} className="text-[#7C3AED]" strokeWidth={1.5} />
         </div>
-        <h3 className="font-heading font-semibold text-xl text-[#2D2B27] mb-2">
+        <h3 className="font-heading font-semibold text-xl text-[#0F172A] mb-2">
           Your engagement is live.
         </h3>
-        <p className="text-[#8B8781] text-sm leading-relaxed">
+        <p className="text-[#64748B] text-sm leading-relaxed">
           Contract signed. Your engagement dashboard is being set up — redirecting now...
         </p>
       </div>
@@ -219,12 +219,12 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   // ── Creating state ──────────────────────────────────────────────────────
   if (step === 'creating') {
     return (
-      <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8 text-center">
-        <Loader2 size={32} className="text-[#6B8F5E] animate-spin mx-auto mb-4" />
-        <h3 className="font-heading font-semibold text-lg text-[#2D2B27] mb-2">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center">
+        <Loader2 size={32} className="text-[#7C3AED] animate-spin mx-auto mb-4" />
+        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-2">
           Setting up your engagement...
         </h3>
-        <p className="text-[#8B8781] text-sm">
+        <p className="text-[#64748B] text-sm">
           Creating your project dashboard, assigning your PM, and preparing the workspace.
         </p>
       </div>
@@ -235,40 +235,40 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   if (step === 'agent') {
     return (
       <div className="space-y-6">
-        <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/20 rounded-xl p-6">
+        <div className="bg-[#7C3AED]/5 border border-[#7C3AED]/20 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-[#6B8F5E]/10 flex items-center justify-center">
-              <Hexagon size={18} className="text-[#6B8F5E]" />
+            <div className="w-10 h-10 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+              <Hexagon size={18} className="text-[#7C3AED]" />
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-[#2D2B27] text-lg">Your Glassbox Agent</h3>
-              <p className="text-[#8B8781] text-xs">Every engagement includes a dedicated AI agent that independently monitors your project and reports directly to you.</p>
+              <h3 className="font-heading font-semibold text-[#0F172A] text-lg">Your Glassbox Agent</h3>
+              <p className="text-[#64748B] text-xs">Every engagement includes a dedicated AI agent that independently monitors your project and reports directly to you.</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6 space-y-6">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 space-y-6">
           {/* Success definition */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-[#2D2B27]">
+            <label className="block text-sm font-semibold text-[#0F172A]">
               What does success look like?
             </label>
-            <p className="text-[#B0ADA6] text-xs">In your own words, describe what a successful outcome means for this project.</p>
+            <p className="text-[#94A3B8] text-xs">In your own words, describe what a successful outcome means for this project.</p>
             <Textarea
               value={agentSuccessDefinition}
               onChange={(e) => setAgentSuccessDefinition(e.target.value)}
               placeholder="E.g. 'A fully functional onboarding portal with SSO, deployed to production, handling 500+ users daily with 99.9% uptime.'"
               rows={3}
-              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] resize-none"
             />
           </div>
 
           {/* Critical requirements */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-[#2D2B27]">
-              Critical requirements <span className="text-[#B0ADA6] text-xs font-normal">(up to 5)</span>
+            <label className="block text-sm font-semibold text-[#0F172A]">
+              Critical requirements <span className="text-[#94A3B8] text-xs font-normal">(up to 5)</span>
             </label>
-            <p className="text-[#B0ADA6] text-xs">Non-negotiables. If any are at risk, the agent flags it immediately.</p>
+            <p className="text-[#94A3B8] text-xs">Non-negotiables. If any are at risk, the agent flags it immediately.</p>
             {agentCriticalReqs.map((req, i) => (
               <div key={i} className="flex items-center gap-2">
                 <Input
@@ -279,9 +279,9 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                     setAgentCriticalReqs(updated)
                   }}
                   placeholder="E.g. 'HIPAA compliance at every milestone'"
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] flex-1"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] flex-1"
                 />
-                <button onClick={() => setAgentCriticalReqs(agentCriticalReqs.filter((_, j) => j !== i))} className="text-[#B0ADA6] hover:text-[#EF4444] transition-colors">
+                <button onClick={() => setAgentCriticalReqs(agentCriticalReqs.filter((_, j) => j !== i))} className="text-[#94A3B8] hover:text-[#EF4444] transition-colors">
                   <X size={14} />
                 </button>
               </div>
@@ -289,7 +289,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
             {agentCriticalReqs.length < 5 && (
               <button
                 onClick={() => setAgentCriticalReqs([...agentCriticalReqs, ''])}
-                className="flex items-center gap-1 text-[#6B8F5E] text-xs font-medium hover:text-[#7DA06E] transition-colors"
+                className="flex items-center gap-1 text-[#7C3AED] text-xs font-medium hover:text-[#8B5CF6] transition-colors"
               >
                 <Plus size={12} /> Add requirement
               </button>
@@ -298,10 +298,10 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
           {/* Priority weights */}
           <div className="space-y-3">
-            <label className="block text-sm font-semibold text-[#2D2B27]">
+            <label className="block text-sm font-semibold text-[#0F172A]">
               What matters most to you?
             </label>
-            <p className="text-[#B0ADA6] text-xs">The agent weights its health score according to your priorities.</p>
+            <p className="text-[#94A3B8] text-xs">The agent weights its health score according to your priorities.</p>
             {[
               { key: 'timeline' as const, label: 'Timeline adherence' },
               { key: 'scope' as const, label: 'Scope fidelity' },
@@ -310,55 +310,55 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               { key: 'velocity' as const, label: 'Team velocity' },
             ].map((item) => (
               <div key={item.key} className="flex items-center gap-3">
-                <span className="text-[#2D2B27] text-sm w-40 shrink-0">{item.label}</span>
+                <span className="text-[#0F172A] text-sm w-40 shrink-0">{item.label}</span>
                 <input
                   type="range"
                   min={1}
                   max={10}
                   value={agentWeights[item.key]}
                   onChange={(e) => setAgentWeights({ ...agentWeights, [item.key]: Number(e.target.value) })}
-                  className="flex-1 h-1.5 bg-[#E0DDD6] rounded-full appearance-none cursor-pointer accent-[#6B8F5E]"
+                  className="flex-1 h-1.5 bg-[#E2E8F0] rounded-full appearance-none cursor-pointer accent-[#7C3AED]"
                 />
-                <span className="font-mono-brand text-sm font-semibold text-[#6B8F5E] w-10 text-right">{agentWeights[item.key]}/10</span>
+                <span className="font-mono-brand text-sm font-semibold text-[#7C3AED] w-10 text-right">{agentWeights[item.key]}/10</span>
               </div>
             ))}
           </div>
 
           {/* Alert thresholds */}
           <div className="space-y-3">
-            <label className="block text-sm font-semibold text-[#2D2B27]">Alert me immediately if...</label>
+            <label className="block text-sm font-semibold text-[#0F172A]">Alert me immediately if...</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1">
-                <label className="text-[#8B8781] text-xs">Health drops below</label>
+                <label className="text-[#64748B] text-xs">Health drops below</label>
                 <Input
                   type="number"
                   min={1}
                   max={100}
                   value={agentAlerts.critical_threshold}
                   onChange={(e) => setAgentAlerts({ ...agentAlerts, critical_threshold: Number(e.target.value) })}
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] focus:border-[#7C3AED]"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[#8B8781] text-xs">Milestone slips by (days)</label>
+                <label className="text-[#64748B] text-xs">Milestone slips by (days)</label>
                 <Input
                   type="number"
                   min={1}
                   max={30}
                   value={agentAlerts.milestone_slip_days}
                   onChange={(e) => setAgentAlerts({ ...agentAlerts, milestone_slip_days: Number(e.target.value) })}
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] focus:border-[#7C3AED]"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[#8B8781] text-xs">PM silent for (hours)</label>
+                <label className="text-[#64748B] text-xs">PM silent for (hours)</label>
                 <Input
                   type="number"
                   min={1}
                   max={168}
                   value={agentAlerts.pm_silence_hours}
                   onChange={(e) => setAgentAlerts({ ...agentAlerts, pm_silence_hours: Number(e.target.value) })}
-                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] focus:border-[#7C3AED]"
                 />
               </div>
             </div>
@@ -366,14 +366,14 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
           {/* Report preferences */}
           <div className="space-y-3">
-            <label className="block text-sm font-semibold text-[#2D2B27]">Report preferences</label>
+            <label className="block text-sm font-semibold text-[#0F172A]">Report preferences</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[#8B8781] text-xs">Cadence</label>
+                <label className="text-[#64748B] text-xs">Cadence</label>
                 <select
                   value={agentCadence}
                   onChange={(e) => setAgentCadence(e.target.value as typeof agentCadence)}
-                  className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none transition-colors appearance-none"
+                  className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none transition-colors appearance-none"
                 >
                   <option value="daily">Daily</option>
                   <option value="every_2_days">Every 2 days</option>
@@ -381,11 +381,11 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="text-[#8B8781] text-xs">Tone</label>
+                <label className="text-[#64748B] text-xs">Tone</label>
                 <select
                   value={agentTone}
                   onChange={(e) => setAgentTone(e.target.value as typeof agentTone)}
-                  className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none transition-colors appearance-none"
+                  className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none transition-colors appearance-none"
                 >
                   <option value="balanced">Balanced</option>
                   <option value="technical">Technical</option>
@@ -399,20 +399,20 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
         <div className="flex items-center justify-between">
           <button
             onClick={() => { setStep('intake'); setError(null) }}
-            className="text-[#8B8781] text-sm hover:text-[#2D2B27] transition-colors"
+            className="text-[#64748B] text-sm hover:text-[#0F172A] transition-colors"
           >
             &larr; Back to intake
           </button>
           <div className="flex items-center gap-3">
             <button
               onClick={handleAgentSkip}
-              className="text-[#B0ADA6] text-sm hover:text-[#8B8781] transition-colors"
+              className="text-[#94A3B8] text-sm hover:text-[#64748B] transition-colors"
             >
               Use defaults
             </button>
             <Button
               onClick={handleAgentContinue}
-              className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11 px-6"
+              className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11 px-6"
             >
               Continue to Contract
             </Button>
@@ -426,18 +426,18 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   if (step === 'contract') {
     return (
       <div className="space-y-4">
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden">
           {/* Header with sign button */}
-          <div className="flex items-center justify-between p-4 border-b border-[#E0DDD6] bg-[#F5F3EE]">
+          <div className="flex items-center justify-between p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#6B8F5E]/10 flex items-center justify-center">
-                <FileText size={16} className="text-[#6B8F5E]" />
+              <div className="w-9 h-9 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+                <FileText size={16} className="text-[#7C3AED]" />
               </div>
               <div>
-                <h3 className="font-heading font-semibold text-[#2D2B27] text-sm">
+                <h3 className="font-heading font-semibold text-[#0F172A] text-sm">
                   Glassbox Service Contract
                 </h3>
-                <p className="text-[#B0ADA6] text-xs">
+                <p className="text-[#94A3B8] text-xs">
                   {template.title} — Review and sign to proceed
                 </p>
               </div>
@@ -448,7 +448,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                   href={contractPdf}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 h-9 rounded-lg border border-[#E0DDD6] text-[#8B8781] hover:text-[#2D2B27] hover:border-[#D4D0C8] text-sm transition-colors"
+                  className="flex items-center gap-1.5 px-3 h-9 rounded-lg border border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm transition-colors"
                 >
                   <ExternalLink size={13} />
                   Open in new tab
@@ -457,7 +457,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               <Button
                 onClick={handleSign}
                 disabled={loading}
-                className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-9 px-5 text-sm"
+                className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-9 px-5 text-sm"
               >
                 {loading ? (
                   <Loader2 size={14} className="mr-2 animate-spin" />
@@ -479,7 +479,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               />
             </div>
           ) : (
-            <div className="p-8 text-center text-[#B0ADA6] text-sm">
+            <div className="p-8 text-center text-[#94A3B8] text-sm">
               Contract document is being prepared. You can proceed to sign.
             </div>
           )}
@@ -493,7 +493,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
         <button
           onClick={() => setStep('intake')}
-          className="text-[#8B8781] text-sm hover:text-[#2D2B27] transition-colors"
+          className="text-[#64748B] text-sm hover:text-[#0F172A] transition-colors"
         >
           &larr; Back to intake form
         </button>
@@ -505,10 +505,10 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   return (
     <form onSubmit={handleIntakeSubmit} className="space-y-6">
       <div>
-        <h3 className="font-heading font-semibold text-lg text-[#2D2B27] mb-1">
+        <h3 className="font-heading font-semibold text-lg text-[#0F172A] mb-1">
           Project Intake
         </h3>
-        <p className="text-[#8B8781] text-sm">
+        <p className="text-[#64748B] text-sm">
           Tell us about your project. The more context you share, the faster we can prepare
           your scope.
         </p>
@@ -517,7 +517,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       {/* Dynamic fields from intake_schema */}
       {schema.fields.map((field) => (
         <div key={field.key} className="space-y-2">
-          <label className="block text-sm font-medium text-[#2D2B27]">
+          <label className="block text-sm font-medium text-[#0F172A]">
             {field.label}
             {field.required && <span className="text-[#F87171] ml-1">*</span>}
           </label>
@@ -528,7 +528,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               onChange={(e) => handleTextChange(field.key, e.target.value)}
               placeholder={field.placeholder}
               required={field.required}
-              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:ring-[#6B8F5E]/20"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20"
             />
           )}
 
@@ -539,7 +539,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               placeholder={field.placeholder}
               required={field.required}
               rows={4}
-              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:ring-[#6B8F5E]/20 resize-none"
+              className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20 resize-none"
             />
           )}
 
@@ -548,14 +548,14 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               value={(responses[field.key] as string) ?? ''}
               onChange={(e) => handleSelectChange(field.key, e.target.value)}
               required={field.required}
-              className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none focus:ring-1 focus:ring-[#6B8F5E]/30 transition-colors appearance-none"
+              className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors appearance-none"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
             >
-              <option value="" disabled className="text-[#B0ADA6]">
+              <option value="" disabled className="text-[#94A3B8]">
                 Select {field.label.toLowerCase()}
               </option>
               {field.options.map((opt) => (
-                <option key={opt} value={opt} className="bg-[#EFEDE8] text-[#2D2B27]">
+                <option key={opt} value={opt} className="bg-[#F1F5F9] text-[#0F172A]">
                   {opt}
                 </option>
               ))}
@@ -573,8 +573,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
                     onClick={() => toggleMultiselect(field.key, opt)}
                     className={`px-3 py-1.5 rounded-lg text-sm border transition-colors duration-150 ${
                       selected
-                        ? 'bg-[#6B8F5E]/10 border-[#6B8F5E] text-[#6B8F5E]'
-                        : 'bg-[#EFEDE8] border-[#E0DDD6] text-[#8B8781] hover:border-[#D4D0C8]'
+                        ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
+                        : 'bg-[#F1F5F9] border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
                     }`}
                   >
                     {opt}
@@ -587,8 +587,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       ))}
 
       {/* Contact email */}
-      <div className="pt-4 border-t border-[#E0DDD6] space-y-2">
-        <label className="block text-sm font-medium text-[#2D2B27]">
+      <div className="pt-4 border-t border-[#E2E8F0] space-y-2">
+        <label className="block text-sm font-medium text-[#0F172A]">
           Your email <span className="text-[#F87171] ml-1">*</span>
         </label>
         <Input
@@ -597,9 +597,9 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@company.com"
           required
-          className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] focus:ring-[#6B8F5E]/20"
+          className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20"
         />
-        <p className="text-[#B0ADA6] text-xs">
+        <p className="text-[#94A3B8] text-xs">
           We&apos;ll use this to send your scope estimate and follow up with questions.
         </p>
       </div>
@@ -613,7 +613,7 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-12 text-base"
+        className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-12 text-base"
       >
         Continue to Contract
       </Button>

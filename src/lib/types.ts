@@ -24,7 +24,16 @@ export interface User {
   created_at: string
 }
 
-export type OutcomeCategory = 'build' | 'automate' | 'migrate' | 'optimize'
+export type OutcomeCategory =
+  | 'custom'
+  | 'google_cloud'
+  | 'nvidia'
+  | 'aws'
+  | 'azure'
+  | 'databricks'
+  | 'domo'
+  | 'servicenow'
+  | 'salesforce'
 
 export interface IntakeField {
   key: string
@@ -348,7 +357,7 @@ export function getHealthLabel(score: number): HealthScoreLabel {
 
 export function getHealthColor(score: number): string {
   if (score >= 85) return '#10B981'
-  if (score >= 70) return '#6B8F5E'
+  if (score >= 70) return '#7C3AED'
   if (score >= 50) return '#F59E0B'
   return '#EF4444'
 }

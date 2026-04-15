@@ -55,28 +55,28 @@ export default function InternalLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F3EE] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <img src="/logo.png" alt="Glassbox" className="h-7 w-auto" />
+            <img src="/logo2.png" alt="Glassbox" className="h-7 w-auto" />
           </div>
-          <div className="inline-flex items-center gap-2 bg-[#6B8F5E]/10 border border-[#6B8F5E]/20 rounded-full px-3 py-1.5 mb-4">
-            <Shield size={12} className="text-[#6B8F5E]" />
-            <span className="text-[#6B8F5E] text-xs font-semibold">Internal Portal</span>
+          <div className="inline-flex items-center gap-2 bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-full px-3 py-1.5 mb-4">
+            <Shield size={12} className="text-[#7C3AED]" />
+            <span className="text-[#7C3AED] text-xs font-semibold">Internal Portal</span>
           </div>
-          <h1 className="font-heading font-bold text-2xl text-[#2D2B27] mb-1">
+          <h1 className="font-heading font-bold text-2xl text-[#0F172A] mb-1">
             FullStack Team Login
           </h1>
-          <p className="text-[#8B8781] text-sm">
+          <p className="text-[#64748B] text-sm">
             For FullStack project managers and delivery leads.
           </p>
         </div>
 
-        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-8">
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-[#2D2B27]">Email</label>
+              <label className="block text-sm font-medium text-[#0F172A]">Email</label>
               <Input
                 type="email"
                 value={email}
@@ -84,12 +84,12 @@ export default function InternalLoginPage() {
                 placeholder="you@fullstack.com"
                 required
                 autoComplete="email"
-                className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
+                className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-[#2D2B27]">Password</label>
+              <label className="block text-sm font-medium text-[#0F172A]">Password</label>
               <Input
                 type="password"
                 value={password}
@@ -97,7 +97,7 @@ export default function InternalLoginPage() {
                 placeholder="Enter your password"
                 required
                 autoComplete="current-password"
-                className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E]"
+                className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED]"
               />
             </div>
 
@@ -111,7 +111,7 @@ export default function InternalLoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11"
+              className="w-full bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-11"
             >
               {loading ? (
                 <>
@@ -125,9 +125,9 @@ export default function InternalLoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-[#B0ADA6] text-xs mt-6">
+        <p className="text-center text-[#94A3B8] text-xs mt-6">
           Not a FullStack team member?{' '}
-          <a href="/login" className="text-[#6B8F5E] hover:text-[#7DA06E] transition-colors">
+          <a href="/login" className="text-[#7C3AED] hover:text-[#8B5CF6] transition-colors">
             Client login is here
           </a>
         </p>
