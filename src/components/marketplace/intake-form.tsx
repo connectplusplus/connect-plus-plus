@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { createClient } from '@/lib/supabase/client'
 import type { IntakeSchema, OutcomeTemplate } from '@/lib/types'
-import { CheckCircle2, Loader2, FileText, ExternalLink } from 'lucide-react'
+import { CheckCircle2, Loader2, FileText, ExternalLink, Hexagon, Plus, X } from 'lucide-react'
 
 // Map outcome slugs to their contract PDF filenames
 const SLUG_TO_CONTRACT: Record<string, string> = {
@@ -23,7 +23,7 @@ const SLUG_TO_CONTRACT: Record<string, string> = {
   'ai-ready-data': '/FS-GBC-10-AI-Ready_Data_Modernisation.pdf',
 }
 
-type FormStep = 'intake' | 'contract' | 'creating' | 'done'
+type FormStep = 'intake' | 'agent' | 'contract' | 'creating' | 'done'
 
 interface IntakeFormProps {
   template: OutcomeTemplate
@@ -39,6 +39,19 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [multiselects, setMultiselects] = useState<Record<string, string[]>>({})
+
+  // Agent configuration state
+  const [agentSuccessDefinition, setAgentSuccessDefinition] = useState('')
+  const [agentCriticalReqs, setAgentCriticalReqs] = useState<string[]>([])
+  const [agentRiskAreas, setAgentRiskAreas] = useState<string[]>([])
+  const [agentWeights, setAgentWeights] = useState({
+    timeline: 8, quality: 7, scope: 9, communication: 5, velocity: 4,
+  })
+  const [agentAlerts, setAgentAlerts] = useState({
+    critical_threshold: 60, milestone_slip_days: 3, pm_silence_hours: 48,
+  })
+  const [agentCadence, setAgentCadence] = useState<'daily' | 'every_2_days' | 'weekly'>('daily')
+  const [agentTone, setAgentTone] = useState<'technical' | 'executive' | 'balanced'>('balanced')
 
   const schema: IntakeSchema = template.intake_schema
   const contractPdf = SLUG_TO_CONTRACT[template.slug]
@@ -65,9 +78,20 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   function handleIntakeSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
-    // Move to contract signing step
+    // Move to agent configuration step
+    setStep('agent')
+    document.getElementById('intake-form')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  function handleAgentContinue() {
     setStep('contract')
-    // Scroll to top of form area
+    document.getElementById('intake-form')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  function handleAgentSkip() {
+    // Use all defaults
+    setAgentSuccessDefinition('Successful delivery of all contracted scope on time and to quality standards.')
+    setStep('contract')
     document.getElementById('intake-form')?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -136,6 +160,26 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
           content: `Engagement created. Contract signed for ${template.title}. Your AI-native PM will review your scope within 24 hours.`,
           is_system_message: true,
         })
+
+        // Create Glassbox Agent configuration
+        await supabase.from('agent_configs').insert({
+          engagement_id: engagement.id,
+          success_definition: agentSuccessDefinition || 'Successful delivery of all contracted scope on time and to quality standards.',
+          critical_requirements: agentCriticalReqs.filter(Boolean),
+          risk_areas: agentRiskAreas.filter(Boolean),
+          weight_timeline: agentWeights.timeline,
+          weight_quality: agentWeights.quality,
+          weight_scope: agentWeights.scope,
+          weight_communication: agentWeights.communication,
+          weight_velocity: agentWeights.velocity,
+          alert_critical_threshold: agentAlerts.critical_threshold,
+          alert_milestone_slip_days: agentAlerts.milestone_slip_days,
+          alert_pm_silence_hours: agentAlerts.pm_silence_hours,
+          report_cadence: agentCadence,
+          report_tone: agentTone,
+          on_demand_enabled: true,
+          configured_by: user?.id ?? null,
+        })
       }
 
       setStep('done')
@@ -183,6 +227,197 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
         <p className="text-[#8B8781] text-sm">
           Creating your project dashboard, assigning your PM, and preparing the workspace.
         </p>
+      </div>
+    )
+  }
+
+  // ── Agent configuration step ─────────────────────────────────────────────
+  if (step === 'agent') {
+    return (
+      <div className="space-y-6">
+        <div className="bg-[#6B8F5E]/5 border border-[#6B8F5E]/20 rounded-xl p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#6B8F5E]/10 flex items-center justify-center">
+              <Hexagon size={18} className="text-[#6B8F5E]" />
+            </div>
+            <div>
+              <h3 className="font-heading font-semibold text-[#2D2B27] text-lg">Your Glassbox Agent</h3>
+              <p className="text-[#8B8781] text-xs">Every engagement includes a dedicated AI agent that independently monitors your project and reports directly to you.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#FAFAF7] border border-[#E0DDD6] rounded-xl p-6 space-y-6">
+          {/* Success definition */}
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-[#2D2B27]">
+              What does success look like?
+            </label>
+            <p className="text-[#B0ADA6] text-xs">In your own words, describe what a successful outcome means for this project.</p>
+            <Textarea
+              value={agentSuccessDefinition}
+              onChange={(e) => setAgentSuccessDefinition(e.target.value)}
+              placeholder="E.g. 'A fully functional onboarding portal with SSO, deployed to production, handling 500+ users daily with 99.9% uptime.'"
+              rows={3}
+              className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] resize-none"
+            />
+          </div>
+
+          {/* Critical requirements */}
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-[#2D2B27]">
+              Critical requirements <span className="text-[#B0ADA6] text-xs font-normal">(up to 5)</span>
+            </label>
+            <p className="text-[#B0ADA6] text-xs">Non-negotiables. If any are at risk, the agent flags it immediately.</p>
+            {agentCriticalReqs.map((req, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Input
+                  value={req}
+                  onChange={(e) => {
+                    const updated = [...agentCriticalReqs]
+                    updated[i] = e.target.value
+                    setAgentCriticalReqs(updated)
+                  }}
+                  placeholder="E.g. 'HIPAA compliance at every milestone'"
+                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] placeholder:text-[#B0ADA6] focus:border-[#6B8F5E] flex-1"
+                />
+                <button onClick={() => setAgentCriticalReqs(agentCriticalReqs.filter((_, j) => j !== i))} className="text-[#B0ADA6] hover:text-[#EF4444] transition-colors">
+                  <X size={14} />
+                </button>
+              </div>
+            ))}
+            {agentCriticalReqs.length < 5 && (
+              <button
+                onClick={() => setAgentCriticalReqs([...agentCriticalReqs, ''])}
+                className="flex items-center gap-1 text-[#6B8F5E] text-xs font-medium hover:text-[#7DA06E] transition-colors"
+              >
+                <Plus size={12} /> Add requirement
+              </button>
+            )}
+          </div>
+
+          {/* Priority weights */}
+          <div className="space-y-3">
+            <label className="block text-sm font-semibold text-[#2D2B27]">
+              What matters most to you?
+            </label>
+            <p className="text-[#B0ADA6] text-xs">The agent weights its health score according to your priorities.</p>
+            {[
+              { key: 'timeline' as const, label: 'Timeline adherence' },
+              { key: 'scope' as const, label: 'Scope fidelity' },
+              { key: 'quality' as const, label: 'Code quality' },
+              { key: 'communication' as const, label: 'Communication' },
+              { key: 'velocity' as const, label: 'Team velocity' },
+            ].map((item) => (
+              <div key={item.key} className="flex items-center gap-3">
+                <span className="text-[#2D2B27] text-sm w-40 shrink-0">{item.label}</span>
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  value={agentWeights[item.key]}
+                  onChange={(e) => setAgentWeights({ ...agentWeights, [item.key]: Number(e.target.value) })}
+                  className="flex-1 h-1.5 bg-[#E0DDD6] rounded-full appearance-none cursor-pointer accent-[#6B8F5E]"
+                />
+                <span className="font-mono-brand text-sm font-semibold text-[#6B8F5E] w-10 text-right">{agentWeights[item.key]}/10</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Alert thresholds */}
+          <div className="space-y-3">
+            <label className="block text-sm font-semibold text-[#2D2B27]">Alert me immediately if...</label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="space-y-1">
+                <label className="text-[#8B8781] text-xs">Health drops below</label>
+                <Input
+                  type="number"
+                  min={1}
+                  max={100}
+                  value={agentAlerts.critical_threshold}
+                  onChange={(e) => setAgentAlerts({ ...agentAlerts, critical_threshold: Number(e.target.value) })}
+                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[#8B8781] text-xs">Milestone slips by (days)</label>
+                <Input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={agentAlerts.milestone_slip_days}
+                  onChange={(e) => setAgentAlerts({ ...agentAlerts, milestone_slip_days: Number(e.target.value) })}
+                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[#8B8781] text-xs">PM silent for (hours)</label>
+                <Input
+                  type="number"
+                  min={1}
+                  max={168}
+                  value={agentAlerts.pm_silence_hours}
+                  onChange={(e) => setAgentAlerts({ ...agentAlerts, pm_silence_hours: Number(e.target.value) })}
+                  className="bg-[#EFEDE8] border-[#E0DDD6] text-[#2D2B27] focus:border-[#6B8F5E]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Report preferences */}
+          <div className="space-y-3">
+            <label className="block text-sm font-semibold text-[#2D2B27]">Report preferences</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-[#8B8781] text-xs">Cadence</label>
+                <select
+                  value={agentCadence}
+                  onChange={(e) => setAgentCadence(e.target.value as typeof agentCadence)}
+                  className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none transition-colors appearance-none"
+                >
+                  <option value="daily">Daily</option>
+                  <option value="every_2_days">Every 2 days</option>
+                  <option value="weekly">Weekly</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[#8B8781] text-xs">Tone</label>
+                <select
+                  value={agentTone}
+                  onChange={(e) => setAgentTone(e.target.value as typeof agentTone)}
+                  className="w-full h-10 px-3 rounded-lg bg-[#EFEDE8] border border-[#E0DDD6] text-[#2D2B27] text-sm focus:border-[#6B8F5E] focus:outline-none transition-colors appearance-none"
+                >
+                  <option value="balanced">Balanced</option>
+                  <option value="technical">Technical</option>
+                  <option value="executive">Executive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => { setStep('intake'); setError(null) }}
+            className="text-[#8B8781] text-sm hover:text-[#2D2B27] transition-colors"
+          >
+            &larr; Back to intake
+          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleAgentSkip}
+              className="text-[#B0ADA6] text-sm hover:text-[#8B8781] transition-colors"
+            >
+              Use defaults
+            </button>
+            <Button
+              onClick={handleAgentContinue}
+              className="bg-[#6B8F5E] text-white hover:bg-[#7DA06E] font-semibold h-11 px-6"
+            >
+              Continue to Contract
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }
