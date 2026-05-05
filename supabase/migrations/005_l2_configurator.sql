@@ -29,6 +29,13 @@
 
 -- ── 1. Wipe the dummy catalog ────────────────────────────────────────────────
 -- Done first so the new NOT NULL columns can use simple DEFAULTs without backfill.
+--
+-- engagements.template_id has a FK to outcome_templates with no cascade. Any
+-- existing engagement that points at a dummy template would block the DELETE,
+-- so we null those references first. The engagement record itself stays —
+-- it just becomes effectively a custom_outcome until/unless someone re-points
+-- it at a real (Configurator-authored) template.
+update engagements set template_id = null where template_id is not null;
 delete from outcome_templates;
 
 -- ── 2. New columns on outcome_templates ──────────────────────────────────────
