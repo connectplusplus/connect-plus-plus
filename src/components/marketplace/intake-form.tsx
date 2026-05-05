@@ -515,17 +515,20 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
       </div>
 
       {/* Dynamic fields from intake_schema */}
-      {schema.fields.map((field) => (
-        <div key={field.key} className="space-y-2">
+      {schema.fields.map((field) => {
+        const fieldKey = field.id ?? field.key ?? field.label
+        return (
+        <div key={fieldKey} className="space-y-2">
           <label className="block text-sm font-medium text-[#0F172A]">
             {field.label}
             {field.required && <span className="text-[#F87171] ml-1">*</span>}
           </label>
 
-          {field.type === 'text' && (
+          {(field.type === 'text' || field.type === 'email' || field.type === 'url' || field.type === 'number') && (
             <Input
-              value={(responses[field.key] as string) ?? ''}
-              onChange={(e) => handleTextChange(field.key, e.target.value)}
+              type={field.type === 'text' ? 'text' : field.type}
+              value={(responses[fieldKey] as string) ?? ''}
+              onChange={(e) => handleTextChange(fieldKey, e.target.value)}
               placeholder={field.placeholder}
               required={field.required}
               className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#7C3AED] focus:ring-[#7C3AED]/20"
@@ -534,8 +537,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
           {field.type === 'textarea' && (
             <Textarea
-              value={(responses[field.key] as string) ?? ''}
-              onChange={(e) => handleTextChange(field.key, e.target.value)}
+              value={(responses[fieldKey] as string) ?? ''}
+              onChange={(e) => handleTextChange(fieldKey, e.target.value)}
               placeholder={field.placeholder}
               required={field.required}
               rows={4}
@@ -545,8 +548,8 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
 
           {field.type === 'select' && field.options && (
             <select
-              value={(responses[field.key] as string) ?? ''}
-              onChange={(e) => handleSelectChange(field.key, e.target.value)}
+              value={(responses[fieldKey] as string) ?? ''}
+              onChange={(e) => handleSelectChange(fieldKey, e.target.value)}
               required={field.required}
               className="w-full h-10 px-3 rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 transition-colors appearance-none"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
@@ -565,12 +568,12 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
           {field.type === 'multiselect' && field.options && (
             <div className="flex flex-wrap gap-2">
               {field.options.map((opt) => {
-                const selected = (multiselects[field.key] ?? []).includes(opt)
+                const selected = (multiselects[fieldKey] ?? []).includes(opt)
                 return (
                   <button
                     key={opt}
                     type="button"
-                    onClick={() => toggleMultiselect(field.key, opt)}
+                    onClick={() => toggleMultiselect(fieldKey, opt)}
                     className={`px-3 py-1.5 rounded-lg text-sm border transition-colors duration-150 ${
                       selected
                         ? 'bg-[#7C3AED]/10 border-[#7C3AED] text-[#7C3AED]'
@@ -583,8 +586,13 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
               })}
             </div>
           )}
+
+          {field.help_text && (
+            <p className="text-[#94A3B8] text-xs">{field.help_text}</p>
+          )}
         </div>
-      ))}
+        )
+      })}
 
       {/* Contact email */}
       <div className="pt-4 border-t border-[#E2E8F0] space-y-2">

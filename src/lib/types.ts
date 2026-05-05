@@ -35,17 +35,165 @@ export type OutcomeCategory =
   | 'servicenow'
   | 'salesforce'
 
+export type IntakeFieldType =
+  | 'text'
+  | 'textarea'
+  | 'email'
+  | 'url'
+  | 'select'
+  | 'multiselect'
+  | 'number'
+
 export interface IntakeField {
-  key: string
-  type: 'text' | 'textarea' | 'select' | 'multiselect'
+  // `key` is the legacy identifier. The L2 Configurator emits `id` + `order`;
+  // the renderer treats `id ?? key` as the canonical key so both shapes work.
+  key?: string
+  id?: string
+  order?: number
+  type: IntakeFieldType
   label: string
   placeholder?: string
   options?: string[]
   required?: boolean
+  help_text?: string
+  validation?: string
+  maps_to?: string
 }
 
 export interface IntakeSchema {
   fields: IntakeField[]
+}
+
+// ─── L2 Configurator types ──────────────────────────────────────────────────
+
+export type TemplateStatus = 'draft' | 'published' | 'archived'
+
+export type SignalSource =
+  | 'github'
+  | 'linear'
+  | 'jira'
+  | 'slack'
+  | 'daily_report'
+  | 'ci'
+  | 'manual'
+
+export interface SignalSpec {
+  source: SignalSource
+  signature: string
+  required: boolean
+  description?: string
+}
+
+export interface DeliverableSpec {
+  id: string
+  order: number
+  name: string
+  description?: string
+  acceptance_criteria: string[]
+}
+
+export interface MilestoneTemplate {
+  id: string
+  order: number
+  name: string
+  duration: {
+    min_days: number
+    max_days: number
+    fixed_label?: string
+  }
+  description: string
+  acceptance_criteria: string[]
+  expected_signals: SignalSpec[]
+}
+
+export interface PricingSpec {
+  model?: 'fixed_range' | 'starting_at' | 'custom'
+  min?: number
+  max?: number
+  currency?: 'USD'
+  notes?: string
+}
+
+export interface TimelineSpec {
+  min_days?: number
+  max_days?: number
+  unit?: 'business_days' | 'calendar_days' | 'weeks'
+  starts_from?: 'kickoff' | 'contract_signed' | 'intake_completed'
+  notes?: string
+}
+
+export type TeamRoleKey =
+  | 'forward_deployed_engineer'
+  | 'product_designer'
+  | 'ai_engineer'
+  | 'qa_engineer'
+  | 'devops_engineer'
+  | 'pm'
+
+export interface TeamRole {
+  role: TeamRoleKey
+  count: number
+  seniority: 'junior' | 'mid' | 'senior' | 'principal' | 'staff'
+  allocation_percent: number
+}
+
+export interface AgentSpec {
+  tool: 'claude_code' | 'cursor' | 'windsurf' | 'github_copilot'
+  prompt_library_ref?: string
+  configuration?: Record<string, unknown>
+}
+
+export interface ToolchainSpec {
+  language: string[]
+  frameworks: string[]
+  testing: string[]
+  ci_cd: string[]
+  hosting: string[]
+  monitoring: string[]
+}
+
+export interface DeliveryConfig {
+  typical_team: TeamRole[]
+  ai_agents: AgentSpec[]
+  toolchain: ToolchainSpec
+  environment_template_id?: string
+  expected_velocity_multiplier?: number
+  internal_runbook_url?: string
+  internal_notes?: string
+}
+
+export type ReportCadence = 'daily' | 'every_2_days' | 'weekly'
+export type ReportTone = 'technical' | 'executive' | 'balanced'
+
+export interface AuditConfigDefaults {
+  priority_weights: {
+    timeline: number
+    quality: number
+    scope: number
+    communication: number
+    velocity: number
+  }
+  alert_thresholds: {
+    critical: number
+    warning: number
+  }
+  report_cadence: ReportCadence
+  report_tone: ReportTone
+  pm_review_window_hours: number
+}
+
+export interface Guarantee {
+  id: string
+  label: string
+  description?: string
+  icon: string
+}
+
+export interface ChangelogEntry {
+  version: string
+  changed_by: string
+  changed_at: string
+  notes: string
 }
 
 export interface OutcomeTemplate {
@@ -64,6 +212,31 @@ export interface OutcomeTemplate {
   intake_schema: IntakeSchema
   is_active: boolean
   display_order: number
+  created_at: string
+  // ── L2 Configurator fields ────────────────────────────────────────────────
+  status?: TemplateStatus
+  version?: string
+  author_id?: string | null
+  published_at?: string | null
+  updated_at?: string
+  pricing?: PricingSpec
+  timeline?: TimelineSpec
+  deliverables?: DeliverableSpec[]
+  milestone_templates?: MilestoneTemplate[]
+  delivery_config?: DeliveryConfig
+  audit_config_defaults?: AuditConfigDefaults
+  guarantees?: Guarantee[]
+  changelog?: ChangelogEntry[]
+}
+
+export interface EngagementConfiguration {
+  id: string
+  engagement_id: string
+  source_template_id: string | null
+  source_template_version: string
+  payload: OutcomeTemplate            // snapshot of the template at purchase
+  intake_responses: Record<string, unknown>
+  audit_config_overrides: Partial<AuditConfigDefaults> | null
   created_at: string
 }
 

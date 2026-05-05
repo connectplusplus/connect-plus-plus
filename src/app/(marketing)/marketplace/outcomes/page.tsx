@@ -52,9 +52,9 @@ export default async function OutcomesPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {outcomeTemplates.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-[#64748B] text-lg mb-2">No outcomes available yet.</p>
+            <p className="text-[#64748B] text-lg mb-2">No outcomes published yet.</p>
             <p className="text-[#94A3B8] text-sm">
-              Run the seed script in your Supabase project to populate the catalog.
+              Our Delivery team is finalizing the first templates. Check back soon.
             </p>
           </div>
         ) : (

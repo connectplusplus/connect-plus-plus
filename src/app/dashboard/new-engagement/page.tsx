@@ -24,9 +24,9 @@ export default async function NewEngagementPage() {
 
       {outcomeTemplates.length === 0 ? (
         <div className="bg-white border border-[#E2E8F0] rounded-xl p-16 text-center">
-          <p className="text-[#64748B] mb-2">No outcomes available yet.</p>
+          <p className="text-[#64748B] mb-2">No outcomes published yet.</p>
           <p className="text-[#94A3B8] text-sm">
-            Run the seed script in your Supabase project to populate the catalog.
+            Our Delivery team is finalizing the first templates. Check back soon.
           </p>
         </div>
       ) : (
