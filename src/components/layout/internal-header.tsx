@@ -9,6 +9,8 @@ const ROUTE_TITLES: Record<string, string> = {
   '/internal': 'Internal Dashboard',
   '/internal/daily-reports': 'Daily Reports',
   '/internal/daily-reports/new': 'New Daily Report',
+  '/internal/outcomes': 'Outcome Templates',
+  '/internal/outcomes/new': 'New Template',
 }
 
 interface InternalHeaderProps {
@@ -27,6 +29,7 @@ export function InternalHeader({ user }: InternalHeaderProps) {
   function getTitle() {
     if (ROUTE_TITLES[pathname]) return ROUTE_TITLES[pathname]
     if (pathname.startsWith('/internal/daily-reports')) return 'Daily Reports'
+    if (pathname.startsWith('/internal/outcomes')) return 'Outcome Templates'
     return 'Internal'
   }
 

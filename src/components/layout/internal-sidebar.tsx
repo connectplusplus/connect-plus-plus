@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import {
   Home,
   FileText,
+  Package,
   Layers,
   Users,
 } from 'lucide-react'
@@ -12,6 +13,7 @@ import {
 const NAV_ITEMS = [
   { label: 'Overview', href: '/internal', icon: Home, exact: true, enabled: true },
   { label: 'Daily Reports', href: '/internal/daily-reports', icon: FileText, exact: false, enabled: true },
+  { label: 'Outcomes', href: '/internal/outcomes', icon: Package, exact: false, enabled: true },
   { label: 'Engagements', href: '/internal/engagements', icon: Layers, exact: false, enabled: false },
   { label: 'Talent', href: '/internal/talent', icon: Users, exact: false, enabled: false },
 ]
