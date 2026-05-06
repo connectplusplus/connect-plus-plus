@@ -70,9 +70,13 @@ try {
   assert(heading > 0, 'Outcomes list page should show "Outcome Templates" heading')
   console.log('✓ outcomes list loaded')
 
-  // 3. Create a new draft template
+  // 3. Create a new draft template — through the chooser → manual path
   await page.locator('a[href="/internal/outcomes/new"]').first().click()
-  await page.waitForURL(/\/internal\/outcomes\/new/, { timeout: 10_000 })
+  await page.waitForURL(/\/internal\/outcomes\/new$/, { timeout: 10_000 })
+
+  // Three-option chooser; pick Manual
+  await page.locator('a[href="/internal/outcomes/new/manual"]').first().click()
+  await page.waitForURL(/\/internal\/outcomes\/new\/manual/, { timeout: 10_000 })
 
   await page.locator('input[name="title"]').fill(TITLE)
   await page.locator('input[name="slug"]').fill(SLUG)

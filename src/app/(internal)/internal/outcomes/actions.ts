@@ -264,6 +264,110 @@ export async function createPopulatedDraft(input: {
   }
 }
 
+// ── Copy-from-template ───────────────────────────────────────────────────────
+//
+// Clones a published template into a fresh draft. Inherits everything except
+// slug, title, version, status, published_at, and changelog (the new draft
+// gets a one-line "Cloned from …" entry). The user picks the new slug + title
+// up front so we can land them in a unique editor URL.
+
+export async function cloneTemplateAndRedirect(formData: FormData) {
+  const sourceSlug = String(formData.get('source_slug') ?? '')
+  const newSlug = String(formData.get('new_slug') ?? '')
+  const newTitle = String(formData.get('new_title') ?? '')
+
+  const auth = await assertDeliveryAuthor()
+  if ('error' in auth) {
+    redirect(
+      `/internal/outcomes/new/copy?error=${encodeURIComponent(String(auth.error ?? 'Forbidden'))}`
+    )
+  }
+
+  if (!SLUG_RE.test(newSlug)) {
+    redirect(
+      `/internal/outcomes/new/copy?error=${encodeURIComponent(
+        'Slug must be lowercase, hyphen-separated.'
+      )}`
+    )
+  }
+  if (newTitle.trim().length < 3) {
+    redirect(
+      `/internal/outcomes/new/copy?error=${encodeURIComponent(
+        'Title is too short.'
+      )}`
+    )
+  }
+
+  const { data: source, error: sourceErr } = await auth.supabase
+    .from('outcome_templates')
+    .select('*')
+    .eq('slug', sourceSlug)
+    .eq('status', 'published')
+    .single()
+
+  if (sourceErr || !source) {
+    redirect(
+      `/internal/outcomes/new/copy?error=${encodeURIComponent(
+        'Source template not found or not published.'
+      )}`
+    )
+  }
+
+  const sourceVersion = (source.version as string | null) ?? '1.0.0'
+
+  const { error: insertErr } = await auth.supabase
+    .from('outcome_templates')
+    .insert({
+      slug: newSlug,
+      title: newTitle.trim(),
+      subtitle: source.subtitle,
+      description: source.description,
+      icon: source.icon,
+      category: source.category,
+      intake_schema: source.intake_schema,
+      author_id: auth.user.id,
+      status: 'draft',
+      version: '0.1.0',
+      published_at: null,
+      pricing: source.pricing,
+      timeline: source.timeline,
+      price_range_low: source.price_range_low,
+      price_range_high: source.price_range_high,
+      timeline_range_low: source.timeline_range_low,
+      timeline_range_high: source.timeline_range_high,
+      deliverables: source.deliverables,
+      milestone_templates: source.milestone_templates,
+      delivery_config: source.delivery_config,
+      audit_config_defaults: source.audit_config_defaults,
+      guarantees: source.guarantees,
+      changelog: [
+        {
+          version: '0.1.0',
+          changed_by: auth.user.id,
+          changed_at: new Date().toISOString(),
+          notes: `Cloned from ${sourceSlug} v${sourceVersion}`,
+        },
+      ],
+      ai_suggested_fields: [],
+    })
+
+  if (insertErr) {
+    if (insertErr.code === '23505') {
+      redirect(
+        `/internal/outcomes/new/copy?error=${encodeURIComponent(
+          `Slug "${newSlug}" already exists.`
+        )}`
+      )
+    }
+    redirect(
+      `/internal/outcomes/new/copy?error=${encodeURIComponent(insertErr.message)}`
+    )
+  }
+
+  revalidatePath('/internal/outcomes')
+  redirect(`/internal/outcomes/${newSlug}/edit#overview`)
+}
+
 // ── Smart-intake: dismiss an AI-suggested field marker ───────────────────────
 
 export async function dismissAISuggestion(

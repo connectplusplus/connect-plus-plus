@@ -34,6 +34,7 @@ export function OverviewEditor({ template, categories, onChange }: Props) {
       <Field
         label="Subtitle"
         hint="One-line value prop. 20–140 chars."
+        path="subtitle"
       >
         <Input
           value={template.subtitle ?? ''}
@@ -48,6 +49,7 @@ export function OverviewEditor({ template, categories, onChange }: Props) {
       <Field
         label="Description"
         hint="The full marketing paragraph. Markdown is allowed. 80–600 chars."
+        path="description"
       >
         <Textarea
           value={template.description ?? ''}
@@ -63,6 +65,7 @@ export function OverviewEditor({ template, categories, onChange }: Props) {
       <Field
         label="Icon"
         hint={`Pick one of the ${ICON_NAMES.length} icons supported by the marketplace card.`}
+        path="icon"
       >
         <div className="grid grid-cols-10 gap-2">
           {ICON_NAMES.map((name) => {

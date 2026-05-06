@@ -9,6 +9,7 @@ import type { Anthropic } from '@anthropic-ai/sdk'
 import { z } from 'zod'
 
 import { getAnthropicClient, SMART_INTAKE_MODEL } from './client'
+import { CANONICAL_EXAMPLE_JSON } from './canonical-example'
 import {
   buildSystemPrompt,
   buildUserPrompt,
@@ -254,6 +255,34 @@ function coerceIcon(name: string | undefined): string {
   return match ?? 'Sparkles'
 }
 
+// Force draft-only fields and pull derived legacy columns (price_range_low,
+// timeline_range_low, etc.) out of the structured pricing/timeline objects.
+function toExtractedShape(tpl: ExtractedTemplate): Partial<OutcomeTemplate> {
+  return {
+    slug: tpl.slug,
+    title: tpl.title,
+    subtitle: tpl.subtitle,
+    description: tpl.description,
+    icon: coerceIcon(tpl.icon),
+    category: tpl.category,
+    pricing: tpl.pricing,
+    timeline: tpl.timeline,
+    price_range_low: tpl.pricing?.min ?? null,
+    price_range_high: tpl.pricing?.max ?? null,
+    timeline_range_low: tpl.timeline?.min_days ?? null,
+    timeline_range_high: tpl.timeline?.max_days ?? null,
+    deliverables: tpl.deliverables,
+    milestone_templates: tpl.milestone_templates,
+    intake_schema: tpl.intake_schema,
+    delivery_config: tpl.delivery_config as OutcomeTemplate['delivery_config'],
+    audit_config_defaults: tpl.audit_config_defaults,
+    guarantees: tpl.guarantees,
+    status: 'draft',
+    version: '0.1.0',
+    published_at: null,
+  }
+}
+
 // ─── The orchestrator ───────────────────────────────────────────────────────
 
 const MAX_TOKENS = 8000
@@ -295,6 +324,42 @@ export async function* extractTemplate(
   input: ExtractInput
 ): AsyncGenerator<ExtractionEvent, ExtractionResult, void> {
   const startedAt = Date.now()
+
+  // ── Mock path for e2e tests ─────────────────────────────────────────
+  // Set SMART_INTAKE_MOCK=1 in the dev server env to bypass Anthropic and
+  // return the canonical example. Used by tests/smart-intake-smoke.ts so
+  // CI doesn't burn API tokens.
+  if (process.env.SMART_INTAKE_MOCK === '1') {
+    yield { stage: 'preparing' }
+    yield { stage: 'calling_claude', attempt: 1 }
+    await new Promise((r) => setTimeout(r, 100))
+    yield { stage: 'received_response' }
+    yield { stage: 'parsing' }
+    yield { stage: 'validating' }
+
+    const parsed = JSON.parse(CANONICAL_EXAMPLE_JSON) as ExtractedTemplate
+    // Override identity with the questionnaire so tests can drive a unique
+    // slug per run.
+    parsed.title = input.questionnaire.service_name || parsed.title
+    parsed.category = input.questionnaire.category || parsed.category
+    parsed.slug = parsed.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'mock-extracted'
+
+    return {
+      ok: true,
+      template: toExtractedShape(parsed),
+      ai_suggested_fields: collectAISuggestedPaths(parsed),
+      usage: {
+        input_tokens: 0,
+        output_tokens: 0,
+        latency_ms: Date.now() - startedAt,
+        model: 'mock',
+      },
+    }
+  }
+
   let client: Anthropic
   try {
     client = input.client ?? getAnthropicClient()
@@ -381,31 +446,7 @@ export async function* extractTemplate(
 
   const tpl = validation.data
   const ai_suggested_fields = collectAISuggestedPaths(tpl)
-
-  // Force draft-only fields (the model occasionally invents these).
-  const template: Partial<OutcomeTemplate> = {
-    slug: tpl.slug,
-    title: tpl.title,
-    subtitle: tpl.subtitle,
-    description: tpl.description,
-    icon: coerceIcon(tpl.icon),
-    category: tpl.category,
-    pricing: tpl.pricing,
-    timeline: tpl.timeline,
-    price_range_low: tpl.pricing?.min ?? null,
-    price_range_high: tpl.pricing?.max ?? null,
-    timeline_range_low: tpl.timeline?.min_days ?? null,
-    timeline_range_high: tpl.timeline?.max_days ?? null,
-    deliverables: tpl.deliverables,
-    milestone_templates: tpl.milestone_templates,
-    intake_schema: tpl.intake_schema,
-    delivery_config: tpl.delivery_config as OutcomeTemplate['delivery_config'],
-    audit_config_defaults: tpl.audit_config_defaults,
-    guarantees: tpl.guarantees,
-    status: 'draft',
-    version: '0.1.0',
-    published_at: null,
-  }
+  const template = toExtractedShape(tpl)
 
   return {
     ok: true,

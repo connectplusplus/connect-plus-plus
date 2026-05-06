@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import type { OutcomeTemplate, PricingSpec, TimelineSpec } from '@/lib/types'
 import { Field } from './_shared'
+import { AISuggestedBadge } from './ai-suggested-context'
 
 // Pricing is stored in cents (matching the legacy price_range_low/high columns).
 // The editor surfaces dollars for legibility and converts on the way in/out.
@@ -52,7 +53,10 @@ export function PricingTimelineEditor({ template, onChange }: Props) {
   return (
     <div className="space-y-8">
       <section className="space-y-5">
-        <h2 className="font-heading font-semibold text-base text-[#0F172A]">Pricing</h2>
+        <h2 className="font-heading font-semibold text-base text-[#0F172A]">
+          Pricing
+          <AISuggestedBadge path="pricing" />
+        </h2>
 
         <Field label="Pricing model" hint="Drives how the price range shows on the marketplace card.">
           <select
@@ -101,7 +105,10 @@ export function PricingTimelineEditor({ template, onChange }: Props) {
       </section>
 
       <section className="space-y-5 pt-2 border-t border-[#E2E8F0]">
-        <h2 className="font-heading font-semibold text-base text-[#0F172A] pt-4">Timeline</h2>
+        <h2 className="font-heading font-semibold text-base text-[#0F172A] pt-4">
+          Timeline
+          <AISuggestedBadge path="timeline" />
+        </h2>
 
         <div className="grid grid-cols-2 gap-4">
           <Field label="Min days">

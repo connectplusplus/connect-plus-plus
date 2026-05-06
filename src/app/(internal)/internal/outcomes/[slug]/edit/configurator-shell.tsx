@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Save, Eye, Send, ChevronRight, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { AISuggestedBadge } from '@/components/internal/configurator/ai-suggested-context'
 import { OverviewEditor } from '@/components/internal/configurator/overview-editor'
 import { PricingTimelineEditor } from '@/components/internal/configurator/pricing-timeline-editor'
 import { DeliverablesEditor } from '@/components/internal/configurator/deliverables-editor'
@@ -318,12 +319,29 @@ export function ConfiguratorShell({ template, categories, currentUserName }: Pro
   )
 }
 
+// Section IDs mapped to their AI-suggested-fields root path. When a section
+// has a single root, the SectionHeader renders an "AI" badge by it; finer-
+// grained per-field badges live inside the editors that opt in via Field's
+// `path` prop.
+const SECTION_AI_PATH: Partial<Record<SectionId, string>> = {
+  deliverables: 'deliverables',
+  milestones: 'milestone_templates',
+  'intake-form': 'intake_schema',
+  'delivery-config': 'delivery_config',
+  'audit-config': 'audit_config_defaults',
+  guarantees: 'guarantees',
+}
+
 function SectionHeader({ section }: { section: SectionId }) {
   const meta = SECTIONS.find((s) => s.id === section)!
+  const aiPath = SECTION_AI_PATH[section]
   return (
     <div className="mb-6">
       <div className="flex items-center gap-2 mb-1">
-        <h1 className="font-heading font-bold text-2xl text-[#0F172A]">{meta.label}</h1>
+        <h1 className="font-heading font-bold text-2xl text-[#0F172A]">
+          {meta.label}
+          {aiPath && <AISuggestedBadge path={aiPath} />}
+        </h1>
         {'tag' in meta && meta.tag && (
           <span
             className={`font-mono-brand text-[10px] font-semibold px-1.5 py-0.5 rounded ${

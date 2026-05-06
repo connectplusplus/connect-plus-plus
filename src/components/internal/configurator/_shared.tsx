@@ -1,21 +1,29 @@
 'use client'
 
 import { ArrowDown, ArrowUp, X } from 'lucide-react'
+import { AISuggestedBadge } from './ai-suggested-context'
 
-// Field — label + optional hint, used by every section.
+// Field — label + optional hint, used by every section. The optional `path`
+// prop lets the field render an "AI-suggested" badge when smart-intake
+// populated this section.
 export function Field({
   label,
   hint,
+  path,
   children,
 }: {
   label: string
   hint?: string
+  path?: string
   children: React.ReactNode
 }) {
   return (
     <div className="space-y-2">
       <div>
-        <label className="block text-sm font-semibold text-[#0F172A]">{label}</label>
+        <label className="block text-sm font-semibold text-[#0F172A]">
+          {label}
+          {path && <AISuggestedBadge path={path} />}
+        </label>
         {hint && <p className="text-[#94A3B8] text-xs mt-0.5">{hint}</p>}
       </div>
       {children}

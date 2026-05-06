@@ -190,6 +190,92 @@ These are deliberate post-sprint items.
 
 ---
 
+## Smart intake
+
+The "+ New template" entry point splits into three paths:
+
+1. **AI-guided** (`/internal/outcomes/new/ai`) — answer 3 questions, optionally
+   upload reference materials, get a 70%+ pre-populated draft.
+2. **Copy from existing** (`/internal/outcomes/new/copy`) — clone a published
+   template as the starting point.
+3. **Manual** (`/internal/outcomes/new/manual`) — start from an empty draft.
+
+### What AI-guided extracts
+
+Sonnet 4.6 reads the questionnaire + uploaded files and drafts:
+
+- subtitle + description (long-form)
+- icon (chosen from the 20 supported lucide names)
+- pricing range + timeline range (rough estimates the user refines)
+- deliverables with acceptance criteria
+- **milestones with acceptance criteria AND expected signals** (every milestone
+  guaranteed ≥1 required signal — the publish-time gate)
+- intake_schema fields
+- delivery_config (typical_team, ai_agents, toolchain, etc.)
+- audit_config_defaults (priority weights, alert thresholds, cadence, tone)
+- guarantees
+
+`title` and `category` come verbatim from the questionnaire and are **not**
+flagged as AI-suggested.
+
+### File support
+
+| Format | Extension(s) | How |
+|--------|-----|-----|
+| Plain text | `.txt` | UTF-8, no conversion |
+| Markdown | `.md` | UTF-8, treated as text |
+| PDF | `.pdf` | text layer extracted server-side via pdf-parse |
+| Word | `.docx` | mammoth.extractRawText |
+| PowerPoint | `.pptx` | hand-rolled JSZip extractor: slides + speaker notes |
+
+Image-only PDFs and decks dominated by text-as-image yield little or no text;
+the form surfaces a `PARSE_EMPTY` error and recommends copy-paste.
+
+### Limits
+
+- Max 5 files per intake
+- Max 25 MB per file
+- Max 30,000 words per file (truncated past that)
+- Max 80,000 words combined across all files (later files truncated first)
+- Max 10 smart-intake calls per user per hour (rate-limited via
+  `smart_intake_usage`)
+
+### AI-suggested badges
+
+Fields and sections populated by the AI render a small cyan **AI** pill next
+to their label when you arrive at the editor with `?ai=1`. Clicking the **✓**
+in the badge dismisses it (persisted server-side immediately, so the
+dismissal survives navigation).
+
+The current granularity is **section-level** — Pricing, Timeline,
+Deliverables, Milestones, Intake form, Delivery config, Audit config, and
+Guarantees each get one badge when AI populated them. Overview-level fields
+(subtitle, description, icon) get their own per-field badges.
+
+### Errors and fallbacks
+
+Every error has a structured code, a clear human message, and a
+collapsible technical-details panel. The most common ones:
+
+| Code | When | What to do |
+|------|------|------------|
+| `RATE_LIMITED` | >10 calls in last hour | Wait, or use Copy / Manual |
+| `AUTH_ERROR` | API key missing or rejected | Set `ANTHROPIC_API_KEY` |
+| `INVALID_JSON` | Claude's output couldn't be parsed | Retry; same input often parses on second attempt |
+| `PARSE_EMPTY` | File yielded <50 words | Copy-paste content into the questionnaire instead |
+| `FILE_TOO_LARGE` | File exceeds 25 MB | Split or trim |
+| `API_ERROR` | Network or upstream failure | Retry; if persistent, fall back to Copy / Manual |
+
+The chooser always offers Copy and Manual, so even when AI is down the team
+isn't blocked.
+
+### Mock mode for tests
+
+Set `SMART_INTAKE_MOCK=1` in the dev server env to bypass the Anthropic call.
+The orchestrator returns the canonical example template (with the
+questionnaire's title/category overlaid) so the full UI flow works without
+burning API tokens. Used by the e2e test at `tests/smart-intake-smoke.ts`.
+
 ## Useful files
 
 - [src/app/(internal)/internal/outcomes/](../src/app/(internal)/internal/outcomes/) — list, new, edit, actions

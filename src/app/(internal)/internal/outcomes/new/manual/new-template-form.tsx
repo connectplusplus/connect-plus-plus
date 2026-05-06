@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2, Plus, X } from 'lucide-react'
-import { createCategory, createDraftAndRedirect } from '../actions'
+import { createCategory, createDraftAndRedirect } from '../../actions'
 import type { OutcomeCategoryRow } from '@/lib/types'
 
 const ADD_NEW = '__add_new__'

@@ -2,12 +2,14 @@ import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { OutcomeTemplate, OutcomeCategoryRow } from '@/lib/types'
 import { ConfiguratorShell } from './configurator-shell'
+import { AISuggestedProvider } from '@/components/internal/configurator/ai-suggested-context'
 
 interface PageProps {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ ai?: string }>
 }
 
-export default async function ConfiguratorEditPage({ params }: PageProps) {
+export default async function ConfiguratorEditPage({ params, searchParams }: PageProps) {
   const supabase = await createClient()
 
   const {
@@ -26,6 +28,7 @@ export default async function ConfiguratorEditPage({ params }: PageProps) {
   }
 
   const { slug } = await params
+  const { ai: aiParam } = await searchParams
 
   const [{ data: template }, { data: categories }] = await Promise.all([
     supabase
@@ -47,11 +50,20 @@ export default async function ConfiguratorEditPage({ params }: PageProps) {
   const authorObj = Array.isArray(raw.internal_users) ? raw.internal_users[0] : raw.internal_users
   const normalized = { ...raw, internal_users: authorObj ?? null }
 
+  const aiSuggestedActive = aiParam === '1'
+  const aiSuggestedFields = (normalized.ai_suggested_fields ?? []) as string[]
+
   return (
-    <ConfiguratorShell
-      template={normalized}
-      categories={(categories ?? []) as OutcomeCategoryRow[]}
-      currentUserName={internalUser.full_name}
-    />
+    <AISuggestedProvider
+      templateId={normalized.id}
+      initialPaths={aiSuggestedFields}
+      active={aiSuggestedActive}
+    >
+      <ConfiguratorShell
+        template={normalized}
+        categories={(categories ?? []) as OutcomeCategoryRow[]}
+        currentUserName={internalUser.full_name}
+      />
+    </AISuggestedProvider>
   )
 }
