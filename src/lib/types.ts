@@ -230,6 +230,11 @@ export interface OutcomeTemplate {
   audit_config_defaults?: AuditConfigDefaults
   guarantees?: Guarantee[]
   changelog?: ChangelogEntry[]
+  // Dot-paths into the template payload that the smart-intake AI populated.
+  // Used by the editor to render a cyan "AI-suggested" badge next to each
+  // matching field; dismissing a badge removes its path from the array.
+  // Example: ["description", "milestone_templates.0.acceptance_criteria.1"]
+  ai_suggested_fields?: string[]
 }
 
 export interface EngagementConfiguration {

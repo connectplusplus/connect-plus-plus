@@ -1,0 +1,47 @@
+Project Scope — Code Review Service
+
+Service overview
+================
+
+We provide a structured codebase audit and review pass for engineering teams who suspect their code quality is slipping but can't articulate where. This is a one-week engagement that ends with an actionable report and a 60-minute walkthrough with the engineering team.
+
+Deliverables
+============
+
+- Coverage and complexity audit. Inventory of test coverage by directory, cyclomatic complexity hotspots, and a list of the 10 highest-risk files with reasons.
+- Dependency health report. Outdated packages, security advisories, transitive risk, and a recommended upgrade path with effort estimates.
+- Architecture findings. Where the codebase has accumulated patterns that are likely to cause issues in the next 6 months — circular imports, leaky abstractions, modules with no clear owner.
+- 90-day improvement plan. Prioritized list of fixes with effort estimates and expected impact. Scoped so the team can actually execute it.
+- Walkthrough. 60-minute live session with the engineering team to discuss findings, take questions, and clarify recommendations.
+
+Timeline
+========
+
+5 business days from kickoff. Day 1: tools setup and initial scan. Days 2-3: manual review of high-risk areas. Day 4: synthesize findings and draft report. Day 5: client review session and final delivery.
+
+Pricing
+=======
+
+Fixed price: $4,500. No hourly billing, no scope creep surprises.
+
+Team
+====
+
+One senior engineer (the reviewer) plus a PM for client communication. Reviewer is allocated full-time for the week; PM at 20%.
+
+Tools
+=====
+
+We use Claude Code, Cursor, and our internal review playbook. For analysis: ESLint, Madge, npm-audit, Sourcegraph code intel.
+
+Audit signals
+=============
+
+The Glassbox Agent watches: GitHub PR activity, CI test runs, Slack standup posts, and the daily report from the reviewer. Each milestone has explicit signals — for example, the audit phase requires a "scan_complete" signal from the reviewer's tooling pipeline.
+
+Guarantees
+==========
+
+- 30-day post-delivery follow-up. We answer clarifying questions on the report for 30 days at no extra cost.
+- Fixed price. The price doesn't change once we start.
+- Confidentiality. We sign your NDA before kickoff and retain no client code after delivery.
