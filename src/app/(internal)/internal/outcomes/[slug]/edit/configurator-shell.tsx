@@ -1,10 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Save, Eye, Send, ChevronRight } from 'lucide-react'
-import type { OutcomeTemplate, TemplateStatus } from '@/lib/types'
+import { Save, Eye, Send, ChevronRight, Loader2 } from 'lucide-react'
+import { OverviewEditor } from '@/components/internal/configurator/overview-editor'
+import { saveTemplate } from '../../actions'
+import type {
+  OutcomeTemplate,
+  OutcomeCategoryRow,
+  TemplateStatus,
+} from '@/lib/types'
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -26,13 +32,42 @@ const STATUS_PILL: Record<TemplateStatus, { color: string; bg: string; label: st
   archived: { color: '#94A3B8', bg: '#94A3B815', label: 'Archived' },
 }
 
+// Fields the Configurator can mutate at this point. Phase 4.2+ will extend this.
+const EDITABLE_FIELDS: Array<keyof OutcomeTemplate> = [
+  'title',
+  'subtitle',
+  'description',
+  'icon',
+  'category',
+]
+
+function pickEditable(t: OutcomeTemplate): Partial<OutcomeTemplate> {
+  const out: Partial<OutcomeTemplate> = {}
+  for (const k of EDITABLE_FIELDS) {
+    // @ts-expect-error indexed assignment of heterogeneous keys
+    out[k] = t[k]
+  }
+  return out
+}
+
 interface Props {
   template: OutcomeTemplate & { internal_users: { full_name: string } | null }
+  categories: OutcomeCategoryRow[]
   currentUserName: string
 }
 
-export function ConfiguratorShell({ template, currentUserName }: Props) {
+export function ConfiguratorShell({ template, categories, currentUserName }: Props) {
   const [activeSection, setActiveSection] = useState<SectionId>('overview')
+  const [local, setLocal] = useState<OutcomeTemplate>(template)
+  const [server, setServer] = useState<OutcomeTemplate>(template)
+  const [lastSavedAt, setLastSavedAt] = useState<string>(
+    template.updated_at ?? template.created_at
+  )
+  const [lastSavedBy, setLastSavedBy] = useState<string>(
+    template.internal_users?.full_name ?? currentUserName
+  )
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const [pending, startTransition] = useTransition()
 
   useEffect(() => {
     function syncFromHash() {
@@ -48,10 +83,30 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
     return () => window.removeEventListener('hashchange', syncFromHash)
   }, [])
 
-  const status = (template.status ?? 'draft') as TemplateStatus
+  const dirty =
+    JSON.stringify(pickEditable(local)) !== JSON.stringify(pickEditable(server))
+
+  function handleChange(patch: Partial<OutcomeTemplate>) {
+    setLocal((prev) => ({ ...prev, ...patch }))
+    setSaveError(null)
+  }
+
+  function handleSave() {
+    if (!dirty || pending) return
+    startTransition(async () => {
+      const result = await saveTemplate(local.id, pickEditable(local))
+      if (result.error) {
+        setSaveError(result.error)
+        return
+      }
+      setServer(local)
+      setLastSavedAt(new Date().toISOString())
+      setLastSavedBy(currentUserName)
+    })
+  }
+
+  const status = (local.status ?? 'draft') as TemplateStatus
   const pill = STATUS_PILL[status]
-  const lastSavedAt = template.updated_at ?? template.created_at
-  const lastSavedBy = template.internal_users?.full_name ?? currentUserName
 
   return (
     <div className="-m-6 flex flex-col h-[calc(100vh-3.5rem)]">
@@ -75,7 +130,7 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
               Outcomes
             </Link>
             <ChevronRight size={11} className="text-[#CBD5E1] shrink-0" />
-            <span className="text-[#0F172A] truncate">{template.title}</span>
+            <span className="text-[#0F172A] truncate">{local.title}</span>
           </nav>
           <span
             className="text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0"
@@ -84,22 +139,32 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
             {pill.label}
           </span>
           <span className="font-mono-brand text-[11px] text-[#94A3B8] shrink-0">
-            v{template.version ?? '1.0.0'}
+            v{local.version ?? '1.0.0'}
           </span>
+          {dirty && (
+            <span className="font-mono-brand text-[10px] text-[#F59E0B] shrink-0 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B] inline-block" />
+              Unsaved changes
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="ghost"
             size="sm"
-            disabled
-            title="Section editors land in Phase 4"
+            onClick={handleSave}
+            disabled={!dirty || pending}
             className="text-[#64748B] hover:text-[#0F172A] h-9 px-3"
           >
-            <Save size={13} className="mr-1.5" />
+            {pending ? (
+              <Loader2 size={13} className="mr-1.5 animate-spin" />
+            ) : (
+              <Save size={13} className="mr-1.5" />
+            )}
             Save
           </Button>
           <a
-            href={`/marketplace/outcomes/${template.slug}`}
+            href={`/marketplace/outcomes/${local.slug}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-[#64748B] hover:text-[#0F172A] text-xs font-medium h-9 px-3 rounded-md hover:bg-[#F1F5F9] transition-colors"
@@ -118,6 +183,12 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
           </Button>
         </div>
       </div>
+
+      {saveError && (
+        <div className="bg-[#F87171]/10 border-b border-[#F87171]/20 px-6 py-2 text-[#B91C1C] text-xs shrink-0">
+          Save failed: {saveError}
+        </div>
+      )}
 
       {/* ── Body: left rail + main ─────────────────────────────────────── */}
       <div className="flex-1 flex min-h-0">
@@ -171,7 +242,16 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
         {/* Main area */}
         <main className="flex-1 overflow-y-auto bg-[#F8FAFC] p-8">
           <div className="max-w-3xl mx-auto">
-            <SectionPlaceholder section={activeSection} template={template} />
+            <SectionHeader section={activeSection} />
+            {activeSection === 'overview' ? (
+              <OverviewEditor
+                template={local}
+                categories={categories}
+                onChange={handleChange}
+              />
+            ) : (
+              <SectionPlaceholder section={activeSection} template={local} />
+            )}
           </div>
         </main>
       </div>
@@ -179,40 +259,42 @@ export function ConfiguratorShell({ template, currentUserName }: Props) {
   )
 }
 
+function SectionHeader({ section }: { section: SectionId }) {
+  const meta = SECTIONS.find((s) => s.id === section)!
+  return (
+    <div className="mb-6">
+      <div className="flex items-center gap-2 mb-1">
+        <h1 className="font-heading font-bold text-2xl text-[#0F172A]">{meta.label}</h1>
+        {'tag' in meta && meta.tag && (
+          <span
+            className={`font-mono-brand text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+              meta.tag === 'L1.5'
+                ? 'bg-[#06B6D4]/10 text-[#0891B2]'
+                : 'bg-[#94A3B8]/10 text-[#64748B]'
+            }`}
+          >
+            {meta.tag}
+          </span>
+        )}
+      </div>
+      <p className="text-[#64748B] text-sm">{describeSection(section)}</p>
+    </div>
+  )
+}
+
 function SectionPlaceholder({
-  section,
+  section: _section,
   template,
 }: {
   section: SectionId
   template: OutcomeTemplate
 }) {
-  const meta = SECTIONS.find((s) => s.id === section)!
   return (
-    <div>
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-1">
-          <h1 className="font-heading font-bold text-2xl text-[#0F172A]">{meta.label}</h1>
-          {'tag' in meta && meta.tag && (
-            <span
-              className={`font-mono-brand text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                meta.tag === 'L1.5'
-                  ? 'bg-[#06B6D4]/10 text-[#0891B2]'
-                  : 'bg-[#94A3B8]/10 text-[#64748B]'
-              }`}
-            >
-              {meta.tag}
-            </span>
-          )}
-        </div>
-        <p className="text-[#64748B] text-sm">{describeSection(section)}</p>
-      </div>
-
-      <div className="bg-white border border-dashed border-[#E2E8F0] rounded-xl p-12 text-center">
-        <p className="text-[#94A3B8] text-sm">Section editor coming next.</p>
-        <p className="text-[#CBD5E1] text-xs mt-1">
-          Editing template <span className="font-mono-brand">{template.slug}</span>
-        </p>
-      </div>
+    <div className="bg-white border border-dashed border-[#E2E8F0] rounded-xl p-12 text-center">
+      <p className="text-[#94A3B8] text-sm">Section editor coming next.</p>
+      <p className="text-[#CBD5E1] text-xs mt-1">
+        Editing template <span className="font-mono-brand">{template.slug}</span>
+      </p>
     </div>
   )
 }

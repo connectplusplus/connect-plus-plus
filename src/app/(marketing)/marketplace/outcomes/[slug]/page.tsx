@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { OutcomeTemplate } from '@/lib/types'
-import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants'
+import { categoryColor, categoryLabel } from '@/lib/constants'
 import { OutcomeDetailClient } from './outcome-detail-client'
 import type { Metadata } from 'next'
 import { CheckCircle2, Clock } from 'lucide-react'
@@ -42,8 +42,8 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
   }
 
   const t = template as OutcomeTemplate
-  const categoryColor = CATEGORY_COLORS[t.category]
-  const categoryLabel = CATEGORY_LABELS[t.category]
+  const catColor = categoryColor(t.category)
+  const catLabel = categoryLabel(t.category)
 
   // Build timeline steps from timeline range
   const timelineSteps = [
@@ -73,9 +73,9 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
             <div>
               <div
                 className="inline-flex items-center gap-2 border rounded-full px-3 py-1 mb-4 text-xs font-medium"
-                style={{ color: categoryColor, borderColor: `${categoryColor}40` }}
+                style={{ color: catColor, borderColor: `${catColor}40` }}
               >
-                {categoryLabel}
+                {catLabel}
               </div>
               <h1 className="font-heading font-bold text-4xl md:text-5xl text-[#0F172A] mb-3">
                 {t.title}

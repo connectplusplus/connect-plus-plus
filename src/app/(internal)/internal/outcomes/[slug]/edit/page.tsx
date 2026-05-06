@@ -1,6 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import type { OutcomeTemplate } from '@/lib/types'
+import type { OutcomeTemplate, OutcomeCategoryRow } from '@/lib/types'
 import { ConfiguratorShell } from './configurator-shell'
 
 interface PageProps {
@@ -27,11 +27,17 @@ export default async function ConfiguratorEditPage({ params }: PageProps) {
 
   const { slug } = await params
 
-  const { data: template } = await supabase
-    .from('outcome_templates')
-    .select('*, internal_users(full_name)')
-    .eq('slug', slug)
-    .single()
+  const [{ data: template }, { data: categories }] = await Promise.all([
+    supabase
+      .from('outcome_templates')
+      .select('*, internal_users(full_name)')
+      .eq('slug', slug)
+      .single(),
+    supabase
+      .from('outcome_categories')
+      .select('key, label, color, display_order, created_by, created_at')
+      .order('display_order', { ascending: true }),
+  ])
 
   if (!template) notFound()
 
@@ -44,6 +50,7 @@ export default async function ConfiguratorEditPage({ params }: PageProps) {
   return (
     <ConfiguratorShell
       template={normalized}
+      categories={(categories ?? []) as OutcomeCategoryRow[]}
       currentUserName={internalUser.full_name}
     />
   )

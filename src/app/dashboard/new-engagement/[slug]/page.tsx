@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import type { OutcomeTemplate } from '@/lib/types'
-import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants'
+import { categoryColor, categoryLabel } from '@/lib/constants'
 import { IntakeForm } from '@/components/marketplace/intake-form'
 import { ScopeEstimateSticky } from './scope-estimate-sticky'
 import { CheckCircle2, Clock, ArrowLeft } from 'lucide-react'
@@ -36,8 +36,8 @@ export default async function DashboardNewEngagementDetailPage({ params }: PageP
     .single()
 
   const t = template as OutcomeTemplate
-  const categoryColor = CATEGORY_COLORS[t.category]
-  const categoryLabel = CATEGORY_LABELS[t.category]
+  const catColor = categoryColor(t.category)
+  const catLabel = categoryLabel(t.category)
 
   const timelineSteps = [
     { phase: 'Intake & Scoping', days: '1–2 days', description: 'PM reviews your responses and confirms scope' },
@@ -68,9 +68,9 @@ export default async function DashboardNewEngagementDetailPage({ params }: PageP
           <div>
             <div
               className="inline-flex items-center gap-2 border rounded-full px-3 py-1 mb-4 text-xs font-medium"
-              style={{ color: categoryColor, borderColor: `${categoryColor}40` }}
+              style={{ color: catColor, borderColor: `${catColor}40` }}
             >
-              {categoryLabel}
+              {catLabel}
             </div>
             <h1 className="font-heading font-bold text-4xl text-[#0F172A] mb-3">{t.title}</h1>
             {t.subtitle && <p className="text-[#64748B] text-xl">{t.subtitle}</p>}

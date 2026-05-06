@@ -1,46 +1,10 @@
 import Link from 'next/link'
-import {
-  ArrowRight,
-  BarChart3,
-  Bot,
-  CircuitBoard,
-  Clock,
-  Cloud,
-  Cpu,
-  Database,
-  DollarSign,
-  GitBranch,
-  Globe,
-  Layers,
-  Rocket,
-  Sparkles,
-  TestTube,
-  Wand,
-  Workflow,
-  Zap,
-} from 'lucide-react'
+import { ArrowRight, Clock, DollarSign } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { OutcomeTemplate } from '@/lib/types'
 import { formatPriceRange, formatTimelineRange } from '@/lib/utils'
-import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/constants'
-
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>> = {
-  BarChart3,
-  Bot,
-  CircuitBoard,
-  Cloud,
-  Cpu,
-  Database,
-  GitBranch,
-  Globe,
-  Layers,
-  Rocket,
-  Sparkles,
-  TestTube,
-  Wand,
-  Workflow,
-  Zap,
-}
+import { categoryColor, categoryLabel } from '@/lib/constants'
+import { IconByName } from '@/components/ui/icon-by-name'
 
 interface OutcomeCardProps {
   template: OutcomeTemplate
@@ -48,16 +12,16 @@ interface OutcomeCardProps {
 }
 
 export function OutcomeCard({ template, linkPrefix = '/marketplace/outcomes' }: OutcomeCardProps) {
-  const IconComponent = template.icon ? (ICON_MAP[template.icon] ?? Zap) : Zap
-  const categoryColor = CATEGORY_COLORS[template.category]
-  const categoryLabel = CATEGORY_LABELS[template.category]
+  const catColor = categoryColor(template.category)
+  const catLabel = categoryLabel(template.category)
 
   return (
     <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col hover:border-[#7C3AED]/30 hover:-translate-y-0.5 transition-all duration-150 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-5">
         <div className="w-11 h-11 rounded-xl bg-[#F1F5F9] flex items-center justify-center shrink-0">
-          <IconComponent
+          <IconByName
+            name={template.icon}
             size={20}
             strokeWidth={1.5}
             className="text-[#7C3AED]"
@@ -65,9 +29,9 @@ export function OutcomeCard({ template, linkPrefix = '/marketplace/outcomes' }: 
         </div>
         <Badge
           className="text-xs font-medium border rounded-full px-2.5 py-1 bg-transparent"
-          style={{ color: categoryColor, borderColor: `${categoryColor}40` }}
+          style={{ color: catColor, borderColor: `${catColor}40` }}
         >
-          {categoryLabel}
+          {catLabel}
         </Badge>
       </div>
 
