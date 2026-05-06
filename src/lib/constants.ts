@@ -53,6 +53,9 @@ export const MILESTONE_STATUS_LABELS: Record<MilestoneStatus, string> = {
 export const ENGAGEMENT_STATUS_LABELS: Record<EngagementStatus, string> = {
   intake: 'Intake',
   scoping: 'Scoping',
+  pending_review: 'SOW being prepared',
+  awaiting_signature: 'Awaiting signature',
+  awaiting_kickoff: 'Kickoff pending',
   active: 'Active',
   in_review: 'In Review',
   completed: 'Completed',
@@ -62,6 +65,9 @@ export const ENGAGEMENT_STATUS_LABELS: Record<EngagementStatus, string> = {
 export const ENGAGEMENT_STATUS_COLORS: Record<EngagementStatus, string> = {
   intake: '#60A5FA',
   scoping: '#FBBF24',
+  pending_review: '#BA7517',  // amber — action needed, time-bounded
+  awaiting_signature: '#7C3AED',  // primary purple — client action
+  awaiting_kickoff: '#06B6D4',  // glass cyan — scheduling state
   active: '#7C3AED',
   in_review: '#FBBF24',
   completed: '#34D399',

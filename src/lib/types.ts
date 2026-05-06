@@ -249,7 +249,30 @@ export interface EngagementConfiguration {
 }
 
 export type EngagementMode = 'talent' | 'pod' | 'predefined_outcome' | 'custom_outcome'
-export type EngagementStatus = 'intake' | 'scoping' | 'active' | 'in_review' | 'completed' | 'cancelled'
+
+// Engagement status spans the legacy two-state path (intake/scoping) plus
+// the four-state lifecycle introduced by migration 008
+// (pending_review → awaiting_signature → awaiting_kickoff → active). Both
+// sets coexist; new engagements use the four-state lifecycle.
+export type EngagementStatus =
+  | 'intake'                // legacy
+  | 'scoping'               // legacy
+  | 'pending_review'        // PM is preparing the SOW
+  | 'awaiting_signature'    // SOW sent to client; awaiting e-signature
+  | 'awaiting_kickoff'      // client signed; kickoff call pending
+  | 'active'
+  | 'in_review'
+  | 'completed'
+  | 'cancelled'
+
+// The four post-008 lifecycle states. Useful for narrowing in UI code that
+// only renders the new flow.
+export const NEW_LIFECYCLE_STATES = [
+  'pending_review',
+  'awaiting_signature',
+  'awaiting_kickoff',
+  'active',
+] as const
 
 export interface Engagement {
   id: string
@@ -266,8 +289,41 @@ export interface Engagement {
   actual_end_date: string | null
   created_at: string
   updated_at: string
+  // ── Lifecycle (added by migration 008) ─────────────────────────────────
+  pm_user_id?: string | null
+  intake_submitted_at?: string | null
+  sow_sent_at?: string | null
+  signed_at?: string | null
+  kickoff_completed_at?: string | null
+  first_agent_run_at?: string | null
   // Joined
   outcome_templates?: OutcomeTemplate
+}
+
+// ─── Engagement lifecycle events (migration 008) ───────────────────────────
+
+export type LifecycleEventType =
+  | 'intake_submitted'
+  | 'sow_sent'
+  | 'sow_revised'
+  | 'signed'
+  | 'kickoff_scheduled'
+  | 'kickoff_completed'
+  | 'activated'
+  | 'cancelled'
+  | 'returned_to_review'
+
+export type LifecycleActorRole = 'client' | 'pm' | 'system'
+
+export interface EngagementLifecycleEvent {
+  id: string
+  engagement_id: string
+  event_type: LifecycleEventType
+  actor_user_id: string | null
+  actor_role: LifecycleActorRole
+  notes: string | null
+  payload: Record<string, unknown> | null
+  created_at: string
 }
 
 export type MilestoneStatus = 'upcoming' | 'in_progress' | 'in_review' | 'completed'
