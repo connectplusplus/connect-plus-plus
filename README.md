@@ -22,7 +22,12 @@ The app expects a Supabase project. Set the env in `.env.local`:
 ```
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+ANTHROPIC_API_KEY=...   # required for the Configurator's smart-intake feature
 ```
+
+`ANTHROPIC_API_KEY` is server-side only — never prefix it with
+`NEXT_PUBLIC_`. Get one at
+[console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
 
 Apply migrations in order:
 

@@ -15,6 +15,11 @@ export type ExtractErrorCode =
   | 'PARSE_EMPTY'
   | 'COMBINED_TOO_LARGE'
   | 'TOO_MANY_FILES'
+  | 'AUTH_ERROR'
+  | 'API_ERROR'
+  | 'RATE_LIMITED'
+  | 'INVALID_JSON'
+  | 'EMPTY_RESPONSE'
 
 export interface ExtractError {
   code: ExtractErrorCode

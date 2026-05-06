@@ -11,6 +11,7 @@
     "test:extractors": "tsx tests/extractor-smoke.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.94.0",
     "@base-ui/react": "^1.4.0",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.103.0",
