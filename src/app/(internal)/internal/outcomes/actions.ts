@@ -3,7 +3,14 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import type { OutcomeCategory, OutcomeCategoryRow, OutcomeTemplate } from '@/lib/types'
+import type {
+  ChangelogEntry,
+  OutcomeCategory,
+  OutcomeCategoryRow,
+  OutcomeTemplate,
+} from '@/lib/types'
+import { validateForPublish, bumpVersion } from '@/lib/configurator/validation'
+import type { ValidationError } from '@/lib/configurator/validation'
 
 const AUTHOR_ROLES = ['pm', 'delivery_lead'] as const
 
@@ -105,9 +112,73 @@ export async function saveTemplate(
   return { ok: true }
 }
 
-export async function publishTemplate(_id: string): Promise<{ error: string }> {
-  // Validation + version bump + changelog land in Phase 5.
-  return { error: 'Publish flow lands in Phase 5.' }
+export async function publishTemplate(
+  id: string,
+  options: { breakingChange?: boolean; notes?: string } = {}
+): Promise<{
+  ok?: true
+  version?: string
+  errors?: ValidationError[]
+  error?: string
+}> {
+  const auth = await assertDeliveryAuthor()
+  if ('error' in auth) return { error: auth.error }
+
+  // Re-load the canonical row so validation runs against the stored copy,
+  // not whatever the client-side editor thinks is true.
+  const { data: row, error: fetchErr } = await auth.supabase
+    .from('outcome_templates')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (fetchErr || !row) {
+    return { error: fetchErr?.message ?? 'Template not found.' }
+  }
+
+  const template = row as OutcomeTemplate
+
+  const result = validateForPublish(template)
+  if (!result.ok) {
+    return { errors: result.errors }
+  }
+
+  const nextVersion = bumpVersion(
+    template.version ?? '1.0.0',
+    options.breakingChange ? 'major' : 'minor'
+  )
+
+  const newEntry: ChangelogEntry = {
+    version: nextVersion,
+    changed_by: auth.user.id,
+    changed_at: new Date().toISOString(),
+    notes:
+      options.notes?.trim() ||
+      (options.breakingChange
+        ? `Published ${nextVersion} (breaking change)`
+        : `Published ${nextVersion}`),
+  }
+
+  const changelog = [...(template.changelog ?? []), newEntry]
+
+  const { error: updateErr } = await auth.supabase
+    .from('outcome_templates')
+    .update({
+      status: 'published',
+      version: nextVersion,
+      published_at: new Date().toISOString(),
+      changelog,
+    })
+    .eq('id', id)
+
+  if (updateErr) return { error: updateErr.message }
+
+  revalidatePath('/internal/outcomes')
+  revalidatePath(`/internal/outcomes/${template.slug}/edit`)
+  revalidatePath(`/marketplace/outcomes/${template.slug}`)
+  revalidatePath('/marketplace/outcomes')
+
+  return { ok: true, version: nextVersion }
 }
 
 // ── Categories ───────────────────────────────────────────────────────────────

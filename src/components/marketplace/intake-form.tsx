@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { createClient } from '@/lib/supabase/client'
+import { createEngagementFromTemplate } from '@/app/(marketing)/marketplace/actions'
 import type { IntakeSchema, OutcomeTemplate } from '@/lib/types'
 import { CheckCircle2, Loader2, FileText, ExternalLink, Hexagon, Plus, X } from 'lucide-react'
 
@@ -31,7 +31,7 @@ interface IntakeFormProps {
   userEmail?: string
 }
 
-export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) {
+export function IntakeForm({ template, companyId: _companyId, userEmail }: IntakeFormProps) {
   const router = useRouter()
   const [step, setStep] = useState<FormStep>('intake')
   const [responses, setResponses] = useState<Record<string, string | string[]>>({})
@@ -40,18 +40,31 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
   const [error, setError] = useState<string | null>(null)
   const [multiselects, setMultiselects] = useState<Record<string, string[]>>({})
 
-  // Agent configuration state
+  // Agent configuration state — pre-filled from the template's audit defaults
+  // when present, so the client sees the Configurator-author's intent rather
+  // than a generic baseline.
+  const acd = template.audit_config_defaults
   const [agentSuccessDefinition, setAgentSuccessDefinition] = useState('')
   const [agentCriticalReqs, setAgentCriticalReqs] = useState<string[]>([])
   const [agentRiskAreas, setAgentRiskAreas] = useState<string[]>([])
   const [agentWeights, setAgentWeights] = useState({
-    timeline: 8, quality: 7, scope: 9, communication: 5, velocity: 4,
+    timeline: acd?.priority_weights?.timeline ?? 8,
+    quality: acd?.priority_weights?.quality ?? 7,
+    scope: acd?.priority_weights?.scope ?? 9,
+    communication: acd?.priority_weights?.communication ?? 5,
+    velocity: acd?.priority_weights?.velocity ?? 4,
   })
   const [agentAlerts, setAgentAlerts] = useState({
-    critical_threshold: 60, milestone_slip_days: 3, pm_silence_hours: 48,
+    critical_threshold: acd?.alert_thresholds?.critical ?? 60,
+    milestone_slip_days: 3,
+    pm_silence_hours: 48,
   })
-  const [agentCadence, setAgentCadence] = useState<'daily' | 'every_2_days' | 'weekly'>('daily')
-  const [agentTone, setAgentTone] = useState<'technical' | 'executive' | 'balanced'>('balanced')
+  const [agentCadence, setAgentCadence] = useState<'daily' | 'every_2_days' | 'weekly'>(
+    acd?.report_cadence ?? 'every_2_days'
+  )
+  const [agentTone, setAgentTone] = useState<'technical' | 'executive' | 'balanced'>(
+    acd?.report_tone ?? 'technical'
+  )
 
   const schema: IntakeSchema = template.intake_schema
   const contractPdf = SLUG_TO_CONTRACT[template.slug]
@@ -101,95 +114,35 @@ export function IntakeForm({ template, companyId, userEmail }: IntakeFormProps) 
     setError(null)
 
     try {
-      const supabase = createClient()
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      // Resolve company_id
-      let resolvedCompanyId = companyId
-
-      if (!resolvedCompanyId && user) {
-        const { data: userRecord } = await supabase
-          .from('users')
-          .select('company_id')
-          .eq('id', user.id)
-          .single()
-        resolvedCompanyId = userRecord?.company_id ?? undefined
-      }
-
-      if (!resolvedCompanyId) {
-        const domain = email.split('@')[1] ?? 'unknown.com'
-        const { data: company, error: companyError } = await supabase
-          .from('companies')
-          .insert({ name: domain })
-          .select('id')
-          .single()
-        if (companyError) throw companyError
-        resolvedCompanyId = company.id
-      }
-
-      // Create the engagement
-      const { data: engagement, error: engError } = await supabase
-        .from('engagements')
-        .insert({
-          company_id: resolvedCompanyId,
-          template_id: template.id,
-          mode: 'predefined_outcome',
-          title: `${template.title}`,
-          status: 'intake',
-          intake_responses: {
-            ...responses,
-            contact_email: email || user?.email || '',
-            contract_signed: true,
-            contract_signed_at: new Date().toISOString(),
+      const result = await createEngagementFromTemplate({
+        templateId: template.id,
+        intakeResponses: responses,
+        contactEmail: email,
+        agent: {
+          successDefinition: agentSuccessDefinition,
+          criticalRequirements: agentCriticalReqs,
+          riskAreas: agentRiskAreas,
+          weights: agentWeights,
+          alerts: {
+            criticalThreshold: agentAlerts.critical_threshold,
+            milestoneSlipDays: agentAlerts.milestone_slip_days,
+            pmSilenceHours: agentAlerts.pm_silence_hours,
           },
-        })
-        .select('id')
-        .single()
+          cadence: agentCadence,
+          tone: agentTone,
+        },
+      })
 
-      if (engError) throw engError
-
-      // Create initial system message
-      if (engagement) {
-        await supabase.from('messages').insert({
-          engagement_id: engagement.id,
-          sender_name: 'System',
-          sender_role: 'system',
-          content: `Engagement created. Contract signed for ${template.title}. Your AI-native PM will review your scope within 24 hours.`,
-          is_system_message: true,
-        })
-
-        // Create Glassbox Agent configuration
-        await supabase.from('agent_configs').insert({
-          engagement_id: engagement.id,
-          success_definition: agentSuccessDefinition || 'Successful delivery of all contracted scope on time and to quality standards.',
-          critical_requirements: agentCriticalReqs.filter(Boolean),
-          risk_areas: agentRiskAreas.filter(Boolean),
-          weight_timeline: agentWeights.timeline,
-          weight_quality: agentWeights.quality,
-          weight_scope: agentWeights.scope,
-          weight_communication: agentWeights.communication,
-          weight_velocity: agentWeights.velocity,
-          alert_critical_threshold: agentAlerts.critical_threshold,
-          alert_milestone_slip_days: agentAlerts.milestone_slip_days,
-          alert_pm_silence_hours: agentAlerts.pm_silence_hours,
-          report_cadence: agentCadence,
-          report_tone: agentTone,
-          on_demand_enabled: true,
-          configured_by: user?.id ?? null,
-        })
+      if (result.error || !result.engagementId) {
+        setError(result.error ?? 'Something went wrong creating your engagement.')
+        setStep('contract')
+        return
       }
 
       setStep('done')
-
-      // Redirect to engagement dashboard
-      if (user && engagement) {
-        setTimeout(() => {
-          router.push(`/dashboard/engagements/${engagement.id}`)
-        }, 2000)
-      }
+      setTimeout(() => {
+        router.push(`/dashboard/engagements/${result.engagementId}`)
+      }, 2000)
     } catch (err) {
       console.error('Engagement creation error:', err)
       setError('Something went wrong creating your engagement. Please try again.')

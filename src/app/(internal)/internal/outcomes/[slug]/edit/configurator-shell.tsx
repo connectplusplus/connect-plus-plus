@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Save, Eye, Send, ChevronRight, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { OverviewEditor } from '@/components/internal/configurator/overview-editor'
 import { PricingTimelineEditor } from '@/components/internal/configurator/pricing-timeline-editor'
 import { DeliverablesEditor } from '@/components/internal/configurator/deliverables-editor'
@@ -13,7 +14,8 @@ import { DeliveryConfigEditor } from '@/components/internal/configurator/deliver
 import { AuditConfigEditor } from '@/components/internal/configurator/audit-config-editor'
 import { GuaranteesEditor } from '@/components/internal/configurator/guarantees-editor'
 import { ReviewPublish } from '@/components/internal/configurator/review-publish'
-import { saveTemplate } from '../../actions'
+import { saveTemplate, publishTemplate } from '../../actions'
+import { validateForPublish, bumpVersion } from '@/lib/configurator/validation'
 import type {
   OutcomeTemplate,
   OutcomeCategoryRow,
@@ -126,8 +128,44 @@ export function ConfiguratorShell({ template, categories, currentUserName }: Pro
     })
   }
 
+  const validation = validateForPublish(server)
+  const nextVersion = bumpVersion(local.version ?? '1.0.0')
+  const canPublish = !dirty && validation.ok && !pending
+
+  function handlePublish() {
+    if (!canPublish) return
+    startTransition(async () => {
+      const result = await publishTemplate(local.id)
+      if (result.errors) {
+        toast.error(`${result.errors.length} validation issue${result.errors.length === 1 ? '' : 's'} blocked publishing.`)
+        // Surface the first error in the persistent banner too
+        setSaveError(result.errors[0]?.message ?? 'Validation failed')
+        return
+      }
+      if (result.error) {
+        toast.error(result.error)
+        setSaveError(result.error)
+        return
+      }
+      if (result.ok && result.version) {
+        const next = { ...local, status: 'published' as TemplateStatus, version: result.version, published_at: new Date().toISOString() }
+        setLocal(next)
+        setServer(next)
+        setLastSavedAt(new Date().toISOString())
+        setLastSavedBy(currentUserName)
+        toast.success(`Published v${result.version}`)
+      }
+    })
+  }
+
   const status = (local.status ?? 'draft') as TemplateStatus
   const pill = STATUS_PILL[status]
+
+  const publishTooltip = dirty
+    ? 'Save your changes first'
+    : !validation.ok
+      ? `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} to resolve — see Review & publish`
+      : `Publish v${nextVersion}`
 
   return (
     <div className="-m-6 flex flex-col h-[calc(100vh-3.5rem)]">
@@ -195,12 +233,13 @@ export function ConfiguratorShell({ template, categories, currentUserName }: Pro
           </a>
           <Button
             size="sm"
-            disabled
-            title="Publish flow lands in Phase 5"
-            className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-9 px-4"
+            onClick={handlePublish}
+            disabled={!canPublish}
+            title={publishTooltip}
+            className="bg-[#7C3AED] text-white hover:bg-[#8B5CF6] font-semibold h-9 px-4 disabled:opacity-50"
           >
             <Send size={13} className="mr-1.5" />
-            Publish
+            {validation.ok && !dirty ? `Publish v${nextVersion}` : 'Publish'}
           </Button>
         </div>
       </div>
