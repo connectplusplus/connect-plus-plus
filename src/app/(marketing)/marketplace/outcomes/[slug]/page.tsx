@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import type { OutcomeTemplate } from '@/lib/types'
 import { categoryColor, categoryLabel } from '@/lib/constants'
@@ -8,6 +9,7 @@ import { CheckCircle2, Clock } from 'lucide-react'
 
 interface PageProps {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ draft?: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -26,16 +28,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function OutcomeDetailPage({ params }: PageProps) {
+export default async function OutcomeDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params
+  const { draft: draftParam } = await searchParams
   const supabase = await createClient()
 
-  const { data: template, error } = await supabase
-    .from('outcome_templates')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single()
+  // Draft preview path: only available to internal users (pm/delivery_lead/finance).
+  // The is_active filter is bypassed; RLS still enforces the visibility rule
+  // ("Internal users can read all templates") so non-internal callers fall
+  // through to the regular published-only fetch.
+  let isDraftPreview = false
+  if (draftParam === '1') {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user) {
+      const { data: internalUser } = await supabase
+        .from('internal_users')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+      if (internalUser) isDraftPreview = true
+    }
+  }
+
+  let query = supabase.from('outcome_templates').select('*').eq('slug', slug)
+  if (!isDraftPreview) query = query.eq('is_active', true)
+  const { data: template, error } = await query.single()
 
   if (error || !template) {
     notFound()
@@ -56,15 +75,36 @@ export default async function OutcomeDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {isDraftPreview && (
+        <div className="bg-[#F59E0B]/10 border-b border-[#F59E0B]/30 px-6 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <p className="text-[#92400E] text-xs">
+              <span className="font-mono-brand uppercase tracking-widest font-semibold mr-2">
+                Draft preview
+              </span>
+              You&apos;re viewing template{' '}
+              <span className="font-mono-brand">{t.slug}</span> in{' '}
+              <span className="font-mono-brand">{(t.status ?? 'draft').toString()}</span>{' '}
+              status as it would appear once published. Visible to internal users only.
+            </p>
+            <Link
+              href={`/internal/outcomes/${t.slug}/edit`}
+              className="text-[#92400E] text-xs font-semibold hover:underline shrink-0"
+            >
+              ← Back to Configurator
+            </Link>
+          </div>
+        </div>
+      )}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* ── Left column (60%) ──────────────────────────────────────────── */}
           <div className="lg:col-span-3 space-y-10">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-[#94A3B8]">
-              <a href="/marketplace/outcomes" className="hover:text-[#0F172A] transition-colors">
+              <Link href="/marketplace/outcomes" className="hover:text-[#0F172A] transition-colors">
                 Outcomes
-              </a>
+              </Link>
               <span>/</span>
               <span className="text-[#0F172A]">{t.title}</span>
             </nav>

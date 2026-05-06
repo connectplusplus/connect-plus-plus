@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Glassbox
 
-## Getting Started
+FullStack's AI-native delivery platform. A three-layer product:
 
-First, run the development server:
+- **L1 — Marketplace.** Productized outcomes with fixed pricing and timelines. Public-facing.
+- **L1.5 — Glassbox Agent.** Independent AI auditor that watches every active engagement and reports to the client.
+- **L2 — Configurator.** Internal tool where Delivery authors and publishes the outcome templates that power L1 and feed L1.5.
+
+Built on Next.js 16, React 19, Supabase, Tailwind v4, shadcn/ui.
+
+---
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app expects a Supabase project. Set the env in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Apply migrations in order:
 
-## Learn More
+```bash
+# Paste each file's contents into the Supabase SQL editor, wrapped in BEGIN; / COMMIT;
+supabase/migrations/001_initial_schema.sql
+supabase/migrations/002_internal_layer.sql
+supabase/migrations/003_ai_layer.sql
+supabase/migrations/004_expand_categories.sql
+supabase/migrations/005_l2_configurator.sql
+supabase/migrations/006_managed_categories.sql
+```
 
-To learn more about Next.js, take a look at the following resources:
+Then optionally run the seed for talent profiles + demo company/engagements:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Same pattern: paste supabase/seed.sql into the SQL editor
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The seed no longer ships outcome templates — those are authored through the
+Configurator.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project surfaces
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Three route groups, three audiences:
+
+- **`(marketing)`** — public marketplace. `/marketplace/outcomes`,
+  `/marketplace/talent`, `/marketplace/pods`, `/marketplace/custom`. The
+  outcomes list and detail pages render whatever templates Delivery has
+  published.
+- **`dashboard`** — authenticated client surface. `/dashboard/engagements`,
+  `/dashboard/messages`, `/dashboard/my-talent`. Where customers see their
+  active engagements, daily reports, agent assessments, and milestone progress.
+- **`(internal)`** — FullStack employees only. `/internal` overview,
+  `/internal/daily-reports` (AI-drafted reports the PM reviews), and the
+  L2 Configurator at `/internal/outcomes`.
+
+`(internal)` has its own auth model — `internal_users` table, separate
+`/internal-login` page, RLS-gated to FullStack staff. See
+[migration 002](supabase/migrations/002_internal_layer.sql) for the rationale.
+
+---
+
+## Internal tooling
+
+- **Daily Reports** — `/internal/daily-reports` — AI-drafted daily reports
+  for active engagements. The PM reviews, optionally overrides, and publishes
+  to the client.
+- **L2 Configurator** — `/internal/outcomes` — author outcome templates that
+  power the L1 marketplace and feed the L1.5 audit. See
+  [docs/configurator.md](docs/configurator.md) for the full guide.
+
+---
+
+## Glassbox Agent (L1.5)
+
+An independent AI auditor configured per engagement. Lives in
+[src/lib/agent/](src/lib/agent/). Pipeline: collect signals → score
+deterministically → ask Claude for a written assessment → route to PM
+review (or bypass to client when score is critical). API surface at
+`/api/agent/{on-demand,run-scheduled,assessments}`. Spec doc:
+[glassbox-agent-prompt.md](glassbox-agent-prompt.md).
+
+---
+
+## Scripts
+
+```bash
+pnpm dev              # Next.js dev server
+pnpm build            # production build
+pnpm lint             # ESLint
+pnpm test             # Playwright e2e tests (requires test credentials in env)
+node scripts/screenshot-walk.mjs   # full-app screenshot walker for design review
+```
+
+The e2e test exercises the Configurator's create/edit flow. It needs:
+
+```
+TEST_INTERNAL_EMAIL=...
+TEST_INTERNAL_PASSWORD=...
+```
+
+set in env or `.env.local`. The user must already exist in `internal_users`
+with role `pm` or `delivery_lead`.
+
+---
+
+## Reference docs
+
+- [Glassbox_Product_Architecture_Guide.md](Glassbox_Product_Architecture_Guide.md) — full product + tech context
+- [glassbox-l2-schema.md](glassbox-l2-schema.md) — L2 Configurator data schema
+- [glassbox-agent-prompt.md](glassbox-agent-prompt.md) — Glassbox Agent spec
+- [docs/configurator.md](docs/configurator.md) — L2 Configurator user guide
+- [update.md](update.md) — delta since the architecture guide

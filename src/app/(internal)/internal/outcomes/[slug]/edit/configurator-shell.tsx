@@ -223,13 +223,14 @@ export function ConfiguratorShell({ template, categories, currentUserName }: Pro
             Save
           </Button>
           <a
-            href={`/marketplace/outcomes/${local.slug}`}
+            href={`/marketplace/outcomes/${local.slug}?draft=1`}
             target="_blank"
             rel="noopener noreferrer"
+            title="Preview as a client would see it (draft view, internal-only)"
             className="inline-flex items-center text-[#64748B] hover:text-[#0F172A] text-xs font-medium h-9 px-3 rounded-md hover:bg-[#F1F5F9] transition-colors"
           >
             <Eye size={13} className="mr-1.5" />
-            Preview
+            Preview as client →
           </a>
           <Button
             size="sm"
