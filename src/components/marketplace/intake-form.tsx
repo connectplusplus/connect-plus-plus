@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { createEngagementFromTemplate } from '@/app/(marketing)/marketplace/actions'
+import { IntakeSuccessModal } from '@/components/marketplace/intake-success-modal'
 import type { IntakeSchema, OutcomeTemplate } from '@/lib/types'
 import { CheckCircle2, Loader2, FileText, ExternalLink, Hexagon, Plus, X } from 'lucide-react'
 
@@ -31,14 +32,22 @@ interface IntakeFormProps {
   userEmail?: string
 }
 
+interface SuccessPayload {
+  engagementId: string
+  pmName: string | null
+  engagementRef: string
+}
+
 export function IntakeForm({ template, companyId: _companyId, userEmail }: IntakeFormProps) {
   const router = useRouter()
+  void router // kept for potential future direct nav; success modal owns redirect now
   const [step, setStep] = useState<FormStep>('intake')
   const [responses, setResponses] = useState<Record<string, string | string[]>>({})
   const [email, setEmail] = useState(userEmail ?? '')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [multiselects, setMultiselects] = useState<Record<string, string[]>>({})
+  const [success, setSuccess] = useState<SuccessPayload | null>(null)
 
   // Agent configuration state — pre-filled from the template's audit defaults
   // when present, so the client sees the Configurator-author's intent rather
@@ -140,9 +149,11 @@ export function IntakeForm({ template, companyId: _companyId, userEmail }: Intak
       }
 
       setStep('done')
-      setTimeout(() => {
-        router.push(`/dashboard/engagements/${result.engagementId}`)
-      }, 2000)
+      setSuccess({
+        engagementId: result.engagementId,
+        pmName: result.pmName ?? null,
+        engagementRef: result.engagementRef ?? '',
+      })
     } catch (err) {
       console.error('Engagement creation error:', err)
       setError('Something went wrong creating your engagement. Please try again.')
@@ -152,20 +163,23 @@ export function IntakeForm({ template, companyId: _companyId, userEmail }: Intak
     }
   }
 
-  // ── Done state ──────────────────────────────────────────────────────────
-  if (step === 'done') {
+  // ── Done state — overlay the success modal on top of the contract view ──
+  if (step === 'done' && success) {
     return (
-      <div className="bg-white border border-[#7C3AED]/30 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 bg-[#7C3AED]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={32} className="text-[#7C3AED]" strokeWidth={1.5} />
+      <>
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 text-center opacity-50">
+          <div className="w-16 h-16 bg-[#10B981]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 size={32} className="text-[#10B981]" strokeWidth={1.5} />
+          </div>
+          <p className="text-[#64748B] text-sm">Intake submitted.</p>
         </div>
-        <h3 className="font-heading font-semibold text-xl text-[#0F172A] mb-2">
-          Your engagement is live.
-        </h3>
-        <p className="text-[#64748B] text-sm leading-relaxed">
-          Contract signed. Your engagement dashboard is being set up — redirecting now...
-        </p>
-      </div>
+        <IntakeSuccessModal
+          pmName={success.pmName}
+          engagementId={success.engagementId}
+          engagementRef={success.engagementRef}
+          templateTitle={template.title}
+        />
+      </>
     )
   }
 

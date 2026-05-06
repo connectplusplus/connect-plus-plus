@@ -1,6 +1,13 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import type { Engagement, Milestone, Message, OutcomeTemplate, DailyReport } from '@/lib/types'
+import type {
+  Engagement,
+  Milestone,
+  Message,
+  OutcomeTemplate,
+  DailyReport,
+  EngagementLifecycleEvent,
+} from '@/lib/types'
 import { EngagementDetailClient } from './engagement-detail-client'
 
 interface PageProps {
@@ -58,6 +65,39 @@ export default async function EngagementDetailPage({ params }: PageProps) {
     .eq('engagement_id', id)
     .order('report_date', { ascending: false })
 
+  // Lifecycle events for the new timeline tab
+  const { data: lifecycleEvents } = await supabase
+    .from('engagement_lifecycle_events')
+    .select('*')
+    .eq('engagement_id', id)
+    .order('created_at', { ascending: true })
+
+  // Resolve actor names. Events reference auth.users.id but actor could be a
+  // client (users table) OR an internal user (internal_users table). We
+  // collect every actor_user_id and look it up in both, taking whichever
+  // matches.
+  const actorIds = Array.from(
+    new Set(
+      ((lifecycleEvents ?? []) as { actor_user_id: string | null }[])
+        .map((e) => e.actor_user_id)
+        .filter((v): v is string => !!v)
+    )
+  )
+
+  const actorNames: Record<string, string> = {}
+  if (actorIds.length > 0) {
+    const [{ data: clientUsers }, { data: internalUsers }] = await Promise.all([
+      supabase.from('users').select('id, full_name').in('id', actorIds),
+      supabase.from('internal_users').select('id, full_name').in('id', actorIds),
+    ])
+    for (const u of clientUsers ?? []) {
+      if (u.full_name) actorNames[u.id as string] = u.full_name as string
+    }
+    for (const u of internalUsers ?? []) {
+      if (u.full_name) actorNames[u.id as string] = u.full_name as string
+    }
+  }
+
   return (
     <EngagementDetailClient
       engagement={engagement as Engagement & { outcome_templates: OutcomeTemplate | null }}
@@ -66,6 +106,8 @@ export default async function EngagementDetailPage({ params }: PageProps) {
       dailyReports={(dailyReports ?? []) as unknown as DailyReport[]}
       currentUserId={user.id}
       currentUserName={userProfile.full_name}
+      lifecycleEvents={(lifecycleEvents ?? []) as EngagementLifecycleEvent[]}
+      lifecycleActorNames={actorNames}
     />
   )
 }

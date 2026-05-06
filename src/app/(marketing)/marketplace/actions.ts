@@ -1,8 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { recordLifecycleEvent } from '@/lib/lifecycle/events'
 import type {
-  AuditConfigDefaults,
   OutcomeTemplate,
   ReportCadence,
   ReportTone,
@@ -32,12 +32,23 @@ export interface CreateEngagementInput {
   templateId: string
   intakeResponses: Record<string, unknown>
   contactEmail: string
+  // Agent preferences captured at intake. We DO NOT create agent_configs here
+  // anymore (that lands at kickoff completion). The intake values are stored
+  // on the lifecycle event payload so the PM can see what the client picked
+  // when they walk through the agent setup at kickoff.
   agent: AgentConfigInput
 }
 
 export interface CreateEngagementResult {
   engagementId?: string
+  pmName?: string | null
+  pmAvatarUrl?: string | null
+  engagementRef?: string  // GBX-XXXXXXXX, the human-quotable reference
   error?: string
+}
+
+function engagementRef(uuid: string): string {
+  return `GBX-${uuid.replace(/-/g, '').slice(0, 8).toUpperCase()}`
 }
 
 // Snapshot fields that the engagement should be pinned against. Anything not
@@ -126,6 +137,27 @@ export async function createEngagementFromTemplate(
     return { error: 'This template is not currently available for purchase.' }
   }
 
+  // ── Pick a PM. Random over internal_users with role='pm'. We DO NOT fall
+  //    back to a random non-PM internal user — that hides a setup bug. If
+  //    no PM exists, fail loudly so ops provisions one before any new
+  //    engagement can be taken.
+  const { data: pms, error: pmsErr } = await supabase
+    .from('internal_users')
+    .select('id, full_name, avatar_url')
+    .eq('role', 'pm')
+
+  if (pmsErr) {
+    return { error: `Could not load PM roster: ${pmsErr.message}` }
+  }
+  if (!pms || pms.length === 0) {
+    return {
+      error:
+        'No project managers are configured. Please contact support — we cannot start an engagement without a PM assigned.',
+    }
+  }
+
+  const pm = pms[Math.floor(Math.random() * pms.length)]
+
   const intakeWithMeta = {
     ...input.intakeResponses,
     contact_email: input.contactEmail || user.email || '',
@@ -133,9 +165,10 @@ export async function createEngagementFromTemplate(
     contract_signed_at: new Date().toISOString(),
   }
 
-  // 1. Engagement
   const priceCents = template.pricing?.max ?? template.price_range_high ?? null
+  const nowIso = new Date().toISOString()
 
+  // ── 1. Engagement (status=pending_review, PM assigned, intake stamped) ──
   const { data: eng, error: engErr } = await supabase
     .from('engagements')
     .insert({
@@ -143,9 +176,11 @@ export async function createEngagementFromTemplate(
       template_id: template.id,
       mode: 'predefined_outcome',
       title: template.title,
-      status: 'intake',
+      status: 'pending_review',
       intake_responses: intakeWithMeta,
       price_cents: priceCents,
+      pm_user_id: pm.id,
+      intake_submitted_at: nowIso,
     })
     .select('id')
     .single()
@@ -154,7 +189,7 @@ export async function createEngagementFromTemplate(
     return { error: engErr?.message ?? 'Failed to create engagement.' }
   }
 
-  // 2. engagement_configurations snapshot — the artifact L1.5 reads.
+  // ── 2. engagement_configurations snapshot — the immutable promise ───────
   const { error: cfgErr } = await supabase
     .from('engagement_configurations')
     .insert({
@@ -165,49 +200,54 @@ export async function createEngagementFromTemplate(
       intake_responses: input.intakeResponses,
     })
   if (cfgErr) {
-    // Don't roll back the engagement — log and continue. The snapshot is
-    // recoverable from the template + intake_responses if we ever need to.
-    console.error('engagement_configurations insert failed:', cfgErr)
+    console.error('[lifecycle] engagement_configurations insert failed:', cfgErr)
   }
 
-  // 3. agent_configs — populated from the template's audit defaults, with
-  //    the client's intake-form overrides applied on top.
-  const acd: AuditConfigDefaults | undefined = template.audit_config_defaults
-  const { error: agentErr } = await supabase.from('agent_configs').insert({
+  // ── 3. Lifecycle event — single audit row for this whole submission ─────
+  // The agent preferences captured at intake go on the event payload so the
+  // PM can see what the client picked when walking through agent setup at
+  // kickoff. They are NOT written to agent_configs here; that lands at
+  // kickoff completion (the load-bearing trust moment).
+  await recordLifecycleEvent({
     engagement_id: eng.id,
-    success_definition:
-      input.agent.successDefinition ||
-      'Successful delivery of all contracted scope on time and to quality standards.',
-    critical_requirements: input.agent.criticalRequirements.filter(Boolean),
-    risk_areas: input.agent.riskAreas.filter(Boolean),
-    weight_timeline: input.agent.weights.timeline ?? acd?.priority_weights?.timeline ?? 8,
-    weight_quality: input.agent.weights.quality ?? acd?.priority_weights?.quality ?? 7,
-    weight_scope: input.agent.weights.scope ?? acd?.priority_weights?.scope ?? 9,
-    weight_communication:
-      input.agent.weights.communication ?? acd?.priority_weights?.communication ?? 5,
-    weight_velocity: input.agent.weights.velocity ?? acd?.priority_weights?.velocity ?? 4,
-    alert_critical_threshold:
-      input.agent.alerts.criticalThreshold ?? acd?.alert_thresholds?.critical ?? 60,
-    alert_milestone_slip_days: input.agent.alerts.milestoneSlipDays ?? 3,
-    alert_pm_silence_hours: input.agent.alerts.pmSilenceHours ?? 48,
-    report_cadence: input.agent.cadence ?? acd?.report_cadence ?? 'every_2_days',
-    report_tone: input.agent.tone ?? acd?.report_tone ?? 'technical',
-    pm_review_window_hours: acd?.pm_review_window_hours ?? 4,
-    on_demand_enabled: true,
-    configured_by: user.id,
+    event_type: 'intake_submitted',
+    actor_role: 'client',
+    actor_user_id: user.id,
+    payload: {
+      template_slug: template.slug,
+      template_version: template.version ?? '1.0.0',
+      contact_email: intakeWithMeta.contact_email,
+      assigned_pm_id: pm.id,
+      assigned_pm_name: pm.full_name,
+      // Snapshot of the client's intake-form agent preferences for the PM
+      // to review during kickoff prep.
+      intake_agent_preferences: {
+        success_definition: input.agent.successDefinition,
+        critical_requirements: input.agent.criticalRequirements.filter(Boolean),
+        risk_areas: input.agent.riskAreas.filter(Boolean),
+        weights: input.agent.weights,
+        alerts: input.agent.alerts,
+        cadence: input.agent.cadence,
+        tone: input.agent.tone,
+      },
+    },
   })
-  if (agentErr) {
-    console.error('agent_configs insert failed:', agentErr)
-  }
 
-  // 4. System message
+  // ── 4. PM-facing system message — appears in the engagement's thread ────
+  // Email/Slack notifications come later; the message + lifecycle event are
+  // the audit-grade signal that this engagement needs PM attention.
   await supabase.from('messages').insert({
     engagement_id: eng.id,
     sender_name: 'System',
     sender_role: 'system',
-    content: `Engagement created. Contract signed for ${template.title}. Your AI-native PM will review your scope within 24 hours.`,
+    content: `Intake submitted for ${template.title}. SOW preparation needed within 1 business day.`,
     is_system_message: true,
   })
 
-  return { engagementId: eng.id }
+  return {
+    engagementId: eng.id,
+    pmName: pm.full_name,
+    pmAvatarUrl: pm.avatar_url ?? null,
+    engagementRef: engagementRef(eng.id),
+  }
 }

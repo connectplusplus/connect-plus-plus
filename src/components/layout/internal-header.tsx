@@ -7,6 +7,7 @@ import { getInitials } from '@/lib/utils'
 
 const ROUTE_TITLES: Record<string, string> = {
   '/internal': 'Internal Dashboard',
+  '/internal/queue': 'Action Queue',
   '/internal/daily-reports': 'Daily Reports',
   '/internal/daily-reports/new': 'New Daily Report',
   '/internal/outcomes': 'Outcome Templates',
@@ -30,6 +31,7 @@ export function InternalHeader({ user }: InternalHeaderProps) {
     if (ROUTE_TITLES[pathname]) return ROUTE_TITLES[pathname]
     if (pathname.startsWith('/internal/daily-reports')) return 'Daily Reports'
     if (pathname.startsWith('/internal/outcomes')) return 'Outcome Templates'
+    if (pathname.startsWith('/internal/engagements/')) return 'Engagement workspace'
     return 'Internal'
   }
 

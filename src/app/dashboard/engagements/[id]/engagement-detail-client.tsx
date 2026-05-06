@@ -7,8 +7,10 @@ import { MilestoneTracker } from '@/components/dashboard/milestone-tracker'
 import { MilestoneTimeline } from '@/components/dashboard/milestone-timeline'
 import { MessageThread } from '@/components/dashboard/message-thread'
 import { EngagementStatusBadge } from '@/components/dashboard/status-badge'
+import { LifecycleTimeline } from '@/components/lifecycle/lifecycle-timeline'
 import { formatCents } from '@/lib/utils'
 import { getHealthColor } from '@/lib/types'
+import type { EngagementLifecycleEvent } from '@/lib/types'
 import {
   Calendar,
   DollarSign,
@@ -31,9 +33,10 @@ import {
   FolderOpen,
   Hexagon,
   Loader2,
+  AlertCircle,
 } from 'lucide-react'
 
-type Tab = 'overview' | 'milestones' | 'docs' | 'daily_reports' | 'agent_reports' | 'codebase' | 'messages'
+type Tab = 'overview' | 'milestones' | 'docs' | 'daily_reports' | 'agent_reports' | 'codebase' | 'messages' | 'lifecycle'
 
 interface TeamMember {
   name: string
@@ -63,6 +66,8 @@ interface EngagementDetailClientProps {
   dailyReports?: DailyReport[]
   currentUserId?: string
   currentUserName?: string
+  lifecycleEvents?: EngagementLifecycleEvent[]
+  lifecycleActorNames?: Record<string, string>
 }
 
 function HealthRing({ score }: { score: number }) {
@@ -103,6 +108,8 @@ export function EngagementDetailClient({
   dailyReports = [],
   currentUserId,
   currentUserName,
+  lifecycleEvents = [],
+  lifecycleActorNames = {},
 }: EngagementDetailClientProps) {
   const [activeTab, setActiveTab] = useState<Tab>('overview')
 
@@ -137,10 +144,42 @@ export function EngagementDetailClient({
     { id: 'agent_reports', label: 'Agent Reports', icon: Hexagon },
     { id: 'codebase', label: 'Codebase', icon: GitBranch },
     { id: 'messages', label: `Messages (${messages.filter((m) => !m.is_system_message).length})`, icon: MessageCircle },
+    { id: 'lifecycle', label: 'Lifecycle', icon: Clock },
   ]
+
+  // Activation checklist banner: read the latest 'activated' lifecycle
+  // event's checklist payload; show a banner only when items remain.
+  const activationChecklist = (() => {
+    if (engagement.status !== 'active') return null
+    for (let i = lifecycleEvents.length - 1; i >= 0; i--) {
+      const e = lifecycleEvents[i]
+      if (e.event_type === 'activated') {
+        const items = ((e.payload ?? {}) as { checklist?: Array<{ key: string; label: string; done: boolean }> }).checklist
+        if (!items) return null
+        const unfinished = items.filter((c) => !c.done)
+        if (unfinished.length === 0) return null
+        return { total: items.length, unfinished }
+      }
+    }
+    return null
+  })()
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
+
+      {activationChecklist && (
+        <div className="bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-xl px-4 py-3 flex items-start gap-3">
+          <AlertCircle size={16} className="text-[#92400E] shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[#92400E] text-sm font-semibold">
+              {activationChecklist.unfinished.length} of {activationChecklist.total} activation tasks pending
+            </p>
+            <p className="text-[#92400E] text-xs mt-0.5">
+              {activationChecklist.unfinished.map((c) => c.label).join(' · ')}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
@@ -446,6 +485,24 @@ export function EngagementDetailClient({
 
       {activeTab === 'codebase' && (
         <CodebaseTab engagementTitle={engagement.title} />
+      )}
+
+      {activeTab === 'lifecycle' && (
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-6">
+          <div className="mb-5">
+            <h3 className="font-heading font-semibold text-[#0F172A] text-base mb-1">
+              Engagement timeline
+            </h3>
+            <p className="text-[#64748B] text-xs">
+              Every state change, with who and when. The audit trail under glass.
+            </p>
+          </div>
+          <LifecycleTimeline
+            events={lifecycleEvents}
+            audience="client"
+            actorNames={lifecycleActorNames}
+          />
+        </div>
       )}
     </div>
   )
