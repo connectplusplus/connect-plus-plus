@@ -84,9 +84,12 @@ export const SENDER_ROLE_COLORS: Record<SenderRole, string> = {
 }
 
 // ─── Category Labels ──────────────────────────────────────────────────────────
-// Custom covers all bespoke FullStack outcomes; the rest are partnership categories
-// keyed to the partner's brand.
-export const CATEGORY_LABELS: Record<OutcomeCategory, string> = {
+// Live categories live in outcome_categories (migration 006). These maps are a
+// fallback for synchronous lookups (server components rendering a category
+// badge from a joined row, etc.) — the 9 seeded keys are guaranteed present.
+// Categories added through the Configurator won't appear here; render code
+// should fall back to the row's own label/color from the DB when available.
+export const CATEGORY_LABELS: Record<string, string> = {
   custom: 'Custom',
   google_cloud: 'Google Cloud',
   nvidia: 'NVIDIA',
@@ -100,7 +103,7 @@ export const CATEGORY_LABELS: Record<OutcomeCategory, string> = {
 
 // Colors use each partner's primary brand color so the category badge reads as a
 // "powered by" signal; Custom falls back to the Glassbox brand purple.
-export const CATEGORY_COLORS: Record<OutcomeCategory, string> = {
+export const CATEGORY_COLORS: Record<string, string> = {
   custom: '#7C3AED',
   google_cloud: '#4285F4',
   nvidia: '#76B900',
@@ -112,7 +115,17 @@ export const CATEGORY_COLORS: Record<OutcomeCategory, string> = {
   salesforce: '#00A1E0',
 }
 
-// Preferred display order for the category filter pills (used by the catalog UI).
+// Helpers that gracefully degrade for unknown categories (custom-authored ones).
+export function categoryLabel(key: string): string {
+  return CATEGORY_LABELS[key] ?? key
+}
+
+export function categoryColor(key: string): string {
+  return CATEGORY_COLORS[key] ?? '#7C3AED'
+}
+
+// Preferred display order for the seeded categories. Configurator-added
+// categories use their own display_order from the DB.
 export const CATEGORY_ORDER: OutcomeCategory[] = [
   'custom',
   'google_cloud',

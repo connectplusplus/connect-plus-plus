@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import type { OutcomeCategory, OutcomeTemplate } from '@/lib/types'
+import type { OutcomeCategory, OutcomeCategoryRow, OutcomeTemplate } from '@/lib/types'
 
 const AUTHOR_ROLES = ['pm', 'delivery_lead'] as const
 
@@ -108,6 +108,60 @@ export async function saveTemplate(
 export async function publishTemplate(_id: string): Promise<{ error: string }> {
   // Validation + version bump + changelog land in Phase 5.
   return { error: 'Publish flow lands in Phase 5.' }
+}
+
+// ── Categories ───────────────────────────────────────────────────────────────
+
+const CATEGORY_KEY_RE = /^[a-z0-9]+(?:_[a-z0-9]+)*$/
+const HEX_RE = /^#[0-9A-Fa-f]{6}$/
+
+export async function createCategory(input: {
+  key: string
+  label: string
+  color: string
+}): Promise<{ category?: OutcomeCategoryRow; error?: string }> {
+  const auth = await assertDeliveryAuthor()
+  if ('error' in auth) return { error: auth.error }
+
+  const key = input.key.trim().toLowerCase().replace(/-/g, '_')
+  const label = input.label.trim()
+  const color = input.color.trim()
+
+  if (!CATEGORY_KEY_RE.test(key)) {
+    return { error: 'Key must be lowercase, underscore-separated (e.g. "snowflake" or "open_ai").' }
+  }
+  if (label.length < 2 || label.length > 60) {
+    return { error: 'Label must be 2–60 characters.' }
+  }
+  if (!HEX_RE.test(color)) {
+    return { error: 'Color must be a 6-digit hex like #7C3AED.' }
+  }
+
+  const { data: maxRow } = await auth.supabase
+    .from('outcome_categories')
+    .select('display_order')
+    .order('display_order', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const display_order = ((maxRow?.display_order as number | undefined) ?? -1) + 1
+
+  const { data, error } = await auth.supabase
+    .from('outcome_categories')
+    .insert({ key, label, color, display_order, created_by: auth.user.id })
+    .select('key, label, color, display_order, created_by, created_at')
+    .single()
+
+  if (error) {
+    if (error.code === '23505') {
+      return { error: `A category with key "${key}" already exists.` }
+    }
+    return { error: error.message }
+  }
+
+  revalidatePath('/internal/outcomes/new')
+  revalidatePath('/internal/outcomes')
+  return { category: data as OutcomeCategoryRow }
 }
 
 export async function archiveTemplate(id: string): Promise<{ ok?: true; error?: string }> {

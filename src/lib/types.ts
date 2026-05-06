@@ -24,16 +24,19 @@ export interface User {
   created_at: string
 }
 
-export type OutcomeCategory =
-  | 'custom'
-  | 'google_cloud'
-  | 'nvidia'
-  | 'aws'
-  | 'azure'
-  | 'databricks'
-  | 'domo'
-  | 'servicenow'
-  | 'salesforce'
+// Categories are now stored in outcome_categories (migration 006). The
+// type is a free-form string keyed by outcome_categories.key. The 9 seeded
+// values still appear as friendly fallback labels in src/lib/constants.ts.
+export type OutcomeCategory = string
+
+export interface OutcomeCategoryRow {
+  key: string
+  label: string
+  color: string
+  display_order: number
+  created_by: string | null
+  created_at: string
+}
 
 export type IntakeFieldType =
   | 'text'
