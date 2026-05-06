@@ -6,6 +6,7 @@ import { IconByName } from '@/components/ui/icon-by-name'
 import { ICON_NAMES } from '@/lib/icons'
 import { categoryLabel } from '@/lib/constants'
 import type { OutcomeTemplate, OutcomeCategoryRow } from '@/lib/types'
+import { Field } from './_shared'
 
 interface Props {
   template: OutcomeTemplate
@@ -115,26 +116,6 @@ export function OverviewEditor({ template, categories, onChange }: Props) {
           )}
         </select>
       </Field>
-    </div>
-  )
-}
-
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string
-  hint?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="space-y-2">
-      <div>
-        <label className="block text-sm font-semibold text-[#0F172A]">{label}</label>
-        {hint && <p className="text-[#94A3B8] text-xs mt-0.5">{hint}</p>}
-      </div>
-      {children}
     </div>
   )
 }

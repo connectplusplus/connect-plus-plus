@@ -5,6 +5,14 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Save, Eye, Send, ChevronRight, Loader2 } from 'lucide-react'
 import { OverviewEditor } from '@/components/internal/configurator/overview-editor'
+import { PricingTimelineEditor } from '@/components/internal/configurator/pricing-timeline-editor'
+import { DeliverablesEditor } from '@/components/internal/configurator/deliverables-editor'
+import { MilestonesEditor } from '@/components/internal/configurator/milestones-editor'
+import { IntakeFormEditor } from '@/components/internal/configurator/intake-form-editor'
+import { DeliveryConfigEditor } from '@/components/internal/configurator/delivery-config-editor'
+import { AuditConfigEditor } from '@/components/internal/configurator/audit-config-editor'
+import { GuaranteesEditor } from '@/components/internal/configurator/guarantees-editor'
+import { ReviewPublish } from '@/components/internal/configurator/review-publish'
 import { saveTemplate } from '../../actions'
 import type {
   OutcomeTemplate,
@@ -32,13 +40,26 @@ const STATUS_PILL: Record<TemplateStatus, { color: string; bg: string; label: st
   archived: { color: '#94A3B8', bg: '#94A3B815', label: 'Archived' },
 }
 
-// Fields the Configurator can mutate at this point. Phase 4.2+ will extend this.
+// Every field the Configurator's section editors can mutate. The Save action
+// sends only this subset to the server.
 const EDITABLE_FIELDS: Array<keyof OutcomeTemplate> = [
   'title',
   'subtitle',
   'description',
   'icon',
   'category',
+  'pricing',
+  'timeline',
+  'price_range_low',
+  'price_range_high',
+  'timeline_range_low',
+  'timeline_range_high',
+  'deliverables',
+  'milestone_templates',
+  'intake_schema',
+  'delivery_config',
+  'audit_config_defaults',
+  'guarantees',
 ]
 
 function pickEditable(t: OutcomeTemplate): Partial<OutcomeTemplate> {
@@ -243,15 +264,13 @@ export function ConfiguratorShell({ template, categories, currentUserName }: Pro
         <main className="flex-1 overflow-y-auto bg-[#F8FAFC] p-8">
           <div className="max-w-3xl mx-auto">
             <SectionHeader section={activeSection} />
-            {activeSection === 'overview' ? (
-              <OverviewEditor
-                template={local}
-                categories={categories}
-                onChange={handleChange}
-              />
-            ) : (
-              <SectionPlaceholder section={activeSection} template={local} />
-            )}
+            <ActiveEditor
+              section={activeSection}
+              template={local}
+              categories={categories}
+              dirty={dirty}
+              onChange={handleChange}
+            />
           </div>
         </main>
       </div>
@@ -282,21 +301,45 @@ function SectionHeader({ section }: { section: SectionId }) {
   )
 }
 
-function SectionPlaceholder({
-  section: _section,
+function ActiveEditor({
+  section,
   template,
+  categories,
+  dirty,
+  onChange,
 }: {
   section: SectionId
   template: OutcomeTemplate
+  categories: OutcomeCategoryRow[]
+  dirty: boolean
+  onChange: (patch: Partial<OutcomeTemplate>) => void
 }) {
-  return (
-    <div className="bg-white border border-dashed border-[#E2E8F0] rounded-xl p-12 text-center">
-      <p className="text-[#94A3B8] text-sm">Section editor coming next.</p>
-      <p className="text-[#CBD5E1] text-xs mt-1">
-        Editing template <span className="font-mono-brand">{template.slug}</span>
-      </p>
-    </div>
-  )
+  switch (section) {
+    case 'overview':
+      return (
+        <OverviewEditor
+          template={template}
+          categories={categories}
+          onChange={onChange}
+        />
+      )
+    case 'pricing-timeline':
+      return <PricingTimelineEditor template={template} onChange={onChange} />
+    case 'deliverables':
+      return <DeliverablesEditor template={template} onChange={onChange} />
+    case 'milestones':
+      return <MilestonesEditor template={template} onChange={onChange} />
+    case 'intake-form':
+      return <IntakeFormEditor template={template} onChange={onChange} />
+    case 'delivery-config':
+      return <DeliveryConfigEditor template={template} onChange={onChange} />
+    case 'audit-config':
+      return <AuditConfigEditor template={template} onChange={onChange} />
+    case 'guarantees':
+      return <GuaranteesEditor template={template} onChange={onChange} />
+    case 'review':
+      return <ReviewPublish template={template} dirty={dirty} />
+  }
 }
 
 function describeSection(id: SectionId): string {
