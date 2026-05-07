@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import type { Engagement, EngagementLifecycleEvent } from '@/lib/types'
+import type { Engagement, EngagementLifecycleEvent, Sow } from '@/lib/types'
 import { PMWorkspace } from './workspace'
 
 interface PageProps {
@@ -72,6 +72,18 @@ export default async function PMEngagementPage({ params }: PageProps) {
     }
   }
 
+  // Active SOW (latest non-superseded, non-cancelled). May be null for
+  // legacy engagements that predate migration 010 — the workspace falls
+  // back to the prior textarea-and-stub flow in that case.
+  const { data: activeSowRow } = await supabase
+    .from('sows')
+    .select('*')
+    .eq('engagement_id', id)
+    .not('status', 'in', '(superseded,cancelled)')
+    .order('version_number', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
   const eng = engagement as unknown as Engagement & {
     companies?: { name: string } | { name: string }[] | null
     outcome_templates?: { slug: string; title: string } | { slug: string; title: string }[] | null
@@ -88,6 +100,7 @@ export default async function PMEngagementPage({ params }: PageProps) {
       lifecycleActorNames={actorNames}
       scheduledKickoffAt={scheduledKickoffAt}
       currentUserId={user.id}
+      activeSow={(activeSowRow ?? null) as Sow | null}
     />
   )
 }

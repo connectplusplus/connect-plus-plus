@@ -18,7 +18,8 @@ import {
 } from '../actions'
 import { completeKickoff } from './kickoff-actions'
 import { KickoffCompletionModal } from './kickoff-completion-modal'
-import type { Engagement, EngagementLifecycleEvent } from '@/lib/types'
+import { SowAuthoringPanel } from './sow-authoring-panel'
+import type { Engagement, EngagementLifecycleEvent, Sow } from '@/lib/types'
 
 interface Props {
   engagement: Engagement & {
@@ -29,6 +30,7 @@ interface Props {
   lifecycleActorNames: Record<string, string>
   scheduledKickoffAt: string | null
   currentUserId: string
+  activeSow: Sow | null
 }
 
 export function PMWorkspace({
@@ -38,12 +40,19 @@ export function PMWorkspace({
   lifecycleActorNames,
   scheduledKickoffAt,
   currentUserId: _currentUserId,
+  activeSow,
 }: Props) {
   void _currentUserId
   const router = useRouter()
   const [pending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [showKickoffModal, setShowKickoffModal] = useState(false)
+
+  // pending_review and awaiting_legal_review get the new SOW authoring
+  // experience (full-width form + preview). Everything else uses the
+  // existing two-column lifecycle + action panel layout.
+  const sowAuthoringMode =
+    engagement.status === 'pending_review' || engagement.status === 'awaiting_legal_review'
 
   function refresh() {
     setError(null)
@@ -112,6 +121,50 @@ export function PMWorkspace({
         </div>
       )}
 
+      {/* ── SOW authoring layout (pending_review / awaiting_legal_review) ── */}
+      {sowAuthoringMode && (
+        <div className="space-y-6">
+          <SowAuthoringPanel
+            sow={activeSow}
+            engagementId={engagement.id}
+            engagementTitle={engagement.title}
+            companyName={companyName}
+          />
+
+          {/* Compressed lifecycle + cancel below the SOW panel */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <section className="lg:col-span-3 bg-white border border-[#E2E8F0] rounded-xl p-5">
+              <h3 className="font-heading font-semibold text-sm text-[#0F172A] mb-4">
+                Lifecycle
+              </h3>
+              <LifecycleTimeline
+                events={lifecycleEvents}
+                audience="internal"
+                actorNames={lifecycleActorNames}
+              />
+            </section>
+            <aside className="lg:col-span-2">
+              <CancelSowAuthoringPanel
+                pending={pending}
+                onCancel={(reason) =>
+                  handle(() =>
+                    cancelEngagementAsPM({
+                      engagement_id: engagement.id,
+                      current_status: engagement.status as
+                        | 'pending_review'
+                        | 'awaiting_legal_review',
+                      reason,
+                    })
+                  )
+                }
+              />
+            </aside>
+          </div>
+        </div>
+      )}
+
+      {/* ── Existing two-column layout for non-SOW-authoring states ────── */}
+      {!sowAuthoringMode && (
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* ── Left: lifecycle timeline ───────────────────────────────────── */}
         <section className="lg:col-span-3 bg-white border border-[#E2E8F0] rounded-xl p-5">
@@ -127,7 +180,11 @@ export function PMWorkspace({
 
         {/* ── Right: state-specific action panel ─────────────────────────── */}
         <aside className="lg:col-span-2 space-y-4">
-          {engagement.status === 'pending_review' && (
+          {/* pending_review handled above (sowAuthoringMode); kept off the
+              legacy path entirely. The legacy PendingReviewPanel below is
+              dead code in the post-010 world but stays for any in-flight
+              old engagement until its lifecycle completes. */}
+          {false && engagement.status === 'pending_review' && (
             <PendingReviewPanel
               engagementId={engagement.id}
               pending={pending}
@@ -215,6 +272,7 @@ export function PMWorkspace({
           )}
         </aside>
       </div>
+      )}
 
       {showKickoffModal && (
         <KickoffCompletionModal
@@ -242,7 +300,67 @@ export function PMWorkspace({
   )
 }
 
-// ─── Pending review panel ───────────────────────────────────────────────────
+// ─── SOW-authoring sidebar: just the cancel-engagement affordance ─────────
+
+function CancelSowAuthoringPanel({
+  pending,
+  onCancel,
+}: {
+  pending: boolean
+  onCancel: (reason: string) => void
+}) {
+  const [showCancel, setShowCancel] = useState(false)
+  const [cancelReason, setCancelReason] = useState('')
+
+  return (
+    <div className="bg-white border border-[#E2E8F0] rounded-xl p-5">
+      {!showCancel ? (
+        <>
+          <h3 className="font-heading font-semibold text-[#0F172A] text-sm mb-1">
+            Cancel engagement
+          </h3>
+          <p className="text-[#64748B] text-xs mb-3">
+            Pre-active cancellation soft-closes the engagement and any in-flight SOW versions.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowCancel(true)}
+            className="text-[#94A3B8] hover:text-[#B91C1C] text-xs"
+          >
+            Cancel this engagement
+          </button>
+        </>
+      ) : (
+        <div className="space-y-2">
+          <Textarea
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            placeholder="Reason for cancellation (logged in lifecycle)"
+            rows={3}
+            className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] focus:border-[#F87171] text-xs resize-none"
+          />
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              onClick={() => onCancel(cancelReason)}
+              disabled={!cancelReason.trim() || pending}
+              size="sm"
+              className="bg-[#F87171] text-white hover:bg-[#EF4444] flex-1"
+            >
+              <XCircle size={12} className="mr-1.5" />
+              Confirm cancellation
+            </Button>
+            <Button type="button" size="sm" variant="ghost" onClick={() => setShowCancel(false)}>
+              Back
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Pending review panel (legacy — pre-010 path; kept for in-flight engagements) ──
 
 function PendingReviewPanel({
   engagementId: _engagementId,

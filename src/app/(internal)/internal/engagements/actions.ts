@@ -165,6 +165,7 @@ export async function cancelEngagementAsPM(input: {
   engagement_id: string
   current_status:
     | 'pending_review'
+    | 'awaiting_legal_review'
     | 'awaiting_signature'
     | 'awaiting_kickoff'
     | 'active'
@@ -185,6 +186,16 @@ export async function cancelEngagementAsPM(input: {
   })
 
   if (!result.ok) return { error: result.error }
+
+  // Mark any in-flight SOW versions for this engagement as cancelled too,
+  // so the audit trail and version history make sense after the fact. Best
+  // effort — the lifecycle event has already landed.
+  await auth.supabase
+    .from('sows')
+    .update({ status: 'cancelled' })
+    .eq('engagement_id', input.engagement_id)
+    .not('status', 'in', '(superseded,cancelled,signed)')
+
   revalidateAll(input.engagement_id)
   return { ok: true }
 }
