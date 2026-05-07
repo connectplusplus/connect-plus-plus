@@ -5,6 +5,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 
 export const SMART_INTAKE_MODEL = 'claude-sonnet-4-6' as const
+export const SOW_DRAFT_MODEL = 'claude-sonnet-4-6' as const
 
 let client: Anthropic | null = null
 
