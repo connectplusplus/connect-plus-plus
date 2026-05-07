@@ -3,7 +3,7 @@
 // types are shown (some are PM-internal, e.g. sow_revised before the SOW
 // was sent).
 
-import { CheckCircle2, PenLine, Send, Calendar, Rocket, XCircle, Undo2, FilePlus } from 'lucide-react'
+import { CheckCircle2, PenLine, Send, Calendar, Rocket, XCircle, Undo2, FilePlus, FileSignature, ScrollText } from 'lucide-react'
 import type { EngagementLifecycleEvent, LifecycleEventType } from '@/lib/types'
 
 const EVENT_META: Record<
@@ -63,6 +63,49 @@ const EVENT_META: Record<
     label: 'Returned to SOW review',
     color: '#BA7517',
     clientVisible: true,
+  },
+  // ── SOW workflow (sprint 010) ────────────────────────────────────────────
+  sow_drafted: {
+    icon: PenLine,
+    label: 'SOW draft saved',
+    color: '#7E8B6A',
+    clientVisible: false,
+  },
+  sow_sent_for_legal: {
+    icon: ScrollText,
+    label: 'Sent to FullStack Legal',
+    color: '#7E8B6A',
+    clientVisible: false,
+  },
+  sow_legal_approved: {
+    icon: FileSignature,
+    label: 'Legal counter-signed',
+    color: '#7E8B6A',
+    clientVisible: false,
+  },
+  sow_legal_rejected: {
+    icon: Undo2,
+    label: 'Legal requested changes',
+    color: '#BA7517',
+    clientVisible: false,
+  },
+  sow_sent_to_client: {
+    icon: Send,
+    label: 'SOW sent for signature',
+    color: '#7C3AED',
+    clientVisible: true,
+  },
+  sow_client_rejected: {
+    icon: Undo2,
+    label: 'Client requested revisions',
+    color: '#BA7517',
+    clientVisible: true,
+  },
+  sow_resubmitted: {
+    icon: FilePlus,
+    label: 'New SOW version drafted',
+    color: '#7E8B6A',
+    clientVisible: false,
   },
 }
 

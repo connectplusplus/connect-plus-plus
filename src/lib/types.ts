@@ -248,27 +248,100 @@ export interface EngagementConfiguration {
   created_at: string
 }
 
+// ─── SOW (Statement of Work) — migration 010 ────────────────────────────────
+
+// Sub-state on the SOW row itself. Distinct from engagement lifecycle
+// state. The engagement is in one of pending_review / awaiting_legal_review
+// / awaiting_signature; the SOW row carries the finer-grained status below.
+export type SowStatus =
+  | 'draft'                // Carlos is editing; not yet sent to legal
+  | 'awaiting_legal'       // sent to legal; awaiting their signature
+  | 'rejected_by_legal'    // legal asked for changes; back to Carlos (same row)
+  | 'awaiting_client'      // legal signed; awaiting client signature
+  | 'rejected_by_client'   // client asked for changes (new row next)
+  | 'signed'               // both parties have signed; this version is the contract
+  | 'superseded'           // a newer version exists; this row is historical
+  | 'cancelled'            // engagement was cancelled before this version completed
+
+export interface SowDeliverable {
+  name: string
+  description: string
+  acceptance_criteria: string[]
+}
+
+export interface SowMilestone {
+  name: string
+  description: string
+  payment_pct: number              // 0–100; all milestones in a SOW sum to 100
+  expected_business_days: number
+}
+
+export interface SowPricing {
+  total_cents: number              // single fixed price; CENTS as integer
+  currency: 'USD'
+  payment_terms_md: string         // markdown — when invoices issue, net terms, etc.
+}
+
+// The editable content of a SOW. The AI drafter returns exactly this shape;
+// the form column edits it; the preview/PDF renders it.
+export interface SowContent {
+  scope_summary: string            // 2–4 paragraphs
+  deliverables: SowDeliverable[]
+  milestones: SowMilestone[]
+  pricing: SowPricing
+  timeline_business_days: number
+  terms_md: string                 // change requests, IP, warranty, confidentiality
+}
+
+// Database row shape (extends content + metadata + signature provenance).
+export interface Sow extends SowContent {
+  id: string
+  engagement_id: string
+  version_number: number
+  status: SowStatus
+  ai_drafted: boolean
+  // Dot-paths into SowContent for fields the AI populated. Same convention
+  // as outcome_templates.ai_suggested_fields. Dismissing a pill removes
+  // its path from this array.
+  ai_drafted_fields: string[]
+  drafted_by: string | null
+  created_at: string
+  updated_at: string
+  sent_to_legal_at: string | null
+  legal_pdf_storage_path: string | null
+  legal_signed_at: string | null
+  legal_signed_by: string | null
+  legal_rejection_notes: string | null
+  sent_to_client_at: string | null
+  client_pdf_storage_path: string | null
+  client_signed_at: string | null
+  client_rejection_notes: string | null
+}
+
 export type EngagementMode = 'talent' | 'pod' | 'predefined_outcome' | 'custom_outcome'
 
 // Engagement status spans the legacy two-state path (intake/scoping) plus
-// the four-state lifecycle introduced by migration 008
-// (pending_review → awaiting_signature → awaiting_kickoff → active). Both
-// sets coexist; new engagements use the four-state lifecycle.
+// the five-state lifecycle introduced by migrations 008+010
+// (pending_review → awaiting_legal_review → awaiting_signature →
+// awaiting_kickoff → active). Both sets coexist; new engagements use the
+// five-state lifecycle.
 export type EngagementStatus =
-  | 'intake'                // legacy
-  | 'scoping'               // legacy
-  | 'pending_review'        // PM is preparing the SOW
-  | 'awaiting_signature'    // SOW sent to client; awaiting e-signature
-  | 'awaiting_kickoff'      // client signed; kickoff call pending
+  | 'intake'                  // legacy
+  | 'scoping'                 // legacy
+  | 'pending_review'          // PM is preparing the SOW
+  | 'awaiting_legal_review'   // SOW sent to FullStack Legal; awaiting their signature
+  | 'awaiting_signature'      // legal-counter-signed; awaiting client e-signature
+  | 'awaiting_kickoff'        // client signed; kickoff call pending
   | 'active'
   | 'in_review'
   | 'completed'
   | 'cancelled'
 
-// The four post-008 lifecycle states. Useful for narrowing in UI code that
+// The five post-010 lifecycle states. Useful for narrowing in UI code that
 // only renders the new flow.
 export const NEW_LIFECYCLE_STATES = [
   'pending_review',
+  'awaiting_legal_review',
   'awaiting_signature',
   'awaiting_kickoff',
   'active',
@@ -303,15 +376,24 @@ export interface Engagement {
 // ─── Engagement lifecycle events (migration 008) ───────────────────────────
 
 export type LifecycleEventType =
+  // Legacy / pre-SOW (still emitted on old engagements; preserved for audit)
   | 'intake_submitted'
   | 'sow_sent'
   | 'sow_revised'
-  | 'signed'
+  | 'signed'                  // both-parties-signed transition (re-used for SOW workflow)
   | 'kickoff_scheduled'
   | 'kickoff_completed'
   | 'activated'
   | 'cancelled'
   | 'returned_to_review'
+  // ── SOW workflow (sprint 010) ────────────────────────────────────────────
+  | 'sow_drafted'             // PM saved a SOW draft (initial or edit)
+  | 'sow_sent_for_legal'      // pending_review → awaiting_legal_review
+  | 'sow_legal_approved'      // awaiting_legal_review → awaiting_signature
+  | 'sow_legal_rejected'      // awaiting_legal_review → pending_review (same row)
+  | 'sow_sent_to_client'      // counter-signed PDF in client's hands
+  | 'sow_client_rejected'     // awaiting_signature → pending_review (new row next)
+  | 'sow_resubmitted'         // new SOW row created with version_number+1
 
 export type LifecycleActorRole = 'client' | 'pm' | 'system'
 

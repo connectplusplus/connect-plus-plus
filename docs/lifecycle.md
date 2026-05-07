@@ -3,9 +3,10 @@
 The path from "client clicks Submit on the intake form" to "engagement is
 active and the Glassbox Agent's first run is queued."
 
-This doc covers what's shipping today after the intake-to-kickoff sprint.
+This doc covers what's shipping today after the SOW authoring sprint.
 For the data schema underneath, see
-[supabase/migrations/008_intake_to_kickoff.sql](../supabase/migrations/008_intake_to_kickoff.sql).
+[supabase/migrations/008_intake_to_kickoff.sql](../supabase/migrations/008_intake_to_kickoff.sql)
+and [supabase/migrations/010_sow_authoring.sql](../supabase/migrations/010_sow_authoring.sql).
 
 ---
 
@@ -15,34 +16,43 @@ For the data schema underneath, see
 [Intake form submitted]
         │
         ▼
-   pending_review        — Client: "SOW being prepared (≤1 business day)"
-        │                  PM:     "Action needed → prepare SOW"
-        │ PM finalizes SOW, sends to client
+   pending_review              — Client: "SOW being prepared (≤1 business day)"
+        │                        PM:     "Draft SOW, review with Legal"
+        │ PM clicks "Send for legal review"
         ▼
-   awaiting_signature    — Client: "Review and sign SOW"
-        │                  PM:     "Awaiting client signature"
+   awaiting_legal_review       — Client: (still sees "SOW being prepared")
+        │                        PM:     "Sent to FullStack Legal · awaiting their signature"
+        │ Legal counter-signs (or PM marks legal signed manually)
+        ▼
+   awaiting_signature          — Client: "Review and sign SOW"
+        │                        PM:     "Awaiting client signature"
         │ Client e-signs (or PM marks signed manually)
         ▼
-   awaiting_kickoff      — Client: "Schedule kickoff with [PM name]"
-        │                  PM:     "Schedule kickoff call"
-        │ PM completes kickoff call AND clicks "Activate engagement"
+   awaiting_kickoff            — Client: "Schedule kickoff with [PM name]"
+        │                        PM:     "Schedule kickoff call"
+        │ PM completes kickoff AND clicks "Activate engagement"
         ▼
-   active                — Existing engagement flow takes over.
-                           Agent first run scheduled.
+   active                      — Existing engagement flow takes over.
+                                  Agent first run scheduled.
 ```
 
 Bidirectional cases:
 
-- **Returned to review.** PM transitions `awaiting_signature → pending_review`
-  when the client requests scope revisions. The original SOW payload stays
-  on its lifecycle event; the new revision is captured by the next
-  `sow_sent` event.
+- **Legal requested changes.** PM transitions `awaiting_legal_review →
+  pending_review`. The same SOW row stays editable (Carlos failed an
+  internal review, not the client). The version number does not bump.
+- **Client requested revisions.** PM transitions `awaiting_signature →
+  pending_review` and creates a NEW SOW version with content cloned from
+  the prior version. The client saw v1, so v2 is a separate document for
+  legal-contract reasons. (Old engagements that predate 010 still use the
+  `returned_to_review` event with no new version row.)
 - **Cancellation.** Either party can cancel from any pre-active state.
   Cancellations are soft — the engagement row stays, status becomes
-  `cancelled`, lifecycle events preserve the audit trail.
+  `cancelled`, lifecycle events preserve the audit trail. Any in-flight
+  SOW rows for the engagement are also marked `status='cancelled'`.
 
 The legacy states (`intake`, `scoping`) stay readable so engagements that
-predate this sprint don't break. New engagements only use the four-state
+predate this sprint don't break. New engagements only use the five-state
 lifecycle.
 
 ---
@@ -52,9 +62,11 @@ lifecycle.
 | Action | From state | To state | Actor |
 |--------|-----------|----------|-------|
 | Submit intake | (none) | `pending_review` | Client |
-| Send SOW for signature | `pending_review` | `awaiting_signature` | PM |
-| Mark as signed | `awaiting_signature` | `awaiting_kickoff` | PM (stub) / e-sign webhook (future) |
-| Return to review | `awaiting_signature` | `pending_review` | PM |
+| Send SOW for legal review | `pending_review` | `awaiting_legal_review` | PM |
+| Mark legal as signed | `awaiting_legal_review` | `awaiting_signature` | PM (stub) / e-sign webhook (future) |
+| Legal requested changes | `awaiting_legal_review` | `pending_review` | PM (same SOW row stays editable) |
+| Mark client as signed | `awaiting_signature` | `awaiting_kickoff` | PM (stub) / e-sign webhook (future) |
+| Make changes and resubmit | `awaiting_signature` | `pending_review` | PM (creates new SOW version) |
 | Schedule kickoff | `awaiting_kickoff` | `awaiting_kickoff` (no transition) | PM |
 | Complete kickoff | `awaiting_kickoff` | `active` | PM |
 | Cancel | any pre-active | `cancelled` | Client (own) / PM (any) |
@@ -74,7 +86,7 @@ Every state change writes to `engagement_lifecycle_events`:
 | Column | Notes |
 |--------|-------|
 | `id`, `engagement_id`, `created_at` | standard |
-| `event_type` | one of: `intake_submitted`, `sow_sent`, `sow_revised`, `signed`, `kickoff_scheduled`, `kickoff_completed`, `activated`, `cancelled`, `returned_to_review` |
+| `event_type` | legacy: `intake_submitted`, `sow_sent`, `sow_revised`, `signed`, `kickoff_scheduled`, `kickoff_completed`, `activated`, `cancelled`, `returned_to_review`. SOW workflow (010): `sow_drafted`, `sow_sent_for_legal`, `sow_legal_approved`, `sow_legal_rejected`, `sow_sent_to_client`, `sow_client_rejected`, `sow_resubmitted`. The both-parties-signed transition reuses the existing `signed` event for audit-symmetry. |
 | `actor_user_id` | references `auth.users.id`; could be a client OR an internal user |
 | `actor_role` | `client` / `pm` / `system` |
 | `notes` | free-form; surfaced in the timeline UI |
@@ -113,6 +125,66 @@ action transaction:
 The "first agent run scheduled" piece is intentionally just a column write.
 The cron that picks up `first_agent_run_at` and fires the agent is a
 separate sprint (the cron-not-yet-wired note from `update.md`).
+
+---
+
+## SOW workflow
+
+The `pending_review → awaiting_legal_review → awaiting_signature` portion
+of the lifecycle is the SOW authoring and two-step signature flow shipped
+in [migration 010](../supabase/migrations/010_sow_authoring.sql).
+
+```
+[Intake submitted]
+        │
+        ▼
+   pending_review · SOW draft
+        │  Carlos clicks "Generate first draft" — Sonnet 4.6 fills the
+        │  scope, deliverables, milestones, pricing, timeline, terms.
+        │  Carlos edits in the form-on-left + preview-on-right panel.
+        │  Save persists; reload preserves; AI-populated fields wear a
+        │  small sage "AI" pill until Carlos dismisses each one.
+        │
+        │  Carlos clicks "Send for legal review"
+        ▼
+   awaiting_legal_review · SOW awaiting_legal
+        │  PDF rendered server-side, uploaded to sow-pdfs bucket.
+        │  PM-side: read-only PDF preview + "Mark legal as signed" /
+        │  "Legal requested changes" actions.
+        │
+        │  Legal counter-signs                Legal requested changes
+        ▼                                     ▼
+   awaiting_signature · SOW awaiting_client   pending_review · SOW rejected_by_legal
+        │  Counter-signed PDF rendered,      The same SOW row stays
+        │  available to client. PM marks      editable. Version number
+        │  client signed manually.            does NOT bump.
+        │
+        │  Client signs               Client requested revisions
+        ▼                             ▼
+   awaiting_kickoff · SOW signed     pending_review · new SOW row, version+1
+                                     The previous version is marked
+                                     `superseded`. Content is cloned so
+                                     Carlos doesn't start over.
+```
+
+The SOW row's `status` field carries the sub-state. The engagement
+lifecycle is intentionally five-state — `rejected_by_legal`,
+`awaiting_finalize`, etc. are NOT engagement states.
+
+Versions are append-only. Each row has a unique `(engagement_id,
+version_number)`. A view `sows_active` exposes the latest non-superseded,
+non-cancelled version per engagement; the application uses that for "the
+SOW for engagement X."
+
+Both PDFs (legal-review and client-signature) live in the private
+`sow-pdfs` Supabase Storage bucket, path scheme
+`{engagement_id}/{sow_id}/{stage}.pdf`. RLS gates client reads to SOWs in
+`awaiting_client` or `signed` state. Signed URLs (15-minute expiry) are
+the only way the application links to a PDF.
+
+eSignature is stubbed in this sprint: "Mark legal as signed" / "Mark
+client as signed" are PM actions. Real DocuSign / HelloSign integration
+will replace those buttons with webhook callbacks in a later sprint.
 
 ---
 

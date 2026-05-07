@@ -4,7 +4,12 @@
 //
 // The map intentionally permits legacy state transitions (intake → active
 // etc.) so old engagements can still be moved by ops. New engagements
-// follow the four-state path.
+// follow the five-state path:
+//   pending_review → awaiting_legal_review → awaiting_signature
+//                  → awaiting_kickoff → active
+//
+// Sub-state of the SOW workflow (draft / awaiting_legal / rejected_by_*
+// / etc.) lives on the sows row and is NOT modeled here.
 
 import { createClient } from '@/lib/supabase/server'
 import { recordLifecycleEvent } from './events'
@@ -17,8 +22,12 @@ import type {
 // Each entry: from-state → set of legal to-states.
 // A given transition either appears here or it's illegal.
 export const LEGAL_TRANSITIONS: Partial<Record<EngagementStatus, EngagementStatus[]>> = {
-  // ── New four-state lifecycle ────────────────────────────────────────────
-  pending_review: ['awaiting_signature', 'cancelled'],
+  // ── New five-state lifecycle (010) ─────────────────────────────────────
+  // Note: pending_review → awaiting_signature is preserved for the legacy
+  // sendSowForSignature stub on engagements created before 010. New
+  // engagements always route through awaiting_legal_review.
+  pending_review: ['awaiting_legal_review', 'awaiting_signature', 'cancelled'],
+  awaiting_legal_review: ['awaiting_signature', 'pending_review', 'cancelled'],
   awaiting_signature: ['awaiting_kickoff', 'pending_review', 'cancelled'],
   awaiting_kickoff: ['active', 'cancelled'],
 
