@@ -19,6 +19,11 @@ import { History, Sparkles, Loader2, AlertCircle, FilePlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SowEditor } from './sow-editor'
 import { SowVersionHistory } from './sow-version-history'
+import {
+  AwaitingLegalPanel,
+  AwaitingClientPanel,
+  SignedSowSummary,
+} from './sow-signature-panels'
 import { getOrCreateSowDraft } from './sow-actions'
 import type { Sow, SowStatus } from '@/lib/types'
 
@@ -138,11 +143,9 @@ export function SowAuthoringPanel({
         </>
       )}
 
-      {(sow.status === 'awaiting_legal' ||
-        sow.status === 'awaiting_client' ||
-        sow.status === 'signed') && (
-        <PendingPhase5Placeholder status={sow.status} />
-      )}
+      {sow.status === 'awaiting_legal' && <AwaitingLegalPanel sow={sow} />}
+      {sow.status === 'awaiting_client' && <AwaitingClientPanel sow={sow} />}
+      {sow.status === 'signed' && <SignedSowSummary sow={sow} />}
 
       {(sow.status === 'superseded' || sow.status === 'cancelled') && (
         <div className="bg-white border border-[#7E8B6A]/20 rounded-xl p-5 text-center text-sm text-[#7E8B6A]">
@@ -465,18 +468,3 @@ function SowEmptyState({
   )
 }
 
-function PendingPhase5Placeholder({ status }: { status: SowStatus }) {
-  const labels: Record<string, string> = {
-    awaiting_legal: 'Awaiting legal review panel · ships in Phase 5',
-    awaiting_client: 'Awaiting client signature panel · ships in Phase 5',
-    signed: 'Signed SOW summary · ships in Phase 5',
-  }
-  return (
-    <div className="bg-white border border-dashed border-[#7E8B6A]/30 rounded-xl p-5 text-center">
-      <p className="text-[#5C6B4D] text-sm">{labels[status] ?? status}</p>
-      <p className="text-[#7E8B6A] text-xs mt-1">
-        The signature flow + PDF rendering will land in the next phase of this sprint.
-      </p>
-    </div>
-  )
-}

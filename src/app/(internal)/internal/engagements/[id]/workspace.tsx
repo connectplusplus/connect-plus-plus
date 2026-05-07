@@ -19,6 +19,7 @@ import {
 import { completeKickoff } from './kickoff-actions'
 import { KickoffCompletionModal } from './kickoff-completion-modal'
 import { SowAuthoringPanel } from './sow-authoring-panel'
+import { SignedSowSummary } from './sow-signature-panels'
 import type { Engagement, EngagementLifecycleEvent, Sow } from '@/lib/types'
 
 interface Props {
@@ -48,11 +49,15 @@ export function PMWorkspace({
   const [error, setError] = useState<string | null>(null)
   const [showKickoffModal, setShowKickoffModal] = useState(false)
 
-  // pending_review and awaiting_legal_review get the new SOW authoring
-  // experience (full-width form + preview). Everything else uses the
-  // existing two-column lifecycle + action panel layout.
+  // pending_review, awaiting_legal_review, and awaiting_signature all
+  // route through the new SOW authoring panel (editor / awaiting-legal /
+  // awaiting-client respectively). awaiting_kickoff and beyond use the
+  // existing two-column layout, with a small SignedSowSummary card added
+  // to the sidebar when the SOW is signed.
   const sowAuthoringMode =
-    engagement.status === 'pending_review' || engagement.status === 'awaiting_legal_review'
+    engagement.status === 'pending_review' ||
+    engagement.status === 'awaiting_legal_review' ||
+    engagement.status === 'awaiting_signature'
 
   function refresh() {
     setError(null)
@@ -152,7 +157,8 @@ export function PMWorkspace({
                       engagement_id: engagement.id,
                       current_status: engagement.status as
                         | 'pending_review'
-                        | 'awaiting_legal_review',
+                        | 'awaiting_legal_review'
+                        | 'awaiting_signature',
                       reason,
                     })
                   )
@@ -209,7 +215,11 @@ export function PMWorkspace({
             />
           )}
 
-          {engagement.status === 'awaiting_signature' && (
+          {/* awaiting_signature is now handled in sowAuthoringMode above;
+              the legacy AwaitingSignaturePanel below is dead code but kept
+              for any in-flight pre-010 engagement until its lifecycle
+              completes. */}
+          {false && engagement.status === 'awaiting_signature' && (
             <AwaitingSignaturePanel
               pending={pending}
               onMarkSigned={() =>
@@ -230,6 +240,10 @@ export function PMWorkspace({
                 )
               }
             />
+          )}
+
+          {engagement.status === 'awaiting_kickoff' && activeSow?.status === 'signed' && (
+            <SignedSowSummary sow={activeSow} />
           )}
 
           {engagement.status === 'awaiting_kickoff' && (
