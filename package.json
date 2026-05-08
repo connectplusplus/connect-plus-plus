@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "pnpm test:extractors && node tests/configurator-smoke.mjs && node tests/smart-intake-smoke.mjs",
+    "test": "pnpm test:extractors && node tests/configurator-smoke.mjs && node tests/smart-intake-smoke.mjs && node tests/sow-smoke.mjs",
     "test:extractors": "tsx tests/extractor-smoke.ts",
-    "test:smart-intake": "node tests/smart-intake-smoke.mjs"
+    "test:smart-intake": "node tests/smart-intake-smoke.mjs",
+    "test:sow": "node tests/sow-smoke.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.94.0",

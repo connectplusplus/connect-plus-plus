@@ -48,6 +48,19 @@ function revalidateAll(engagementId: string) {
   revalidatePath(`/dashboard/engagements/${engagementId}`)
 }
 
+// Structured one-line logger used by every signature action. Format is
+// "[sow] event=NAME engagement=UUID sow=UUID v=N status=STATUS k=v...".
+// Greppable and easy to ship to a structured log sink later.
+function logSowEvent(
+  event: string,
+  fields: Record<string, string | number | boolean | null | undefined>
+) {
+  const parts = Object.entries(fields)
+    .filter(([, v]) => v !== undefined && v !== null)
+    .map(([k, v]) => `${k}=${typeof v === 'string' && v.includes(' ') ? JSON.stringify(v) : v}`)
+  console.log(`[sow] event=${event} ${parts.join(' ')}`)
+}
+
 // ─── Active SOW lookup ──────────────────────────────────────────────────────
 
 async function findActiveSow(
@@ -420,6 +433,13 @@ export async function sendSowForLegalReview(input: {
     `SOW v${sow.version_number} sent to FullStack Legal for counter-signature.`
   )
 
+  logSowEvent('sent_for_legal', {
+    engagement: sow.engagement_id,
+    sow: sow.id,
+    v: sow.version_number,
+    pdf_bytes: pdfBuffer.length,
+  })
+
   revalidateAll(sow.engagement_id)
   return { ok: true }
 }
@@ -521,6 +541,14 @@ export async function recordLegalSignature(input: {
     `SOW v${sow.version_number} counter-signed by FullStack Legal and sent for client signature.`
   )
 
+  logSowEvent('legal_signed', {
+    engagement: sow.engagement_id,
+    sow: sow.id,
+    v: sow.version_number,
+    legal_signer: legalSignerName,
+    pdf_bytes: pdfBuffer.length,
+  })
+
   revalidateAll(sow.engagement_id)
   return { ok: true }
 }
@@ -579,6 +607,13 @@ export async function recordLegalRejection(input: {
     sowRow.engagement_id as string,
     `Legal requested changes to SOW v${sowRow.version_number}. PM editing.`
   )
+
+  logSowEvent('legal_rejected', {
+    engagement: sowRow.engagement_id as string,
+    sow: sowRow.id as string,
+    v: sowRow.version_number as number,
+    notes_chars: input.notes.length,
+  })
 
   revalidateAll(sowRow.engagement_id as string)
   return { ok: true }
@@ -678,6 +713,14 @@ export async function recordClientSignature(input: {
     `SOW v${sow.version_number} signed by ${clientSignerName}. Engagement is ready for kickoff.`
   )
 
+  logSowEvent('client_signed', {
+    engagement: sow.engagement_id,
+    sow: sow.id,
+    v: sow.version_number,
+    client_signer: clientSignerName,
+    pdf_bytes: pdfBuffer.length,
+  })
+
   revalidateAll(sow.engagement_id)
   return { ok: true }
 }
@@ -737,6 +780,13 @@ export async function recordClientRejection(input: {
     sowRow.engagement_id as string,
     `Client requested revisions to SOW v${sowRow.version_number}. PM preparing a new version.`
   )
+
+  logSowEvent('client_rejected', {
+    engagement: sowRow.engagement_id as string,
+    sow: sowRow.id as string,
+    v: sowRow.version_number as number,
+    notes_chars: input.notes.length,
+  })
 
   revalidateAll(sowRow.engagement_id as string)
   return { ok: true }
@@ -819,6 +869,14 @@ export async function resubmitSow(input: {
       new_sow_id: created.id,
       new_version: prevSow.version_number + 1,
     },
+  })
+
+  logSowEvent('resubmitted', {
+    engagement: prevSow.engagement_id,
+    prev_sow: prevSow.id,
+    prev_v: prevSow.version_number,
+    new_sow: created.id as string,
+    new_v: prevSow.version_number + 1,
   })
 
   revalidateAll(prevSow.engagement_id)

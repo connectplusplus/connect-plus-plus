@@ -186,6 +186,46 @@ eSignature is stubbed in this sprint: "Mark legal as signed" / "Mark
 client as signed" are PM actions. Real DocuSign / HelloSign integration
 will replace those buttons with webhook callbacks in a later sprint.
 
+### What Carlos sees, click by click
+
+1. Engagement lands in his queue at `pending_review`. He opens it.
+2. The PM workspace shows a SOW authoring panel with two CTAs: **Generate
+   first draft with Glassbox** (sage, primary) or **Start blank draft**.
+3. Generate streams progress (`Reading template snapshot…` → `Calling
+   Claude…` → `Validating output…`) and lands him in the editor with the
+   form pre-populated. Each AI-populated field wears a small sage **AI**
+   pill. He clicks each pill as he reviews the field.
+4. Form-on-left, live HTML preview-on-right. He edits scope, milestones,
+   pricing, terms. **Save draft** persists; reload preserves state.
+5. **Send for legal review** is a two-click confirm. The PDF renders
+   server-side and uploads to `sow-pdfs/{engagement_id}/{sow_id}/legal_review.pdf`.
+   Engagement transitions `pending_review → awaiting_legal_review`.
+6. The panel switches to **Awaiting Legal**: inline PDF preview + two
+   actions, **Mark legal as signed** (sage) and **Legal requested
+   changes** (amber). On rejection, the same SOW row stays editable;
+   the engagement reverts to `pending_review` and Carlos sees a banner
+   with legal's notes above the editor.
+7. On legal sign, a counter-signed PDF is rendered (now stamped with
+   "Signed by [legal name] on [date]" at the bottom) and uploaded to
+   `client_signature.pdf`. Engagement transitions `awaiting_legal_review
+   → awaiting_signature`.
+8. The panel switches to **Awaiting Client**: the counter-signed PDF +
+   **Mark client as signed** (purple) and **Make changes and resubmit**
+   (amber, opens a notes textarea). On client signature, a fully-signed
+   contract PDF replaces the previous render. Engagement transitions
+   `awaiting_signature → awaiting_kickoff`.
+9. **Make changes and resubmit** is the asymmetric path: it both records
+   the rejection AND immediately creates SOW v(N+1) with content cloned
+   from vN. The previous version is marked `superseded`. Carlos lands
+   back in the editor on v(N+1).
+10. Once the engagement reaches `awaiting_kickoff`, the existing kickoff
+    completion modal takes over. The SOW panel collapses to a small
+    green "Signed SOW v{N}" card with a download link.
+
+The version pill in the panel header (`SOW v2 · Draft`) opens a
+right-side flyout with full version history — every draft, every legal
+rejection, every client revision, and links to every archived PDF.
+
 ---
 
 ## Activation checklist

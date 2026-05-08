@@ -143,14 +143,14 @@ export function GlassParticles() {
       rx: number, ry: number, rz: number
     ) {
       // Rotate X
-      let y1 = y * Math.cos(rx) - z * Math.sin(rx)
-      let z1 = y * Math.sin(rx) + z * Math.cos(rx)
+      const y1 = y * Math.cos(rx) - z * Math.sin(rx)
+      const z1 = y * Math.sin(rx) + z * Math.cos(rx)
       // Rotate Y
-      let x1 = x * Math.cos(ry) + z1 * Math.sin(ry)
-      let z2 = -x * Math.sin(ry) + z1 * Math.cos(ry)
+      const x1 = x * Math.cos(ry) + z1 * Math.sin(ry)
+      const z2 = -x * Math.sin(ry) + z1 * Math.cos(ry)
       // Rotate Z
-      let x2 = x1 * Math.cos(rz) - y1 * Math.sin(rz)
-      let y2 = x1 * Math.sin(rz) + y1 * Math.cos(rz)
+      const x2 = x1 * Math.cos(rz) - y1 * Math.sin(rz)
+      const y2 = x1 * Math.sin(rz) + y1 * Math.cos(rz)
       return { x: x2, y: y2, z: z2 }
     }
 

@@ -428,5 +428,10 @@ export async function renderSowPdf(input: RenderSowPdfInput): Promise<Buffer> {
   const doc = React.createElement(SowDocument, input) as unknown as Parameters<
     typeof renderToBuffer
   >[0]
-  return renderToBuffer(doc)
+  const t0 = Date.now()
+  const buf = await renderToBuffer(doc)
+  console.log(
+    `[sow] pdf rendered stage=${input.stage} v=${input.sow.version_number} bytes=${buf.length} latency_ms=${Date.now() - t0}`
+  )
+  return buf
 }
