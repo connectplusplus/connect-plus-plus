@@ -99,9 +99,9 @@ try {
   }
 
   // 4. Wait for the editor to populate ─────────────────────────────────────
-  // The mock path returns immediately; we cap at 30s so a misconfigured mock
-  // fails cleanly. Look for the "Save draft" footer + the AI pill.
-  await page.waitForSelector('text=Save draft', { timeout: 30_000 })
+  // Mock returns in <1s; real Sonnet takes ~30s. Cap at 60s so the smoke
+  // works against either. Looks for the "Save draft" footer + the AI pill.
+  await page.waitForSelector('text=Save draft', { timeout: 60_000 })
   console.log('✓ editor rendered after draft')
 
   // AI pills (sage "AI" badge next to populated field labels). At least one
