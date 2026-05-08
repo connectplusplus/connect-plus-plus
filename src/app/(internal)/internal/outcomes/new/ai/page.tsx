@@ -42,7 +42,7 @@ export default async function AIIntakePage() {
           AI-guided intake
         </h2>
         <p className="text-[#64748B] text-sm">
-          Answer a few questions and optionally upload reference materials. Claude drafts the
+          Answer a few questions and optionally upload reference materials. Glassbox drafts the
           template; you review and refine it in the Configurator.
         </p>
       </div>

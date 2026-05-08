@@ -267,8 +267,10 @@ function stageLabel(stage: string, attempt?: number): string {
   switch (stage) {
     case 'preparing':
       return 'Reading template snapshot…'
-    case 'calling_claude':
-      return attempt && attempt > 1 ? `Calling Claude (retry ${attempt})…` : 'Calling Claude…'
+    case 'drafting':
+      return attempt && attempt > 1
+        ? `Drafting with Glassbox (retry ${attempt})…`
+        : 'Drafting with Glassbox…'
     case 'received_response':
       return 'Got response, parsing…'
     case 'parsing':

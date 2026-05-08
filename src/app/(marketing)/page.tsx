@@ -229,7 +229,7 @@ export default function HomePage() {
               {/* Pipeline steps */}
               <div className="space-y-4">
                 {[
-                  { icon: '⬡', label: 'Agent generates independently', desc: 'Collects signals, scores against your weights, writes findings via Claude' },
+                  { icon: '⬡', label: 'Agent generates independently', desc: 'Collects signals, scores against your weights, writes findings' },
                   { icon: '◎', label: 'PM adds context (read-only)', desc: '4-hour window to annotate findings — no edits, no suppressions' },
                   { icon: '▤', label: 'Delivered to you, intact', desc: 'Agent findings unchanged, PM context alongside — both clearly labeled' },
                 ].map((step, i) => (

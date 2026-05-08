@@ -104,7 +104,7 @@ const SUGGESTED_PODS: Pod[] = [
     name: 'AI Product Pod',
     description: 'End-to-end AI feature development: model integration, API layer, and streaming UI. Ship production AI features in sprints.',
     members: 3,
-    skills: ['Claude / GPT-4', 'Python', 'React', 'RAG', 'Prompt Engineering'],
+    skills: ['LLM APIs', 'Python', 'React', 'RAG', 'Prompt Engineering'],
     monthlyRate: 48000,
     tasks: ['AI feature development', 'LLM integration & prompt engineering', 'RAG pipeline builds', 'Evaluation & monitoring'],
   },

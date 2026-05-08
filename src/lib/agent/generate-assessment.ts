@@ -137,12 +137,12 @@ Respond ONLY with valid JSON (no markdown, no code fences) in exactly this forma
 
   if (!response.ok) {
     const errorBody = await response.text()
-    throw new Error(`Claude API error ${response.status}: ${errorBody}`)
+    throw new Error(`AI service error ${response.status}: ${errorBody}`)
   }
 
   const data = await response.json()
   const text = data.content?.[0]?.text
-  if (!text) throw new Error('Empty response from Claude API')
+  if (!text) throw new Error('Empty response from AI service')
 
   const cleanText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
   const draft = JSON.parse(cleanText)

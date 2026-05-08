@@ -8,7 +8,7 @@ const PODS = [
     name: 'AI Product Pod',
     members: 3,
     roles: ['Senior ML Engineer', 'Full-Stack Engineer', 'AI-Native PM'],
-    skills: ['Claude / GPT-4', 'Python', 'React', 'RAG', 'Prompt Engineering', 'LangChain'],
+    skills: ['LLM APIs', 'Python', 'React', 'RAG', 'Prompt Engineering', 'LangChain'],
     description: 'End-to-end AI feature development: model integration, API layer, and streaming UI. Ship production AI features in sprints, not months.',
     monthlyRate: '$48,000',
     tasks: ['AI feature development & LLM integration', 'RAG pipeline design & implementation', 'Prompt engineering & evaluation frameworks', 'Streaming UI & real-time AI responses', 'Model cost optimization & monitoring'],

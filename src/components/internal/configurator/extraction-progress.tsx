@@ -8,7 +8,7 @@ import { Loader2, Sparkles, X } from 'lucide-react'
 // events for analytics / future extension.
 export type ProgressStage =
   | 'preparing'
-  | 'calling_claude'
+  | 'drafting'
   | 'received_response'
   | 'parsing'
   | 'retry'

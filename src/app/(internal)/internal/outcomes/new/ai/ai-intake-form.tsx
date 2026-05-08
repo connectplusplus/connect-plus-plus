@@ -303,7 +303,7 @@ export function AIIntakeForm({ categories }: Props) {
             <span className="text-[#94A3B8] text-xs font-normal">(optional)</span>
           </label>
           <p className="text-[#94A3B8] text-xs">
-            Scope docs, proposals, decks, anything Delivery already has. Claude reads them
+            Scope docs, proposals, decks, anything Delivery already has. Glassbox reads them
             and pulls structure into the draft.
           </p>
           <FileDropzone files={files} onChange={setFiles} disabled={extracting} />

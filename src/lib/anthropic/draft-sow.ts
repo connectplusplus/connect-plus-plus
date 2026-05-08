@@ -34,7 +34,7 @@ export type DraftSowErrorCode =
 
 export type DraftSowEvent =
   | { stage: 'preparing' }
-  | { stage: 'calling_claude'; attempt: 1 | 2 }
+  | { stage: 'drafting'; attempt: 1 | 2 }
   | { stage: 'received_response' }
   | { stage: 'parsing' }
   | { stage: 'retry'; reason: string }
@@ -129,11 +129,11 @@ const TOP_LEVEL_AI_PATHS = [
   'terms_md',
 ] as const
 
-// ─── Streaming Claude call ──────────────────────────────────────────────────
+// ─── Streaming model call ──────────────────────────────────────────────────
 
 const MAX_TOKENS = 6000
 
-async function callClaude(
+async function callModel(
   client: Anthropic,
   systemPrompt: string,
   userPrompt: string
@@ -176,7 +176,7 @@ export async function* draftSow(
   // ── Mock path for e2e tests ─────────────────────────────────────────
   if (process.env.SOW_DRAFT_MOCK === '1') {
     yield { stage: 'preparing' }
-    yield { stage: 'calling_claude', attempt: 1 }
+    yield { stage: 'drafting', attempt: 1 }
     await new Promise((r) => setTimeout(r, 50))
     yield { stage: 'received_response' }
     yield { stage: 'parsing' }
@@ -221,8 +221,8 @@ export async function* draftSow(
   // ── First attempt ────────────────────────────────────────────────────
   let response: { text: string; input_tokens: number; output_tokens: number }
   try {
-    yield { stage: 'calling_claude', attempt: 1 }
-    response = await callClaude(client, systemPrompt, userPrompt)
+    yield { stage: 'drafting', attempt: 1 }
+    response = await callModel(client, systemPrompt, userPrompt)
   } catch (err) {
     return apiError(err)
   }
@@ -234,7 +234,7 @@ export async function* draftSow(
     return {
       ok: false,
       code: 'EMPTY_RESPONSE',
-      message: 'Claude returned no content.',
+      message: 'The drafter returned no content.',
       retryable: true,
     }
   }
@@ -245,15 +245,15 @@ export async function* draftSow(
   } catch (err) {
     yield { stage: 'retry', reason: 'JSON parse failed on first attempt' }
     try {
-      yield { stage: 'calling_claude', attempt: 2 }
-      response = await callClaude(client, systemPrompt + RETRY_SYSTEM_ADDENDUM, userPrompt)
+      yield { stage: 'drafting', attempt: 2 }
+      response = await callModel(client, systemPrompt + RETRY_SYSTEM_ADDENDUM, userPrompt)
       yield { stage: 'parsing' }
       parsed = tryParse(response.text)
     } catch (err2) {
       return {
         ok: false,
         code: 'INVALID_JSON',
-        message: "Claude's response could not be parsed as JSON, even after a retry.",
+        message: "The drafter's response could not be parsed as JSON, even after a retry.",
         details:
           (err2 instanceof Error ? err2.message : String(err2)) +
           ' (first attempt: ' +
@@ -321,7 +321,7 @@ function apiError(err: unknown): DraftSowResult {
     ok: false,
     code: 'API_ERROR',
     message:
-      'Calling Claude failed. This is usually transient — retry, or fall back to manual SOW entry.',
+      'The drafter call failed. This is usually transient — retry, or fall back to manual SOW entry.',
     details: err instanceof Error ? err.message : String(err),
     retryable: true,
   }

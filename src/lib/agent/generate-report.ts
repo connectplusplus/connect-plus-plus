@@ -56,13 +56,13 @@ Respond with ONLY a JSON object (no markdown, no code fences, no explanation) in
 
   if (!response.ok) {
     const errorBody = await response.text()
-    throw new Error(`Claude API error ${response.status}: ${errorBody}`)
+    throw new Error(`AI service error ${response.status}: ${errorBody}`)
   }
 
   const data = await response.json()
   const text = data.content?.[0]?.text
 
-  if (!text) throw new Error('Empty response from Claude API')
+  if (!text) throw new Error('Empty response from AI service')
 
   // Parse JSON — handle potential markdown fences
   const cleanText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
@@ -70,7 +70,7 @@ Respond with ONLY a JSON object (no markdown, no code fences, no explanation) in
 
   // Validate required fields
   if (!reportDraft.health_score || !reportDraft.accomplishments || !reportDraft.plan_tomorrow) {
-    throw new Error('Incomplete report draft from Claude')
+    throw new Error('Incomplete report draft from AI service')
   }
 
   return {
